@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+	<div class="mainContainer">
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/jobseekers/register}">Register as Job Seeker</a></li>
+                <li><a th:href="@{/employers/register}">Register as Employer</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+            </ul>
+        </nav>
+    <div class="headtitle">
+        <h2>Welcome Back!!</h2>
+        <h4>Please Log in to Continue</h4>
+    </div>
+    <div class="formtable">
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <input type="text" id="username" name="username" placeholder="Your Username" required>
+            </div>
+
+            <div class="pass-group">
+                <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                <button type="button" id="togglePassword" class="passButton">Show</button>
+            </div>
+            
+            <div class="form-group">
+                <p id="message" class="error" th:text="${errorMessage}"></p>
+            </div>
+			<div class="error">
+				<p th:if="${error?.login}">
+					<!--if there is no username or passsword in register table it wiil show error -->
+					<span th:text="${error}"></span>
+				</p>
+			</div>
+			
+            <div class="spacebetn">
+                <div class="form-group">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+                <div class="form-group">
+                    <a href="#">Forgot password</a>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" id="loginButton" class="button-type1">Login</button>
+            </div>
+         </form>
+            <div class="form-group">
+                <button id="logoutButton" class="button-type1" th:onclick="window.location.href='@{/logout}'">Logout</button>
+            </div>
+        </div>
+</div>
+
+<script th:src="@{/js/login.js}"></script>
+</body>
+</html>

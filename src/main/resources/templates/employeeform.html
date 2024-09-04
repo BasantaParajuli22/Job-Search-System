@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validator</title>
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+    <div class="mainContainer">
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/jobseekers/register}">Register as Job Seeker</a></li>
+                <li><a th:href="@{/employers/register}">Register as Employer</a></li>
+                <li><a th:href="@{/login}">Login</a></li>
+            </ul>
+        </nav>
+    <div class="headtitle">
+		<h2>Get started with Us</h2>
+		<h4>Employer Registration</h4>
+    </div>
+    <div class="formtable">
+		
+        <form  th:action="@{/employers/register}" method="post" id="registrationForm">
+            <div  class="form-group">
+                <label for="name">Company/Organization Name:</label>
+                <input type="text" name="emp_username" id="name" placeholder="Enter your Company/Organization" th:value="${emp_username}" >
+                <span id="nameError" class="error"></span>
+				<p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="text" name="emp_email"  id="email" placeholder="example@example.com" th:value="${emp_email}">
+                <span id="emailError" class="error"></span>
+				<span  class="error" th:text="${emailExists}"></span>
+				<p th:if="${error?.email != null}"><span th:text="${error.email}" class="error"></span></p>
+            </div>
+
+            <div class="form-group">
+                <label for="number">Number:</label>
+                <input type="number" name="emp_number"  id="number" placeholder="987653210" th:value="${emp_number}">
+                <span id="numberError" class="error"></span>
+            </div>
+
+            <div  class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" name="emp_password"  id="password" placeholder="Enter your password" value="password">
+                <span id="passwordError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+                    <label for="confirmpassword">Password:</label>
+                    <input type="password" name="confirmpassword" id="confirmpassword"  placeholder="Confirm your password" value="password">
+                    <span id="confirmpasswordError" class="error"></span>
+
+            </div>
+
+            <div class="form-group">
+                <label for="terms">Terms and conditoins:</label>
+                <input type="checkbox" id="terms" name="terms" checked> I accept all the terms and conditions 
+                <a th:href="@{/}">terms and conditions</a>
+				<div id="termsError" class="error"></div>
+            </div>
+            <div class="form-group"><button type="submit">Register</button></div>
+            
+            <div class="form-group"> Already have an account <a th:href="@{/login}">Log in</a></div>
+        </form>
+    </div>
+</div>
+    <script th:src="@{/js/employervalidate.js}"></script>
+</body>
+</html>
