@@ -1,7 +1,14 @@
 package com.example.springTrain.user;
 
+import java.time.Instant;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.usertype.UserType;
+
 //import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 //import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +29,14 @@ public class EmployerUser {
 	private String email;
 	private String number;
 	private String password;
+	
+	@CreationTimestamp
+	private Instant createdAt;
+	
+	private String sesion;//temporary password
+	
+	@Enumerated(value = EnumType.STRING)
+	private UserType userType;
 
 	public String getId() {
 		return username;
@@ -52,6 +67,18 @@ public class EmployerUser {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getSesion() {
+		return sesion;
+	}
+	public void setSesion(String sesion) {
+		this.sesion = sesion;
+	}
+	public String getUserType() {
+		return UserType;
+	}
+	public void setUserType(String userType) {
+		UserType = userType;
 	}
 }
  

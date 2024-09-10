@@ -23,23 +23,21 @@
     <div class="formtable">
         <form th:action="@{/login}" method="post">
             <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Your Username" required>
-            </div>
+                <input type="text" id="username" name="username" placeholder="Your Username" required th:value="${username}">
+				
+				<p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
+			</div>
 
             <div class="pass-group">
-                <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                <input type="password" id="password" name="password" placeholder="Enter your Password" required th:value="${password}">
+				
+				<p th:if="${error?.password != null}"><span th:text="${error.password}" class="error"></span></p>
                 <button type="button" id="togglePassword" class="passButton">Show</button>
             </div>
             
             <div class="form-group">
                 <p id="message" class="error" th:text="${errorMessage}"></p>
             </div>
-			<div class="error">
-				<p th:if="${error?.login}">
-					<!--if there is no username or passsword in register table it wiil show error -->
-					<span th:text="${error}"></span>
-				</p>
-			</div>
 			
             <div class="spacebetn">
                 <div class="form-group">

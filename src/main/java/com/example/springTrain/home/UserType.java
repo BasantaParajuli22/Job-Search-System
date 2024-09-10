@@ -1,6 +1,5 @@
 package com.example.springTrain.home;
 
-public class MyController {
-	
-	
+public enum UserType {
+	ADMIN, USER;
 }

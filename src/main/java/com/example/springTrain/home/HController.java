@@ -30,6 +30,14 @@ public class HController {
 	@Autowired
 	private JobUserRepository jobUserRepository;
 	
+  @GetMapping("/search")
+  public String search(@RequestParam("keyword") String keyword, Model model) {
+      model.addAttribute("keyword", keyword);
+      model.addAttribute("message", "Showing results for: " + keyword);
+
+      // Return the same home page with search results (you can also redirect to another page)
+      return "home";
+  }
 	@GetMapping("/")
 	public String getHomepage() {
 		return "home";
@@ -72,6 +80,7 @@ public class HController {
 	        model.addAttribute("emp_email", emp_email);
 	        model.addAttribute("emp_number", emp_number);
 	        
+	        
 			model.addAttribute("error", validationError);//sending both errors in 1 error variable
 			return "employeeform";
 		}
@@ -98,6 +107,8 @@ public class HController {
 		employeruser.setEmail(emp_email);
 		employeruser.setNumber(emp_number);
 		employeruser.setPassword(emp_password);
+//		employeruser.setUserType(UserType.USER);
+		
 		employeruserRepository.save(employeruser);//userRepository save employeruser
 		
 		System.out.println(emp_username);
@@ -122,8 +133,8 @@ public class HController {
 
 		
 		ValidationError validationError = new ValidationError();
-		
 		validationError.clear();
+		
 		JobUser existingjobuser = jobUserRepository.findByUsername(job_username);//if found it will not be null
 		if(existingjobuser != null) {//if same username foind in table u cant login 	
 			validationError.setUsername("Sorry username is already taken ");//if login is set it will be not null meaning it haserrors
@@ -169,21 +180,38 @@ public class HController {
 	}
 	@PostMapping("/login")
 	public String postlogin(
-			@RequestParam("job_username")String job_username,
-			@RequestParam("job_password")String job_password,
+			@RequestParam("username")String username,
+			@RequestParam("password")String password,
 			Model model) {
 		
-		JobUser loginuser = jobUserRepository.findByUsername(job_username);
+		JobUser loginusername = jobUserRepository.findByUsername(username);
+		//JobUser loginuserpass = jobUserRepository.findByPassword(password);
 		
-		//ValidationError validationError = new ValidationError();
+		ValidationError validationError = new ValidationError();
+		validationError.clear();
 		
-		
-		if(loginuser == null) {
-			
+		if(loginusername == null) {//if same username isnot foiund in table u cant login 	
+			validationError.setUsername("Sorry username not found ");//if login is set it will be not null meaning it haserrors
+			//model.addAttribute("userExists","Sorry username is already taken");
+			System.out.println("Sorry username not found " + username); // Debugging	
+			validationError.setPassword("Sorry password didnot match");
+			validationError.setEmail("no email");
 		}
-		System.out.println(loginuser.getUsername());
-		System.out.println (loginuser.getPassword());
-		return "login"; 
+		
+//		if(loginuserpass == null) {//if same password isnot foiund in table u cant login 	
+//			validationError.setPassword("Sorry password didnot match");
+//			validationError.setEmail("no email");
+//			System.out.println("Sorry password didnot match " + password); // Debugging
+//		}
+		if(validationError.hasErrors()) {
+			// Re-add the input data to the model to repopulate the form
+	        model.addAttribute("username", username);
+	        model.addAttribute("password", password);
+	        
+			model.addAttribute("error", validationError);//sending both errors in 1 error variable
+			return "login";
+		}
+		return "home"; 
 	}
 
 }

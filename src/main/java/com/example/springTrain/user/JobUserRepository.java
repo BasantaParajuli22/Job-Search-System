@@ -8,5 +8,6 @@ public interface JobUserRepository extends JpaRepository<JobUser, Integer>{
 	
 	JobUser findByUsername(String username);
 	JobUser findByEmail(String email);
+	JobUser findByUsernamePassword(String username,String password);
 	
 }
