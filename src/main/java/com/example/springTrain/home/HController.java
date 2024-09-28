@@ -24,7 +24,6 @@ public class HController {
 	
 	 private static final Logger logger = LoggerFactory.getLogger(HController.class);
 	 
-
 	@Autowired
 	private EmployerUserRepository employeruserRepository;
 	@Autowired
@@ -79,27 +78,10 @@ public class HController {
 	        model.addAttribute("emp_username", emp_username);
 	        model.addAttribute("emp_email", emp_email);
 	        model.addAttribute("emp_number", emp_number);
-	        
-	        
+	         
 			model.addAttribute("error", validationError);//sending both errors in 1 error variable
 			return "employeeform";
 		}
-
-//        		//checking if email exists or not in database 
-//
-//				EmployerUser existingemail = userRepository.findByEmail(emp_email);	
-//
-//					if(existingemail != null) {//if same email u cant login 
-//						
-//						model.addAttribute("emailExists","Sorry email is already taken");
-//						System.out.println("Email already taken: " + emp_email); // Debugging
-//						
-//						// Re-add the input data to the model to repopulate the form
-//				        model.addAttribute("emp_username", emp_username);
-//				        model.addAttribute("emp_email", emp_email);
-//				        model.addAttribute("emp_number", emp_number);
-//						return "employeeform";
-//					}
 		
 		EmployerUser employeruser = new EmployerUser();
 		//calling methods of EmployerUser class
@@ -184,18 +166,14 @@ public class HController {
 			@RequestParam("password")String password,
 			Model model) {
 		
-		JobUser loginusername = jobUserRepository.findByUsername(username);
-		//JobUser loginuserpass = jobUserRepository.findByPassword(password);
+		JobUser loginuserNpass = jobUserRepository.findByUsernameAndPassword(username,password);
 		
 		ValidationError validationError = new ValidationError();
 		validationError.clear();
 		
-		if(loginusername == null) {//if same username isnot foiund in table u cant login 	
-			validationError.setUsername("Sorry username not found ");//if login is set it will be not null meaning it haserrors
-			//model.addAttribute("userExists","Sorry username is already taken");
-			System.out.println("Sorry username not found " + username); // Debugging	
-			validationError.setPassword("Sorry password didnot match");
-			validationError.setEmail("no email");
+		if(loginuserNpass == null) {
+			System.out.println("Sorry Credentials not matched" + username); // Debugging	
+			validationError.setPassword("Sorry Credentials not matched");
 		}
 		
 //		if(loginuserpass == null) {//if same password isnot foiund in table u cant login 	

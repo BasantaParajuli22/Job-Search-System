@@ -3,7 +3,8 @@ package com.example.springTrain.user;
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.usertype.UserType;
+
+import com.example.springTrain.home.Usertype;
 
 //import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class EmployerUser {
 	private String sesion;//temporary password
 	
 	@Enumerated(value = EnumType.STRING)
-	private UserType userType;
+	private Usertype Usertype;
 
 	public String getId() {
 		return username;
@@ -74,11 +75,11 @@ public class EmployerUser {
 	public void setSesion(String sesion) {
 		this.sesion = sesion;
 	}
-	public String getUserType() {
-		return UserType;
+	public Usertype getUserType() {
+		return Usertype;
 	}
-	public void setUserType(String userType) {
-		UserType = userType;
+	public void setUserType(Usertype Usertype) {
+		this.Usertype = Usertype;
 	}
 }
  

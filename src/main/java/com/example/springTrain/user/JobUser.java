@@ -1,13 +1,20 @@
 package com.example.springTrain.user;
 
 
-	//import jakarta.persistence.Column;
-	import jakarta.persistence.Entity;
-	//import jakarta.persistence.GeneratedValue;
-	import jakarta.persistence.GeneratedValue;
-	import jakarta.persistence.GenerationType;
-	import jakarta.persistence.Id;
-	import jakarta.persistence.Table;
+import java.time.Instant;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.example.springTrain.home.Usertype;
+//import jakarta.persistence.Column;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 	@Entity
 	@Table(name = "job_user")
@@ -23,6 +30,14 @@ package com.example.springTrain.user;
 		private String email;
 		private String number;
 		private String password;
+		
+		@CreationTimestamp
+		private Instant createdAt;
+		
+		private String sesion;//temporary password
+		
+		@Enumerated(EnumType.STRING)
+		private Usertype Usertype;
 
 		public String getId() {
 			return username;
@@ -53,5 +68,23 @@ package com.example.springTrain.user;
 		}
 		public void setPassword(String password) {
 			this.password = password;
+		}
+		public String getSesion() {
+			return sesion;
+		}
+		public void setSesion(String sesion) {
+			this.sesion = sesion;
+		}
+		public Instant getCreatedAt() {
+			return createdAt;
+		}
+		public void setCreatedAt(Instant createdAt) {
+			this.createdAt = createdAt;
+		}
+		public Usertype getUsertype() {
+			return Usertype;
+		}
+		public void setUserType(Usertype Usertype) {
+			this.Usertype = Usertype;
 		}
 	}	

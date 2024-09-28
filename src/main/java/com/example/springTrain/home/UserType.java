@@ -1,5 +1,5 @@
 package com.example.springTrain.home;
 
-public enum UserType {
-	ADMIN, USER;
+public enum Usertype {
+	ADMIN, EMPLOYER,JOBSEEKER;
 }
