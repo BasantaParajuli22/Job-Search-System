@@ -1,0 +1,67 @@
+package com.example.dto;
+
+import com.example.springTrain.home.Usertype;
+
+public class JobSeekerDTO {
+	private String username;
+    private String password;
+    private String email;
+    private String number;
+    private String address;
+    private String skills;
+    private Usertype usertype;
+
+//    private String resume;
+    
+    
+    
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getNumber() {
+		return number;
+	}
+	public void setNumber(String number) {
+		this.number = number;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getSkills() {
+		return skills;
+	}
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+	public Usertype getUsertype() {
+		return usertype;
+	}
+	public void setUsertype(Usertype usertype) {
+		this.usertype = usertype;
+	}
+
+//	public String getResume() {
+//		return resume;
+//	}
+//	public void setResume(String resume) {
+//		this.resume = resume;
+//	}
+}

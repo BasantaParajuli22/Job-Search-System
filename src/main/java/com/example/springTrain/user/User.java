@@ -1,50 +1,47 @@
 package com.example.springTrain.user;
 
-
 import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.example.springTrain.home.Usertype;
-//import jakarta.persistence.Column;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-	@Entity
-	@Table(name = "job_user")
-	public class JobUser {
-		
+@Entity
+@Table(name = "users")
+public class User {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private int id;
+		private int user_id;
 		
-		//@Column(name = "true")
 		private String username;
-		
-		private String email;
-		private String number;
 		private String password;
-		
-		@CreationTimestamp
-		private Instant createdAt;
-		
-		private String sesion;//temporary password
-		
+		private String email;
 		@Enumerated(EnumType.STRING)
 		private Usertype Usertype;
+		@CreationTimestamp
+		private Instant createdAt;		
 
-		public String getId() {
-			return username;
-		}
-		public void serId(int id) {
-			 this.id = id;
-		}
+		@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	    private Employer employer;
+
+	    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	    private JobSeeker jobSeeker;
+	    
+		//private String session;
+		
+	    
+	    
+		//getters and setters
 		public String getUsername() {
 			return username;
 		}
@@ -57,24 +54,18 @@ import jakarta.persistence.Table;
 		public void setEmail(String email) {
 			this.email = email;
 		}
-		public String getNumber() {
-			return number;
-		}
-		public void setNumber(String number) {
-			this.number = number;
-		} 
 		public String getPassword() {
 			return password;
 		}
 		public void setPassword(String password) {
 			this.password = password;
 		}
-		public String getSesion() {
-			return sesion;
-		}
-		public void setSesion(String sesion) {
-			this.sesion = sesion;
-		}
+//		public String getSesion() {
+//			return sesion;
+//		}
+//		public void setSesion(String sesion) {
+//			this.sesion = sesion;
+//		}
 		public Instant getCreatedAt() {
 			return createdAt;
 		}
@@ -86,5 +77,23 @@ import jakarta.persistence.Table;
 		}
 		public void setUserType(Usertype Usertype) {
 			this.Usertype = Usertype;
+		}
+		public int getUser_id() {
+			return user_id;
+		}
+		public void setUserid(int user_id) {
+			this.user_id = user_id;
+		}
+		public JobSeeker getJobSeeker() {
+			return jobSeeker;
+		}
+		public void setJobSeeker(JobSeeker jobSeeker) {
+			this.jobSeeker = jobSeeker;
+		}
+		public Employer getEmployer() {
+			return employer;
+		}
+		public void setEmployer(Employer employer) {
+			this.employer = employer;
 		}
 	}	

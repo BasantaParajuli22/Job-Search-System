@@ -24,29 +24,45 @@
 		
         <form  th:action="@{/employers/register}" method="post" id="registrationForm">
             <div  class="form-group">
-                <label for="name">Company/Organization Name:</label>
-                <input type="text" name="emp_username" id="name" placeholder="Enter your Company/Organization" th:value="${emp_username}" >
+                <label for="companyName">Company/Organization Name:</label>
+                <input type="text" name="companyName" id="name" placeholder="Enter your Company/Organization" th:value="${companyName}" >
                 <span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
             </div>
 
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" name="emp_email"  id="email" placeholder="example@example.com" th:value="${emp_email}">
+                <input type="text" name="email"  id="email" placeholder="example@example.com" th:value="${email}">
                 <span id="emailError" class="error"></span>
 				<span  class="error" th:text="${emailExists}"></span>
 				<p th:if="${error?.email != null}"><span th:text="${error.email}" class="error"></span></p>
             </div>
 
             <div class="form-group">
-                <label for="number">Number:</label>
-                <input type="number" name="emp_number"  id="number" placeholder="987653210" th:value="${emp_number}">
+                <label for="contactNumber">Number:</label>
+                <input type="number" name="contactNumber"  id="number" placeholder="987653210" th:value="${contactNumber}">
                 <span id="numberError" class="error"></span>
             </div>
+			<div class="form-group">
+			        <label for="address">Password:</label>
+			        <input type="text" name="address" id="address"  placeholder="Enter your address" value="china company">
+			        <span id="addressError" class="error"></span>
+
+			</div>
+			<div class="form-group">
+			        <label for="website">Website:</label>
+			        <input type="text" name="website" id="website"  placeholder="Enter your website" value="www.domainnName.com">
+			        <span id="websiteError" class="error"></span>
+			</div>
+			<div class="form-group">
+			        <label for="companyDescription">Website:</label>
+			        <input type="text" name="companyDescription" id="companyDescription"  placeholder="Company Description:Best company" value="Best Company to apply for ">
+			        <span id="companyDescriptionError" class="error"></span>
+			</div>
 
             <div  class="form-group">
                 <label for="password">Password:</label>
-                <input type="password" name="emp_password"  id="password" placeholder="Enter your password" value="password">
+                <input type="password" name="password"  id="password" placeholder="Enter your password" value="password">
                 <span id="passwordError" class="error"></span>
             </div>
 
@@ -54,8 +70,13 @@
                     <label for="confirmpassword">Password:</label>
                     <input type="password" name="confirmpassword" id="confirmpassword"  placeholder="Confirm your password" value="password">
                     <span id="confirmpasswordError" class="error"></span>
-
             </div>
+			<div>
+			       <label for="usertype">Usertype:</label>
+			       <input type="hidden" name="usertype" id="usertype"  value="EMPLOYER">
+			</div>
+			
+		
 
             <div class="form-group">
                 <label for="terms">Terms and conditoins:</label>

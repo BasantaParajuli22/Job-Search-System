@@ -1,4 +1,4 @@
-package validation;
+package com.example.validation;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
