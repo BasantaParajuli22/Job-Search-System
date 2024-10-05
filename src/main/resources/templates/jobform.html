@@ -21,11 +21,11 @@
         <h4>JobSeeker Registration</h4>
     </div>
     <div class="formtable">
-        <form th:action="@{/jobseekers/register}" method="post" id="registrationForm">
+        <form th:action="@{/jobseekers/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}">
             <div class="form-group">
 				
-                <label for="name">Name:</label>
-                <input type="text" name="username" id="name" placeholder="Enter your name" th:value="${job_username}">
+                <label for="username">Name:</label>
+				<input type="text" name="username" id="username" placeholder="Enter your name" th:field="*{username}">
                 <span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
 					<!--if there is no username in register table it wiil show error -->
@@ -33,59 +33,59 @@
 				</p>
             </div>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="text" name="email" id="email" placeholder="example@example.com" th:value="${job_email}">
-                <span id="emailError" class="error"></span>
-					<p th:if="${error?.email != null}">
-						<!--if there is no email in register table it wiil show error -->
-						<span th:text="${error.email}" class="error"></span>
-					</p>
-            </div>
+			<div class="form-group">
+			    <label for="email">Email:</label>
+			    <input type="text" name="email" id="email" placeholder="example@example.com" th:field="*{email}" />
+			    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+			    <p th:if="${error?.email != null}">
+			        <span th:text="${error.email}" class="error"></span>
+			    </p>
+			</div>
 
             <div class="form-group">
                 <label for="number">Number:</label>
-                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:value="${job_number}">
+                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:field="*{number}">
                 <span id="numberError" class="error"></span>
             </div>
-			
-            <div  class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder="Enter your password" value="password">
-                <span id="passwordError" class="error"></span>
-            </div>
 
-            <div class="form-group">
-                    <label for="confirmpassword">Password:</label>
-                    <input type="password" name="confirmpassword" id="confirmpassword"  placeholder="Confirm your password" value="password">
-                    <span id="confirmpasswordError" class="error"></span>
-
-            </div>
-
-            <div class="form-group">
-                <label for="gender">Gender:</label>
-                <input type="radio" id="gender" name="genderGroup" value="male" checked> Male
-                <input type="radio" id="gender" name="genderGroup" value="female"> Female
-                <input type="radio" id="gender" name="genderGroup" value="others"> Others
-				<div id="genderError" class="error"></div>
-			</div>
-			
 			<div  class="form-group">
 			    <label for="address">Address:</label>
-			    <input type="text" name="address" id="address" placeholder="Enter your full address" value="Nepal">
+			    <input type="text" name="address" id="address" placeholder="Enter your full address" value="Nepal" th:field="*{address}">
 			    <span id="addressError" class="error"></span>
 			</div>
 			<div  class="form-group">
 				    <label for="skills">Skills:</label>
-				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend">
+				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}">
 				    <span id="skillsError" class="error"></span>
+				</div>
+				<div class="form-group">
+				    <label for="gender">Gender:</label>
+				    <input type="radio" id="gender" name="genderGroup" value="male" checked> Male
+				    <input type="radio" id="gender" name="genderGroup" value="female"> Female
+				    <input type="radio" id="gender" name="genderGroup" value="others"> Others
+					<div id="genderError" class="error"></div>
 				</div>
 			<div>
 				 <label for="usertype">Usertype:</label>
-				 <input type="hidden" name="usertype" id="usertype"  value="JOBSEEKER">
+				 <input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" >
+			</div>
+			
+			<div  class="form-group">
+			    <label for="password">Password:</label>
+			    <input type="password" name="password" id="password" placeholder="Enter your password" value="password" th:field="*{password}">
+			    <span id="passwordError" class="error"></span>
 			</div>
 
-s
+			<div class="form-group">
+			        <label for="confirmPassword">Password:</label>
+			        <input type="password" name="confirmPassword" id="confirmPassword"  placeholder="Confirm your password" value="password" th:field="*{confirmPassword}">
+			        <span id="confirmpasswordError" class="error"></span>
+
+			</div>
+			<div>
+				 <label for="usertype">Usertype:</label>
+				 <input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" >
+			</div>
             <div class="form-group">
                 <label for="terms">Terms and conditoins:</label><br>
                 <input type="checkbox" id="terms" name="terms" checked> I accept all the  

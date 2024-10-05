@@ -1,10 +1,9 @@
 package com.example.dto;
 
-import com.example.springTrain.home.Usertype;
-
 public class JobSeekerDTO {
 	private String username;
     private String password;
+    private String confirmPassword;
     private String email;
     private String number;
     private String address;
@@ -56,6 +55,12 @@ public class JobSeekerDTO {
 	}
 	public void setUsertype(Usertype usertype) {
 		this.usertype = usertype;
+	}
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 //	public String getResume() {

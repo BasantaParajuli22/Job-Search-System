@@ -51,12 +51,14 @@ public class RegisterController {
 	
 	// to register as employers
 	  @GetMapping("/employers/register")
-	  public String getemployform() {
+	  public String getemployform(Model model) {
+		    model.addAttribute("employerDTO", new EmployerDTO()); // Ensure this matches the th:object in your form
 	      return "employeeform";
 	  }
 	// to register as jobseekers
 	  @GetMapping("/jobseekers/register")
-	  public String getemployeeform() {
+	  public String getemployeeform(Model model) {
+		    model.addAttribute("jobSeekerDTO", new JobSeekerDTO()); // Ensure this matches the th:object in your form
 	      return "jobform";
 	  }
 

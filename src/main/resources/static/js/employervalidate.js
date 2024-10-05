@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
         clearErrors();
 
         // Validate Company/Organization Name
-        const name = document.getElementById('name').value.trim();
-        if (name === '') {
+        const companyName = document.getElementById('name').value.trim();
+        if (companyName === '') {
             showError('nameError', 'Company/Organization Name is required.');
             isValid = false;
         }
@@ -21,10 +21,37 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
-        // Validate Number
-        const number = document.getElementById('number').value.trim();
-        if (number === '') {
-            showError('numberError', 'Number is required.');
+        // Validate Contact Number
+        const contactNumber = document.getElementById('number').value.trim();
+        if (contactNumber === '') {
+            showError('numberError', 'Contact Number is required.');
+            isValid = false;
+        } else if (!validateContactNumber(contactNumber)) {
+            showError('numberError', 'Contact Number must be 10 digits long.');
+            isValid = false;
+        }
+
+        // Validate Address
+        const address = document.getElementById('address').value.trim();
+        if (address === '') {
+            showError('addressError', 'Address is required.');
+            isValid = false;
+        }
+
+        // Validate Website
+        const website = document.getElementById('website').value.trim();
+        if (website === '') {
+            showError('websiteError', 'Website is required.');
+            isValid = false;
+        } else if (!validateWebsite(website)) {
+            showError('websiteError', 'Invalid website format.');
+            isValid = false;
+        }
+
+        // Validate Company Description
+        const companyDescription = document.getElementById('companyDescription').value.trim();
+        if (companyDescription === '') {
+            showError('companyDescriptionError', 'Company Description is required.');
             isValid = false;
         }
 
@@ -33,12 +60,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (password === '') {
             showError('passwordError', 'Password is required.');
             isValid = false;
+        } else if (password.length < 6) {
+            showError('passwordError', 'Password must be at least 6 characters long.');
+            isValid = false;
         }
 
         // Validate Confirm Password
-        const confirmPassword = document.getElementById('confirmpassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
         if (confirmPassword !== password) {
-            showError('confirmpasswordError', 'Passwords do not match.');
+            showError('confirmPasswordError', 'Passwords do not match.');
             isValid = false;
         }
 
@@ -56,10 +86,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function validateEmail(email) {
-        const emailregex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailregex.test(email);
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
     }
-	
+
+    function validateContactNumber(number) {
+        const numberRegex = /^\d{10}$/; // Checks for 10 digits
+        return numberRegex.test(number);
+    }
+
+    function validateWebsite(website) {
+        const websiteRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/; // Basic website validation
+        return websiteRegex.test(website);
+    }
+
     function showError(id, message) {
         const errorElement = document.getElementById(id);
         if (errorElement) {

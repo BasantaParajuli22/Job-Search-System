@@ -1,10 +1,9 @@
 package com.example.dto;
 
-import com.example.springTrain.home.Usertype;
-
 public class EmployerDTO {
 	private String username;
     private String password;//for getting data from form not to SAVE//
+    private String confirmPassword;
     private String companyName;
 	private String companyDescription;
 	private String contactNumber;
@@ -67,6 +66,12 @@ public class EmployerDTO {
 	}
 	public void setUsertype(Usertype usertype) {
 		this.usertype = usertype;
+	}
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 
 }

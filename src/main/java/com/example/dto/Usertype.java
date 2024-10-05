@@ -1,4 +1,4 @@
-package com.example.springTrain.home;
+package com.example.dto;
 
 public enum Usertype {
 	ADMIN, EMPLOYER,JOBSEEKER;

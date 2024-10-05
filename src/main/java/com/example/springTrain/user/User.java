@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.example.springTrain.home.Usertype;
+import com.example.dto.Usertype;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
