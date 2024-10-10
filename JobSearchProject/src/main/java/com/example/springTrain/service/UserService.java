@@ -23,10 +23,23 @@ public class UserService {
     @Autowired
     private EmployerRepository employerRepository;
 
+    
+    @Autowired
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    // Method to find a user by username
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);        
+    }
+    
     @Autowired
     private PasswordEncoder passwordEncoder; // Add PasswordEncoder for password hashing
 
-    
+    //for storing data in User table first to generate id
+    //and storing user_id in jobseeker and employer table for foreign key purposes
+    //and storing data on jobseeker and employer table respectively
     @Transactional
     public void createJobSeeker(User user, JobSeeker jobSeeker) {
         // Encode the user's password before saving 
@@ -53,4 +66,8 @@ public class UserService {
         employer.setUser(savedUser);
         employerRepository.save(employer);
     }
+    
+    
+    
+    
 }

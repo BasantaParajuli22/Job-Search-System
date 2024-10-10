@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/jobseeker/**").hasRole("JOBSEEKER")
                 .requestMatchers("/employer/**").hasRole("EMPLOYER")
+                .requestMatchers("/", "/login", "/employers/register", "/jobseekers/register", "/css/**", "/js/**","/photo/**").permitAll() // Allow access to these pages
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -28,7 +29,10 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")
+            	.logoutUrl("/logout") // Custom logout URL
+                 .logoutSuccessUrl("/login?logout") // Redirect after successful logout
+                 .invalidateHttpSession(true) // Invalidate session
+                 .deleteCookies("JSESSIONID") // Delete the session cookie
                 .permitAll()
             );
         

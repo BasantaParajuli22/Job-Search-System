@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      // Convert the User entity to a Spring Security UserDetails object
         return User.withUsername(user.getUsername())
                    .password(user.getPassword())
-//                   .roles(user.getUsertype())  // Assign roles from the database
+                   .roles(user.getUsertype().name())  // Assign roles from the database
                    .build();
     }
 }

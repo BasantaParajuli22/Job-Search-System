@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+    <div class="mainContainer">
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/jobseeker/profile}">My Profile</a></li>
+                <li><a th:href="@{/jobs}">Jobs</a></li>
+                <li><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </nav>
+		
+		    <h1>Welcome, Job Seeker!</h1>
+		    
+
+		    <p>Email: <span th:text="${jobSeeker.email}"></span></p>
+		    <p>Skills: <span th:text="${jobSeeker.skills}"></span></p>
+		    <p>number: <span th:text="${jobSeeker.number}"></span></p>
+			
+		   <!--
+		    <h3>Saved Jobs</h3>
+		    <ul>
+		        <li th:each="job : ${jobSeeker.savedJobs}">
+		            <span th:text="${job.title}"></span> at <span th:text="${job.company}"></span>
+		        </li>
+		    </ul>
+			-->
+			
+</body>
+</html>

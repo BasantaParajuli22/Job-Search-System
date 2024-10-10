@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+</head>
+<body>
+    <div class="mainContainer">
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/employer/profile}">My Profile</a></li>
+                <li><a th:href="@{/posts}">Posts</a></li>
+                <li><a th:href="@{/logout}">Logout</a></li>
+            </ul>
+        </nav>
+		    <h1>Welcome, Employer!</h1>
+
+		    <p>Company Name: <span th:text="${employer.companyName}"></span></p>
+		    <p>Email: <span th:text="${employer.email}"></span></p>
+		    
+		    <!-- Render list of job postings by the employer 
+		    <h3>Your Job Postings</h3>
+		    <ul>
+		        <li th:each="job : ${employer.postedJobs}">
+		            <span th:text="${job.title}"></span> at <span th:text="${job.company}"></span>
+		        </li>
+		    </ul>
+			-->
+</body>
+</html>
+

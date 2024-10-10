@@ -26,7 +26,7 @@ public class User {
 		private String password;
 		private String email;
 		
-		@Enumerated(EnumType.STRING)
+		@Enumerated(EnumType.STRING)  // Store the enum as a String in the database
 		private Usertype usertype;
 		
 		@CreationTimestamp

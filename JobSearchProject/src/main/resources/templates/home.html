@@ -14,7 +14,17 @@
             <li><a th:href="@{/jobseekers/register}">Register as Job Seeker</a></li>
             <li><a th:href="@{/employers/register}">Register as Employer</a></li>
             <li><a th:href="@{/login}">Login</a></li>
-        </ul>
+			<!-- Profile link based on user role -->
+			   <li sec:authorize="hasRole('JOBSEEKER')">
+			       <a th:href="@{/jobseeker/profile}">JProfile</a>
+			   </li>
+			   <li sec:authorize="hasRole('EMPLOYER')">
+			       <a th:href="@{/employer/profile}">EProfile</a>
+			   </li>
+			   <li sec:authorize="hasRole('ADMIN')">
+			       <a th:href="@{/admin/profile}">Admin Profile</a>
+			   </li>        
+		   </ul>
     </nav>
 
 	<!-- Main Content -->
