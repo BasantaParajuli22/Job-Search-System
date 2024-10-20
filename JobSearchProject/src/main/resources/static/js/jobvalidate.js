@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear previous error messages
         clearErrors();
 
-        // Validate Name
-        const name = document.getElementById('name').value.trim();
+        // Validate Name (id is now 'username')
+        const name = document.getElementById('username').value.trim();
         if (name === '') {
             showError('nameError', 'Name is required.');
             isValid = false;
@@ -21,36 +21,33 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
-        // Validate Number
-        const number = document.getElementById('number').value.trim();
-        if (number === '') {
-            showError('numberError', 'Number is required.');
-            isValid = false;
-        }
-
         // Validate Password
         const password = document.getElementById('password').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
         if (password === '') {
             showError('passwordError', 'Password is required.');
             isValid = false;
+        } else if (password.length < 6) {
+            showError('passwordError', 'Password must be at least 6 characters long.');
+            isValid = false;
         }
 
-        // Validate Confirm Password
-        const confirmPassword = document.getElementById('confirmpassword').value.trim();
-        if (confirmPassword !== password) {
+        if (confirmPassword === '') {
+            showError('confirmpasswordError', 'Please confirm your password.');
+            isValid = false;
+        } else if (password !== confirmPassword) {
             showError('confirmpasswordError', 'Passwords do not match.');
             isValid = false;
         }
 
-        // Validate Gender
-        const genderRadios = document.getElementsByName('genderGroup');
-        const genderChecked = Array.from(genderRadios).some(radio => radio.checked);
+        // Validate Gender (unique IDs)
+        const genderChecked = document.querySelector('input[name="genderGroup"]:checked');
         if (!genderChecked) {
             showError('genderError', 'Please select your gender.');
             isValid = false;
         }
 
-        // Validate Terms and Conditions
+        // Validate Terms
         const terms = document.getElementById('terms').checked;
         if (!terms) {
             showError('termsError', 'You must accept the terms and conditions.');

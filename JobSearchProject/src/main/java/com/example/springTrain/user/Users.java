@@ -17,14 +17,16 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class Users {
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private int user_id;
+		private int userId;
 		
 		private String username;
 		private String password;
 		private String email;
+		
+		// Constructor for creating a Users object
 		
 		@Enumerated(EnumType.STRING)  // Store the enum as a String in the database
 		private Usertype usertype;
@@ -32,10 +34,10 @@ public class User {
 		@CreationTimestamp
 		private Instant createdAt;		
 
-		@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+		//this means that Employer and JobSeeker class needs to have users 
+		@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	    private Employer employer;
-
-	    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	    @OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	    private JobSeeker jobSeeker;
 	    
 		//private String session;
@@ -60,12 +62,6 @@ public class User {
 		public void setPassword(String password) {
 			this.password = password;
 		}
-//		public String getSesion() {
-//			return sesion;
-//		}
-//		public void setSesion(String sesion) {
-//			this.sesion = sesion;
-//		}
 		public Instant getCreatedAt() {
 			return createdAt;
 		}
@@ -78,12 +74,6 @@ public class User {
 		public void setUserType(Usertype usertype) {
 			this.usertype = usertype;
 		}
-		public int getUser_id() {
-			return user_id;
-		}
-		public void setUserid(int user_id) {
-			this.user_id = user_id;
-		}
 		public JobSeeker getJobSeeker() {
 			return jobSeeker;
 		}
@@ -95,5 +85,11 @@ public class User {
 		}
 		public void setEmployer(Employer employer) {
 			this.employer = employer;
+		}
+		public int getUserId() {
+			return userId;
+		}
+		public void setUserId(int userId) {
+			this.userId = userId;
 		}
 	}	

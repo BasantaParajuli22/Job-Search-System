@@ -31,19 +31,13 @@ public class ValidationError {
 		public void setEmail(String email) {
 			this.email = email;
 		}
-//		public String getLogin() {
-//			return email;
-//		}
-//		public void setLogin(String email) {
-//			this.email = email;
-//		}	
-
 		public void clear() {
 			this.email = null;
 			this.username = null;
 			this.password = null;
 		}
-		//if email has no value inserted it will be null
+		//if email has   no value   inserted it will be null
+		// if email not equals to null ==hasErrors
 		public boolean hasErrors() {
 			return email != null || username != null || password != null ;
 		}

@@ -8,17 +8,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.springTrain.user.UserRepository;
+import com.example.springTrain.repository.UsersRepository;
+import com.example.springTrain.user.Users;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.example.springTrain.user.User user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -28,4 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                    .roles(user.getUsertype().name())  // Assign roles from the database
                    .build();
     }
+    
+    
+    
 }

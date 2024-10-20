@@ -3,6 +3,10 @@ package com.example.springTrain.user;
 
 import java.time.Instant;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.example.springTrain.table.ApplicationTable;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,12 +21,15 @@ import jakarta.persistence.Table;
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Integer job_seeker_id;
+		private int jobSeekerId;
 		
 		@OneToOne
-		@JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
-		private User user;
+		@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+		private Users users;
 		
+		@OneToOne(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
+	    private ApplicationTable applicationTable;
+
 		private String email;
 		private String number;
 		private String address;
@@ -33,12 +40,6 @@ import jakarta.persistence.Table;
 		private Instant createdAt;
 		
 		//getters and setters
-		public int getJob_seeker_id() {
-			return job_seeker_id;
-		}
-		public void setJobSeeker_id(int job_seeker_id) {
-			this.job_seeker_id = job_seeker_id;
-		}
 		public String getEmail() {
 			return email;
 		}
@@ -51,12 +52,6 @@ import jakarta.persistence.Table;
 		public void setNumber(String number) {
 			this.number = number;
 		} 
-		public User getUser() {
-			return user;
-		}
-		public void setUser(User user) {
-			this.user = user;
-		}
 //		public String getResume() {
 //			return resume;
 //		}
@@ -80,5 +75,23 @@ import jakarta.persistence.Table;
 		}
 		public void setCreatedAt(Instant createdAt) {
 			this.createdAt = createdAt;
+		}
+		public ApplicationTable getApplicationTable() {
+			return applicationTable;
+		}
+		public void setApplicationTable(ApplicationTable applicationTable) {
+			this.applicationTable = applicationTable;
+		}
+		public int getJobSeekerId() {
+			return jobSeekerId;
+		}
+		public void setJobSeekerId(int jobSeekerId) {
+			this.jobSeekerId = jobSeekerId;
+		}
+		public Users getUsers() {
+			return users;
+		}
+		public void setUsers(Users users) {
+			this.users = users;
 		}
 }	

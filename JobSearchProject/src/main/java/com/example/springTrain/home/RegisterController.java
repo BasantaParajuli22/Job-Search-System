@@ -1,26 +1,21 @@
 package com.example.springTrain.home;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 //import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
-import com.example.springTrain.service.UserService;
+import com.example.springTrain.repository.UsersRepository;
+import com.example.springTrain.service.UsersService;
 import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.EmployerRepository;
 import com.example.springTrain.user.JobSeeker;
-//import com.example.springTrain.user.EmployerRepository;
-import com.example.springTrain.user.JobSeekerRepository;
-import com.example.springTrain.user.User;
-import com.example.springTrain.user.UserRepository;
+import com.example.springTrain.user.Users;
 import com.example.springTrain.validation.ValidationError;
 //import jakarta.validation.Valid;
 //import validation.UserDTO;
@@ -28,9 +23,9 @@ import com.example.springTrain.validation.ValidationError;
 public class RegisterController {
 		 
 	@Autowired
-	private UserRepository userRepository;
+	private UsersRepository usersRepository;
 	@Autowired
-	private UserService userService;
+	private UsersService usersService;
 	
 //	@Autowired
 //	private EmployerRepository employerRepository;
@@ -49,33 +44,33 @@ public class RegisterController {
 	}
 	
 	// to register as employers
-	  @GetMapping("/employers/register")
+	  @GetMapping("/employer/register")
 	  public String getemployform(Model model) {
 		    model.addAttribute("employerDTO", new EmployerDTO()); // Ensure this matches the th:object in your form
 	      return "employeeform";
 	  }
 	// to register as jobseekers
-	  @GetMapping("/jobseekers/register")
+	  @GetMapping("/jobseeker/register")
 	  public String getemployeeform(Model model) {
 		    model.addAttribute("jobSeekerDTO", new JobSeekerDTO()); // Ensure this matches the th:object in your form
 	      return "jobform";
 	  }
 
 
-	  @PostMapping("/jobseekers/register")
+	  @PostMapping("/jobseeker/register")
 	  public String registerJobSeeker(@ModelAttribute JobSeekerDTO jobSeekerDTO, Model model) {
 		  
 		  	ValidationError validationError = new ValidationError();
 			validationError.clear();
 			
 			//username should be unique in user table
-			User existinguser = userRepository.findByUsername(jobSeekerDTO.getUsername());
+			Users existinguser = usersRepository.findByUsername(jobSeekerDTO.getUsername());
 			if(existinguser != null) {
 				validationError.setUsername("Sorry username is already taken ");
 				System.out.println("Sorry username is already taken " + jobSeekerDTO.getUsername()); // Debugging	
 			}
 			//email should be unique in job_seeker table
-			User existingjobemail = userRepository.findByEmail(jobSeekerDTO.getEmail());
+			Users existingjobemail = usersRepository.findByEmail(jobSeekerDTO.getEmail());
 			if(existingjobemail != null) {
 				validationError.setEmail("Sorry email is already taken ");
 				System.out.println("Sorry email is already taken: " + jobSeekerDTO.getEmail()); // Debugging
@@ -89,7 +84,7 @@ public class RegisterController {
 				return "jobform";
 			}else {
 			      // Create User entity
-			      User user = new User();
+			      Users user = new Users();
 			      user.setUsername(jobSeekerDTO.getUsername());
 			      user.setPassword(jobSeekerDTO.getPassword());
 			      user.setEmail(jobSeekerDTO.getEmail());
@@ -105,27 +100,27 @@ public class RegisterController {
 			      //jobSeeker.setResume(jobSeekerDTO.getResume());
 
 			      // Call the service method to save the user and job seeker
-			      userService.createJobSeeker(user, jobSeeker);
+			      usersService.createJobSeeker(user, jobSeeker);
 			      
 			      return "login";
 			}	
 
 	  }
 
-	  @PostMapping("/employers/register")
-	  public String registerJobSeeker(@ModelAttribute EmployerDTO employerDTO, Model model) {
+	  @PostMapping("/employer/register")
+	  public String registerEmployer(@ModelAttribute EmployerDTO employerDTO, Model model) {
 		  
 	  	ValidationError validationError = new ValidationError();
 		validationError.clear();
 		
 		//username should be unique in user table
-		User existinguser = userRepository.findByUsername(employerDTO.getUsername());
+		Users existinguser = usersRepository.findByUsername(employerDTO.getCompanyName());
 		if(existinguser != null) {
 			validationError.setUsername("Sorry username is already taken ");
-			System.out.println("Sorry username is already taken " + employerDTO.getUsername()); // Debugging	
+			System.out.println("Sorry username is already taken " + employerDTO.getCompanyName()); // Debugging	
 		}
 		//email should be unique in employer table
-		User existingjobemail = userRepository.findByEmail(employerDTO.getEmail());
+		Users existingjobemail = usersRepository.findByEmail(employerDTO.getEmail());
 		if(existingjobemail != null) {
 			validationError.setEmail("Sorry email is already taken ");
 			System.out.println("Sorry email is already taken: " + employerDTO.getEmail()); // Debugging
@@ -138,7 +133,7 @@ public class RegisterController {
 			model.addAttribute("error", validationError);
 			return "employeeform";
 		}else {
-			  User user = new User();
+			  Users user = new Users();
 		        user.setUsername(employerDTO.getCompanyName());
 		        user.setPassword(employerDTO.getPassword());
 		        user.setEmail(employerDTO.getEmail());
@@ -154,7 +149,7 @@ public class RegisterController {
 		        employer.setEmail(employerDTO.getEmail());
 
 		        
-		        userService.createEmployer(user, employer);
+		        usersService.createEmployer(user, employer);
 
 		        return "login";
 		}

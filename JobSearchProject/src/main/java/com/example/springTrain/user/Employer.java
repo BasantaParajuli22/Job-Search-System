@@ -1,15 +1,19 @@
 package com.example.springTrain.user;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Entity;
+import com.example.springTrain.table.JobPosting;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -19,12 +23,17 @@ public class Employer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer employerId;
+	private int employerId;
 	
 	@OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName="user_id", nullable = false)
-	private User user;
+    @JoinColumn(name = "userId", referencedColumnName="userId", nullable = false)
+	private Users users;
 	
+	// An employer can have multiple jobs //its reference only
+	@OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
+	private List<JobPosting> jobPosting;
+	
+
 	private String companyName;
 	private String companyDescription;
 	private String contactNumber;
@@ -37,12 +46,6 @@ public class Employer {
 	
 	
 	//getters and setters
-	public int getEmployerId() {
-		return employerId;
-	}
-	public void setEmployerId(int employerId) {
-		this.employerId = employerId;
-	}
 	public String getAddress() {
 		return address;
 	}
@@ -55,11 +58,11 @@ public class Employer {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
-	public User getUser() {
-		return user;
+	public Users getUsers() {
+		return users;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 	public String getCompanyName() {
 		return companyName;
@@ -84,6 +87,24 @@ public class Employer {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public List<JobPosting> getJobPosting() {
+		return jobPosting;
+	}
+	public void setJobPosting(List<JobPosting> jobPosting) {
+		this.jobPosting = jobPosting;
+	}
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+	public int getEmployerId() {
+		return employerId;
+	}
+	public void setEmployerId(int employerId) {
+		this.employerId = employerId;
 	}
 
 

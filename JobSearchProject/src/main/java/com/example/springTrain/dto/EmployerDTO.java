@@ -2,9 +2,9 @@ package com.example.springTrain.dto;
 
 public class EmployerDTO {
 	private String username;
+	private String companyName;
     private String password;//for getting data from form not to SAVE//
     private String confirmPassword;
-    private String companyName;
 	private String companyDescription;
 	private String contactNumber;
 	private String address;

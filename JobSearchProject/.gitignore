@@ -1,11 +1,13 @@
-HELP.md
+# Gradle-related files
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
+
+# Ignore build directories except source files
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
+# Spring Tool Suite (STS) related files
 .apt_generated
 .classpath
 .factorypath
@@ -17,8 +19,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ IDEA related files
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -26,12 +28,19 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans related files
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# Visual Studio Code related files
 .vscode/
+
+# Miscellaneous
+*.log
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

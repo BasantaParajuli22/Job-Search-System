@@ -11,8 +11,8 @@
         <nav>
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/jobseekers/register}">Register as Job Seeker</a></li>
-                <li><a th:href="@{/employers/register}">Register as Employer</a></li>
+                <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
+                <li><a th:href="@{/employer/register}">Register as Employer</a></li>
                 <li><a th:href="@{/login}">Login</a></li>
             </ul>
         </nav>
@@ -21,12 +21,13 @@
         <h4>JobSeeker Registration</h4>
     </div>
     <div class="formtable">
-        <form th:action="@{/jobseekers/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}">
+        <form th:action="@{/jobseeker/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}">
             <div class="form-group">
 				
-                <label for="username">Name:</label>
-				<input type="text" name="username" id="username" placeholder="Enter your name" th:field="*{username}">
-                <span id="nameError" class="error"></span>
+				<!-- Name input -->
+				<label for="username">Name:</label>
+				<input type="text" id="username" th:field="*{username}" placeholder="Enter your name">
+				<span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
 					<!--if there is no username in register table it wiil show error -->
 					<span th:text="${error.username}" class="error"></span>
@@ -34,9 +35,11 @@
             </div>
 
 			<div class="form-group">
-			    <label for="email">Email:</label>
-			    <input type="text" name="email" id="email" placeholder="example@example.com" th:field="*{email}" />
-			    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+				<!-- Email input -->
+				<label for="email">Email:</label>
+				<input type="text" id="email" th:field="*{email}" placeholder="example@example.com">
+				<span id="emailError" class="error"></span>
+				<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
 			    <p th:if="${error?.email != null}">
 			        <span th:text="${error.email}" class="error"></span>
 			    </p>
@@ -60,30 +63,26 @@
 				</div>
 				<div class="form-group">
 				    <label for="gender">Gender:</label>
-				    <input type="radio" id="gender" name="genderGroup" value="male" checked> Male
-				    <input type="radio" id="gender" name="genderGroup" value="female"> Female
-				    <input type="radio" id="gender" name="genderGroup" value="others"> Others
+					<!-- Gender Radio Buttons -->
+					<input type="radio" id="genderMale" name="genderGroup" value="male"> Male
+					<input type="radio" id="genderFemale" name="genderGroup" value="female"> Female
+					<input type="radio" id="genderOthers" name="genderGroup" value="others"> Others
 					<div id="genderError" class="error"></div>
-				</div>
-			<div>
-				 <label for="usertype">Usertype:</label>
-				 <input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" >
-			</div>
+				</div>		
 			
 			<div  class="form-group">
 			    <label for="password">Password:</label>
-			    <input type="password" name="password" id="password" placeholder="Enter your password" value="password" th:field="*{password}">
+			    <input type="password" name="password" id="password" placeholder="Enter your password"  th:field="*{password}">
 			    <span id="passwordError" class="error"></span>
 			</div>
 
 			<div class="form-group">
 			        <label for="confirmPassword">Password:</label>
-			        <input type="password" name="confirmPassword" id="confirmPassword"  placeholder="Confirm your password" value="password" th:field="*{confirmPassword}">
-			        <span id="confirmpasswordError" class="error"></span>
-
+					<input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm your password">
+					<span id="confirmpasswordError" class="error"></span>
 			</div>
+			
 			<div>
-				 <label for="usertype">Usertype:</label>
 				 <input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" >
 			</div>
             <div class="form-group">

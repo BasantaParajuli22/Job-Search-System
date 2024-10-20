@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Job Postings</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Job Postings</h1>
+
+    <a href="/jobposts/new/create">Create New Job Posting</a>
+    <table>
+        <thead>
+            <tr>
+                <th>employerId</th>
+                <th>jobId</th>
+                <th>title</th>
+                <th>location</th>
+                <th>requirements</th>
+                <th>jobDescription</th>
+				<th>salaryRange</th>
+				<th>category</th>
+				<th>createdAt</th>
+				<th>edit</th>
+				<th>delete</th>
+            </tr>
+        </thead> 
+        <tbody>
+			<!-- displying all Lists  jobPostings -->
+            <tr th:each="job : ${jobPostings}">
+				<td th:text="${job.employer.employerId}"></td>
+				<td th:text="${job.jobId}"></td>
+                <td th:text="${job.title}"></td>
+                <td th:text="${job.location}"></td>
+                <td th:text="${job.requirements}"></td>
+                <td th:text="${job.jobDescription}"></td>
+				<td th:text="${job.salaryRange}"></td>
+				<td th:text="${job.category}"></td>
+				<td th:text="${job.createdAt}"></td>
+				<td> 
+					<!-- Thymeleaf’s URL Variable Substitution (Parameterized URL)-->
+					<form th:action="@{/jobposts/{jobId}/edit/by/{companyName}(jobId=${job.jobId},companyName=${job.employer.companyName})}" method="get" style="display:inline;">
+					    <!-- Uncomment if CSRF protection is needed -->
+					    <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+					    <button type="submit" class="btn btn-danger">EditByCompany</button>
+					</form>
+				</td>					       
+				<td>
+					<!--<a th:href="@{/jobposts/{id}/edit(id=${job.jobId})}">Edit</a> |-->
+					<form th:action="@{/jobposts/{id}/delete(id=${job.jobId})}" method="post" style="display:inline;">
+				    	<!--  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+						<button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				</td>
+				<td> 
+					<form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${job.jobId})}" method="post" style="display:inline;">
+					    <!-- Uncomment if CSRF protection is needed -->
+					    <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+					    <button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				</td>
+				<td> 
+					<form th:action="@{/view/jobposts/{jobId}(jobId=${job.jobId})}" method="post" style="display:inline;">
+						<!-- Uncomment if CSRF protection is needed -->
+						<!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+						<button type="submit" class="btn btn-danger">View</button>
+					</form>
+				</td>				
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

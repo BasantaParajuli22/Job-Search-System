@@ -1,37 +1,45 @@
 package com.example.springTrain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.example.springTrain.repository.EmployerRepository;
+import com.example.springTrain.repository.JobSeekerRepository;
+import com.example.springTrain.repository.UsersRepository;
 import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.EmployerRepository;
 import com.example.springTrain.user.JobSeeker;
-import com.example.springTrain.user.JobSeekerRepository;
-import com.example.springTrain.user.UserRepository;
-import com.example.springTrain.user.User;
+import com.example.springTrain.user.Users;
+
+import jakarta.transaction.Transactional;
 
 @Service
-public class UserService {
+public class UsersService {
+	
+    private static final Logger logger = LoggerFactory.getLogger(Employer.class);
+
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @Autowired
     private JobSeekerRepository jobSeekerRepository;
 
     @Autowired
     private EmployerRepository employerRepository;
-
-    
+   
     @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UsersService(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
 
     // Method to find a user by username
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);        
+    public Users findByUsername(String username) {
+        return usersRepository.findByUsername(username);        
     }
     
     @Autowired
@@ -41,33 +49,30 @@ public class UserService {
     //and storing user_id in jobseeker and employer table for foreign key purposes
     //and storing data on jobseeker and employer table respectively
     @Transactional
-    public void createJobSeeker(User user, JobSeeker jobSeeker) {
+    public void createJobSeeker(Users user, JobSeeker jobSeeker) {
         // Encode the user's password before saving 
     	//we save password only on user table
         user.setPassword(passwordEncoder.encode(user.getPassword())); 
 
         // Save the user first to generate the user_id
-        User savedUser = userRepository.save(user);
+        Users savedUser = usersRepository.save(user);
 
         // Set the role for JobSeeker
-        jobSeeker.setUser(savedUser);
+        jobSeeker.setUsers(savedUser);
         jobSeekerRepository.save(jobSeeker);
     }
 
     @Transactional
-    public void createEmployer(User user, Employer employer) {
+    public void createEmployer(Users user, Employer employer) {
         // Encode the user's password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword())); 
 
         // Save the user first to generate the user_id
-        User savedUser = userRepository.save(user);
+        Users savedUser = usersRepository.save(user);
 
         // Set the role for Employer
-        employer.setUser(savedUser);
+        employer.setUsers(savedUser);
         employerRepository.save(employer);
     }
-    
-    
-    
-    
+
 }

@@ -4,10 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -17,10 +18,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
+            	.requestMatchers("/", "/login", "/employer/register", "/jobseeker/register", "/css/**", "/js/**","/photo/**","/search","/view/jobposts").permitAll() // Allow access to these pages
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/jobseeker/**").hasRole("JOBSEEKER")
                 .requestMatchers("/employer/**").hasRole("EMPLOYER")
-                .requestMatchers("/", "/login", "/employers/register", "/jobseekers/register", "/css/**", "/js/**","/photo/**").permitAll() // Allow access to these pages
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -34,7 +35,7 @@ public class SecurityConfig {
                  .invalidateHttpSession(true) // Invalidate session
                  .deleteCookies("JSESSIONID") // Delete the session cookie
                 .permitAll()
-            );
+            );  
         
         return http.build();
     }
@@ -52,27 +53,22 @@ public class SecurityConfig {
         return authProvider;
     }
     
-//   @Bean
-//    public UserDetailsService userDetailsService() {
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsService() {
 //        // Define users for testing. In a real-world application, you would fetch these from a database.
-//        UserDetails jobSeeker = User.withDefaultPasswordEncoder()
-//            .username("jobseeker")
-//            .password("password")
-//            .roles("JOBSEEKER")
-//            .build();
-//
-//        UserDetails employer = User.withDefaultPasswordEncoder()
-//            .username("employer")
-//            .password("password")
-//            .roles("EMPLOYER")
-//            .build();
-//
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//            .username("admin")
-//            .password("adminpassword")
-//            .roles("ADMIN")
-//            .build();
-//
-//        return new InMemoryUserDetailsManager(jobSeeker, employer, admin);  // Add all users to in-memory storage
+//        return new InMemoryUserDetailsManager(
+//            User.withUsername("jobseeker")
+//                .password(passwordEncoder().encode("password")) // Encode password
+//                .roles("JOBSEEKER")
+//                .build(),
+//            User.withUsername("employer")
+//                .password(passwordEncoder().encode("password")) // Encode password
+//                .roles("EMPLOYER")
+//                .build(),
+//            User.withUsername("admin")
+//                .password(passwordEncoder().encode("adminpassword")) // Encode password
+//                .roles("ADMIN")
+//                .build()
+//        );  // Add all users to in-memory storage
 //    }
 }

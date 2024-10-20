@@ -12,14 +12,27 @@
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/employer/profile}">My Profile</a></li>
-                <li><a th:href="@{/posts}">Posts</a></li>
-                <li><a th:href="@{/logout}">Logout</a></li>
+                <li><a th:href="@{/jobposts}">Posts</a></li>
+				<li>
+					<form action="#" th:action="@{/logout}" method="post">
+					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					    <button type="submit">Logout</button>
+					</form>
+				</li>
             </ul>
         </nav>
 		    <h1>Welcome, Employer!</h1>
-
+			
+			<p>User ID: <span th:text="${employer.users.userId}"></span></p>
 		    <p>Company Name: <span th:text="${employer.companyName}"></span></p>
-		    <p>Email: <span th:text="${employer.email}"></span></p>
+		    <p>Email: <span th:text="${employer.companyDescription}"></span></p>
+			<p>Email: <span th:text="${employer.contactNumber}"></span></p>
+			<p>Email: <span th:text="${employer.address}"></span></p>
+			<p>Email: <span th:text="${employer.email}"></span></p>
+			<p>Email: <span th:text="${employer.website}"></span></p>
+			<p>Email: <span th:text="${employer.createdAt}"></span></p>
+
+			
 		    
 		    <!-- Render list of job postings by the employer 
 		    <h3>Your Job Postings</h3>

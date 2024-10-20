@@ -14,23 +14,17 @@ public class Admin {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int admin_id;
+	private int adminId;
 	
 	@OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName="user_id", nullable = false)
-	private User user;
+    @JoinColumn(name = "userId", referencedColumnName="userId", nullable = false)
+	private Users users;
 	
 	private String username;
 	private String password;
 	private String email;
 	
 	
-	public int getAdmin_id() {
-		return admin_id;
-	}
-	public void setAdmin_id(int admin_id) {
-		this.admin_id = admin_id;
-	}
 	public String getUsername() {
 		return username;
 	}
@@ -49,11 +43,17 @@ public class Admin {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public User getUser() {
-		return user;
+	public int getAdminId() {
+		return adminId;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
+	}
+	public Users getUsers() {
+		return users;
+	}
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 	
 

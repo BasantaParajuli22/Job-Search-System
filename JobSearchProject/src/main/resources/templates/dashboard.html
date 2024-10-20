@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Link your CSS file -->
+</head>
+<body>
+
+    <h1>Dashboard</h1>
+
+    <!-- Job Postings Section -->
+    <h2>Job Postings</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Job ID</th>
+                <th>Job Title</th>
+                <th>Employer</th>
+                <th>Location</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobPosting : ${jobPostings}">
+                <td th:text="${jobPosting.jobId}"></td>
+                <td th:text="${jobPosting.title}"></td>
+                <td th:text="${jobPosting.employer.companyName}"></td>
+                <td th:text="${jobPosting.location}"></td>
+                <td th:text="${jobPosting.salaryRange}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Employers Section -->
+    <h2>Employers</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employer ID</th>
+                <th>Company</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employer : ${employers}">
+                <td th:text="${employer.employerId}"></td>
+                <td th:text="${employer.companyName}"></td>
+                <td th:text="${employer.email}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Job Seekers Section -->
+    <h2>Job Seekers</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Job Seeker ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Resume Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobseeker : ${jobseekers}">
+                <td th:text="${jobseeker.jobSeekerId}"></td>
+                <td th:text="${jobseeker.users.username}"></td>
+                <td th:text="${jobseeker.email}"></td>
+            <!-- 	
+			<td><a th:href="${jobseeker.resumeLink}" th:text="${jobseeker.resumeLink}"></a></td>
+			-->   
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

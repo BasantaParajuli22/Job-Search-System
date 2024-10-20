@@ -1,12 +1,14 @@
 package com.example.springTrain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.repository.JobSeekerRepository;
 import com.example.springTrain.user.JobSeeker;
-import com.example.springTrain.user.JobSeekerRepository;
-import com.example.springTrain.user.User;
+import com.example.springTrain.user.Users;
 
 @Service
 public class JobSeekerService {
@@ -18,9 +20,13 @@ public class JobSeekerService {
 		this.jobSeekerRepository = jobSeekerRepository;
 	}
 	
-	public JobSeeker findByUser(User user) {
-		return jobSeekerRepository.findByUser(user);
+	//to find user from repository of JobSeeker
+	public JobSeeker findByUsers(Users user) {
+		return jobSeekerRepository.findByUsers(user);
 	}
 
-
+	//to find all jobSeekers
+	public List<JobSeeker> findAllJobSeekers() {
+		return jobSeekerRepository.findAll();
+	}
 }

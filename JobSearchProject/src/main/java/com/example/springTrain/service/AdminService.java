@@ -3,9 +3,9 @@ package com.example.springTrain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.repository.AdminRepository;
 import com.example.springTrain.user.Admin;
-import com.example.springTrain.user.AdminRepository;
-import com.example.springTrain.user.User;
+import com.example.springTrain.user.Users;
 
 @Service
 public class AdminService {
@@ -17,8 +17,8 @@ public class AdminService {
 		this.adminRepository = adminRepository;
 	}
 		
-	public Admin findByUser(User user) {
-		return adminRepository.findByUser(user);
+	public Admin findByUsers(Users user) {
+		return adminRepository.findByUsers(user);
 	}
 }
 

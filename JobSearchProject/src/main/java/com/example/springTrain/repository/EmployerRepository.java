@@ -1,7 +1,10 @@
-package com.example.springTrain.user;
+package com.example.springTrain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.springTrain.user.Employer;
+import com.example.springTrain.user.Users;
 
 @Repository
 public interface EmployerRepository extends JpaRepository<Employer, Integer>{
@@ -9,6 +12,5 @@ public interface EmployerRepository extends JpaRepository<Employer, Integer>{
 	Employer findByEmployerId(Integer employerId);
 	Employer findByCompanyName(String companyName);
 	Employer findByEmail(String email);
-	Employer findByUser(User user);
-
+	Employer findByUsers(Users users);
 }

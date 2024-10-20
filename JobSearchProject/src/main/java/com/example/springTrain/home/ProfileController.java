@@ -1,38 +1,35 @@
 package com.example.springTrain.home;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.security.core.userdetails.User;
 
-import com.example.springTrain.user.Admin;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
 import com.example.springTrain.service.AdminService;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;
-import com.example.springTrain.service.UserService;
+import com.example.springTrain.service.UsersService;
+import com.example.springTrain.user.Admin;
+import com.example.springTrain.user.Employer;
+import com.example.springTrain.user.JobSeeker;
+import com.example.springTrain.user.Users;
 
 
 @Controller
 public class ProfileController{
 	
 	private final JobSeekerService jobSeekerService;
-	private final UserService userService;
+	private final UsersService usersService;
 	private final EmployerService employerService;
 	private final AdminService adminService;
 
     @Autowired
-    public ProfileController(JobSeekerService jobSeekerService, EmployerService employerService, AdminService adminService,UserService userService) {
+    public ProfileController(JobSeekerService jobSeekerService, EmployerService employerService, AdminService adminService,UsersService usersService) {
         this.jobSeekerService = jobSeekerService;
         this.employerService = employerService;
         this.adminService = adminService;
-        this.userService = userService;
+        this.usersService = usersService;
     }
     
     
@@ -44,14 +41,14 @@ public class ProfileController{
         }
         
         // Get the username from the security context //from Authenticated 
-        String username = secureUser.getUsername();
+        String username = secureUser.getUsername();//Specified by: getUsername() in UserDetails
         System.out.println("Authenticated username: " + username);
         
         // Find your custom User entity using the username
-       com.example.springTrain.user.User user = userService.findByUsername(username); // Your custom method to find the User entity
+       Users user = usersService.findByUsername(username); // custom method to find the User entity
         
         // Now that you have the custom User entity, find the associated JobSeeker
-        JobSeeker jobSeeker = jobSeekerService.findByUser(user);
+        JobSeeker jobSeeker = jobSeekerService.findByUsers(user);
         
         // Add the JobSeeker to the model to pass it to the view
         model.addAttribute("jobSeeker", jobSeeker);
@@ -65,13 +62,11 @@ public class ProfileController{
 		if (secureUser == null) {
             throw new RuntimeException("User is not authenticated");
         }
-        
         // Get the username from the security context //from Authenticated 
         String username = secureUser.getUsername();
         System.out.println("Authenticated username: " + username);
-        
         // Find your custom User entity using the username
-       com.example.springTrain.user.User user = userService.findByUsername(username); // Your custom method to find the User entity
+       Users user = usersService.findByUsername(username); // Your custom method to find the User entity
         
         // Now that you have the custom User entity, find the associated Employer
 		Employer employer = employerService.findByUser(user);
@@ -93,9 +88,9 @@ public class ProfileController{
         System.out.println("Authenticated username: " + username);
         
         // Find your custom User entity using the username
-       com.example.springTrain.user.User user = userService.findByUsername(username); // Your custom method to find the User entity
+       Users user = usersService.findByUsername(username); // Your custom method to find the User entity
         
-		Admin admin = adminService.findByUser(user);
+		Admin admin = adminService.findByUsers(user);
 		model.addAttribute("admin", admin);  // Add the jobseeker to the model
 
 		return "admin-profile";

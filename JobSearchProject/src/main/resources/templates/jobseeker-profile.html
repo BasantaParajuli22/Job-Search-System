@@ -12,17 +12,26 @@
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/jobseeker/profile}">My Profile</a></li>
-                <li><a th:href="@{/jobs}">Jobs</a></li>
-                <li><a th:href="@{/logout}">Logout</a></li>
+                <li><a th:href="@{/jobposts}">Jobs</a></li>
+				<li>
+					<form action="#" th:action="@{/logout}" method="post">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+						<button type="submit">Logout</button>
+					</form>
+				</li>
             </ul>
         </nav>
 		
 		    <h1>Welcome, Job Seeker!</h1>
-		    
-
+			<p>jobSeekerId: <span th:text="${jobSeeker.users.userId}"></span></p>
+			<p>Username: <span th:text="${jobSeeker.users.username}"></span></p>
 		    <p>Email: <span th:text="${jobSeeker.email}"></span></p>
 		    <p>Skills: <span th:text="${jobSeeker.skills}"></span></p>
 		    <p>number: <span th:text="${jobSeeker.number}"></span></p>
+			<p>Address: <span th:text="${jobSeeker.address}"></span></p>
+			<p>CreatedAt: <span th:text="${jobSeeker.createdAt}"></span></p>
+
+
 			
 		   <!--
 		    <h3>Saved Jobs</h3>

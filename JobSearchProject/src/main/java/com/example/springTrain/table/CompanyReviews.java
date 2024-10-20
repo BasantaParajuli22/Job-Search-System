@@ -12,14 +12,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "company_reviews")
-public class Company_reviews{
+public class CompanyReviews{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int review_id;
-	
+	private int reviewId;
 	//foreign keys
-	private int employer_id;
-	private int job_seeker_id;
+	private int employerId;
+	private int jobSeekerId;
 
 	private int rating;
 	private String comment;
@@ -28,23 +27,29 @@ public class Company_reviews{
 	private Instant reviewDate;
 	
 	//getters and setters
-	public int getReview_id() {
-		return review_id;
+	public int getReviewId() {
+		return reviewId;
 	}
-	public void setReview_id(int review_id) {
-		this.review_id = review_id;
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
 	}
-	public int getEmployer_id() {
-		return employer_id;
+	public int getEmployerId() {
+		return employerId;
 	}
-	public void setEmployer_id(int employer_id) {
-		this.employer_id = employer_id;
+	public void setEmployerId(int employerId) {
+		this.employerId = employerId;
 	}
-	public int getJob_seeker_id() {
-		return job_seeker_id;
+	public int getJobSeekerId() {
+		return jobSeekerId;
 	}
-	public void setJob_seeker_id(int job_seeker_id) {
-		this.job_seeker_id = job_seeker_id;
+	public void setJobSeekerId(int jobSeekerId) {
+		this.jobSeekerId = jobSeekerId;
+	}
+	public Instant getReviewDate() {
+		return reviewDate;
+	}
+	public void setReviewDate(Instant reviewDate) {
+		this.reviewDate = reviewDate;
 	}
 	public int getRating() {
 		return rating;

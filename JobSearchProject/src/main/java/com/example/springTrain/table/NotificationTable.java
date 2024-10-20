@@ -11,31 +11,27 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "notifications_table")
-public class Notifications_table {
+@Table (name = "notification_table")
+public class NotificationTable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int notification_id;
+	private int notificationId;
 	
-	private String user_id;
 	private String message;
 	private String status;
 	
+	//foreign key
+	private String userId;
 	@CreationTimestamp
 	private Instant messageAt;
 	
-	public int getNotification_id() {
-		return notification_id;
+	
+	public int getNotificationId() {
+		return notificationId;
 	}
-	public void setNotification_id(int notification_id) {
-		this.notification_id = notification_id;
-	}
-	public String getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setNotificationId(int notificationId) {
+		this.notificationId = notificationId;
 	}
 	public String getMessage() {
 		return message;
@@ -49,5 +45,18 @@ public class Notifications_table {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public Instant getMessageAt() {
+		return messageAt;
+	}
+	public void setMessageAt(Instant messageAt) {
+		this.messageAt = messageAt;
+	}
+
+
 }

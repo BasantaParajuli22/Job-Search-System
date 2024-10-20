@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Vacancy</title>
+    <link rel="stylesheet" th:href="@{/css/jobListingsss.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="job-container">
+        <div class="job-header">
+            <h1 th:text="${job.title}">Vacancy for the Waiter</h1>
+            <span class="urgent-badge">Urgent</span>
+            <span class="deadline" th:text="'Application deadline: ' + ${job.applicationDeadline}"></span>
+        </div>
+
+        <div class="location-info">
+            <i class="fas fa-map-marker-alt icon"></i> 
+            <span th:text="${job.location}"></span> | 
+            <span>Salary: <span th:text="${job.salaryRange}"></span></span>
+        </div>
+
+        <div class="job-info-section">
+            <h3>Job Description</h3>
+            <p th:text="${job.jobDescription}"></p>
+        </div>
+		
+		<div class="job-info-section">
+		     <h3>jobType</h3>
+		     <p th:text="${job.jobType}"></p>
+		</div>
+		<!-- Background, Skills & Experience -->
+		<div class="job-info-section">
+		    <h3>Background, Skills & Experience</h3>
+		    <p th:each="skill : ${job.skills}">
+		        <span th:text="${skill}">Skill details</span><br>
+		    </p>
+		    <p th:text="'Experience Level: ' + ${job.experienceLevel}"></p>
+		</div>
+
+		<!-- Remote/Onsite Section -->
+		<div class="job-info-section">
+		    <h3>Work Type</h3>
+		    <p th:text="${job.isRemote ? 'Remote' : 'Onsite'}"></p>
+		</div>
+		
+		<!-- Job Duration Section -->
+		<div class="job-info-section">
+		    <h3>Job Duration</h3>
+		    <p th:text="'Start Date: ' + ${job.startDate}">Start date info</p>
+		    <p th:if="${job.endDate != null}" th:text="'End Date: ' + ${job.endDate}"></p>
+		</div>
+
+		<!-- Contact Info -->
+		<div class="job-info-section">
+		    <h3>Contact Information</h3>
+		    <p>Email: <span th:text="${job.contactEmail}"></span></p>
+		</div>
+
+		<!-- Stats Section -->
+		<div class="stats">
+		    <i class="fas fa-clock icon"></i> 
+		    <span th:text="'Posted on: ' + ${job.createdAt}"></span> |
+		    <i class="fas fa-sync-alt icon"></i>
+		    <span th:text="'Updated on: ' + ${job.updatedAt}"></span>
+		</div>
+<!-- 
+        <div class="related-jobs">
+            <h3>Related Jobs</h3>
+            <div class="related-job-item" th:each="relatedJob : ${relatedJobs}">
+                <a th:href="@{/job/{id}(id=${relatedJob.id})}">
+                    <span th:text="${relatedJob.company}"></span> - <span th:text="${relatedJob.jobType}"></span> <br>
+                    <span>Qualification: <span th:text="${relatedJob.qualification}">SLC (10th)</span></span>
+                </a>
+                <span class="status" th:text="${relatedJob.status}">No more accepting applications</span>
+            </div>
+        </div>
+-->
+    </div>
+
+</body>
+</html>
