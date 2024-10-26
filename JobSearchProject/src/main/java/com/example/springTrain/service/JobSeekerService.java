@@ -3,7 +3,6 @@ package com.example.springTrain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.JobSeekerRepository;
@@ -29,4 +28,14 @@ public class JobSeekerService {
 	public List<JobSeeker> findAllJobSeekers() {
 		return jobSeekerRepository.findAll();
 	}
+
+	public JobSeeker findByUsername(String jobSeekerUsername) {
+		return jobSeekerRepository.findByJobSeekerUsername(jobSeekerUsername);
+	}
+
+	public JobSeeker findByJobSeekerId(Integer jobseekerId) {
+		return jobSeekerRepository.findByJobSeekerId(jobseekerId);
+
+	}
+
 }

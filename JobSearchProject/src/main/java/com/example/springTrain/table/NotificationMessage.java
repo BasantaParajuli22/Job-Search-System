@@ -11,12 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "notification_table")
-public class NotificationTable {
+@Table (name = "notification_message")
+public class NotificationMessage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int notificationId;
+	private Integer notificationId;
 	
 	private String message;
 	private String status;
@@ -27,10 +27,10 @@ public class NotificationTable {
 	private Instant messageAt;
 	
 	
-	public int getNotificationId() {
+	public Integer getNotificationId() {
 		return notificationId;
 	}
-	public void setNotificationId(int notificationId) {
+	public void setNotificationId(Integer notificationId) {
 		this.notificationId = notificationId;
 	}
 	public String getMessage() {
@@ -57,6 +57,6 @@ public class NotificationTable {
 	public void setMessageAt(Instant messageAt) {
 		this.messageAt = messageAt;
 	}
-
-
+	
+	
 }

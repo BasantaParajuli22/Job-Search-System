@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.example.springTrain.user.Employer;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,8 +32,13 @@ public class JobPosting {
     @JoinColumn(name = "employerId", referencedColumnName = "employerId", nullable = false)
 	private Employer employer;
 	
+	@ManyToOne
+    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", nullable = false)
+	private JobCategory jobCategory;
+
+	//JobApplication should have foreign key of jobPosting 
 	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApplicationTable> applicationTable = new ArrayList<>();
+    private List<JobApplication> JobApplication = new ArrayList<>();
 
 	private String title;
 	private String location;
@@ -42,15 +46,13 @@ public class JobPosting {
 	private String jobDescription;
 	private String jobType;  // Full-Time, Part-Time, Contract
 	private String salaryRange;
-	private String category;
 	private String status;  // active, closed, on hold
 	private LocalDate applicationDeadline;
 	
-	@ElementCollection
-	private List<String> skills = new ArrayList<>();
+	private String skills;
 	
 	private String experienceLevel;  // Entry, Mid, Senior
-	private boolean isRemote;
+	private boolean remote;
 	
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -60,6 +62,8 @@ public class JobPosting {
 	private String createdAt;
 	@UpdateTimestamp
 	private String updatedAt;
+	
+	
 	
 	public Integer getJobId() {
 		return jobId;
@@ -73,11 +77,11 @@ public class JobPosting {
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
 	}
-	public List<ApplicationTable> getApplicationTable() {
-		return applicationTable;
+	public List<JobApplication> getJobApplication() {
+		return JobApplication;
 	}
-	public void setApplicationTable(List<ApplicationTable> applicationTable) {
-		this.applicationTable = applicationTable;
+	public void setJobApplication(List<JobApplication> jobApplication) {
+		JobApplication = jobApplication;
 	}
 	public String getTitle() {
 		return title;
@@ -115,12 +119,6 @@ public class JobPosting {
 	public void setSalaryRange(String salaryRange) {
 		this.salaryRange = salaryRange;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
 	public String getStatus() {
 		return status;
 	}
@@ -133,23 +131,11 @@ public class JobPosting {
 	public void setApplicationDeadline(LocalDate applicationDeadline) {
 		this.applicationDeadline = applicationDeadline;
 	}
-	public List<String> getSkills() {
-		return skills;
-	}
-	public void setSkills(List<String> skills) {
-		this.skills = skills;
-	}
 	public String getExperienceLevel() {
 		return experienceLevel;
 	}
 	public void setExperienceLevel(String experienceLevel) {
 		this.experienceLevel = experienceLevel;
-	}
-	public boolean isRemote() {
-		return isRemote;
-	}
-	public void setRemote(boolean isRemote) {
-		this.isRemote = isRemote;
 	}
 	public LocalDate getStartDate() {
 		return startDate;
@@ -181,6 +167,24 @@ public class JobPosting {
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	
+	public String getSkills() {
+		return skills;
+	}
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+	public JobCategory getJobCategory() {
+		return jobCategory;
+	}
+	public void setJobCategory(JobCategory jobCategory) {
+		this.jobCategory = jobCategory;
+	}
+	public boolean isRemote() {
+		return remote;
+	}
+	public void setRemote(boolean remote) {
+		this.remote = remote;
+	}
+
 }
 	

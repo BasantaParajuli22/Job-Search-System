@@ -4,11 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,10 +16,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/", "/login", "/employer/register", "/jobseeker/register", "/css/**", "/js/**","/photo/**","/search","/view/jobposts").permitAll() // Allow access to these pages
+            	.requestMatchers("/", "/login", "/employer/register", "/jobseeker/register", "/css/**", "/js/**","/photo/**",
+            			"/search","/view/jobposts","/view/jobposts/{jobId}").permitAll() // Allow access to these pages
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/jobseeker/**").hasRole("JOBSEEKER")
-                .requestMatchers("/employer/**").hasRole("EMPLOYER")
+                .requestMatchers("/jobseekers/**").hasRole("JOBSEEKER")
+                .requestMatchers("/employers/**").hasRole("EMPLOYER")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

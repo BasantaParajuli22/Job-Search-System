@@ -1,7 +1,6 @@
 package com.example.springTrain.home;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.service.EmployerService;
+import com.example.springTrain.service.JobCategoryService;
 import com.example.springTrain.service.JobPostingService;
+import com.example.springTrain.table.JobCategory;
 import com.example.springTrain.table.JobPosting;
 import com.example.springTrain.user.Employer;
 import com.example.springTrain.util.UserAuthorization;
@@ -29,6 +30,9 @@ public class JobPostingController {
 	
 	@Autowired
 	private EmployerService employerService;
+	
+	@Autowired
+	private JobCategoryService jobCategoryService;
 	
 	
 	//to create a jobposting 
@@ -46,10 +50,15 @@ public class JobPostingController {
             System.out.println("User not suitable for creating jobposting");
             return "login";
          }
-        
-    	model.addAttribute("employer", employer);  // Add the employer to the model
-    	model.addAttribute("jobPosting", new JobPosting());  // Pass a new JobPosting object
-    	return "jobpostform";
+        List<JobCategory> categories = jobCategoryService.getAllCategories();
+        if(categories == null) {
+            System.out.println("categories, data.sql may not has been exceuted");
+            return "login";
+         }
+        model.addAttribute("categories", categories);
+        model.addAttribute("employer", employer);  // Add the employer to the model
+        model.addAttribute("jobPosting", new JobPosting());  // Pass a new JobPosting object
+        return "jobpostform";
 	}
 	
 	//for posting jobpost employerId is needed
@@ -57,7 +66,7 @@ public class JobPostingController {
 	//and jobposting is created
 	@PostMapping("/new/create")
 	public String createJobPostForm(@ModelAttribute JobPosting jobPosting,
-									@RequestParam("employerId") int employerId) {
+									@RequestParam("employerId") Integer employerId) {
 		
    	 	// Get the currently logged-in user's username
 		String username = UserAuthorization.getLoggedInUsername();
@@ -68,16 +77,8 @@ public class JobPostingController {
 	    	System.out.println("User not suitable for posting jobposting");
         	return "login";
 	    }
-	    // Set the employer for the job posting
-	    jobPosting.setEmployer(employer);
-	    
-	    // Parse comma-separated skills and benefits, if any are provided
-        if (jobPosting.getSkills() != null && !jobPosting.getSkills().isEmpty()) {
-            List<String> skillsList = Arrays.asList(jobPosting.getSkills().get(0).split(","));
-            jobPosting.setSkills(skillsList); // Set parsed skills list
-        }
         System.out.println("Creating job posting:in postmethod " + jobPosting);
-		jobPostingService.createJobPosting(jobPosting);//jobposting created
+		jobPostingService.createJobPosting(jobPosting,employer);//jobposting created
 		return "redirect:/view/jobposts";//to list all jobs after posting
 	}
 	
@@ -86,7 +87,7 @@ public class JobPostingController {
 	//by ALL
 	//all jobposting can be deleted by all
     @PostMapping("/{id}/delete")
-    public String deleteJobPostingByAdmin(@PathVariable("id") int id) {
+    public String deleteJobPostingByAdmin(@PathVariable("id") Integer id) {
     	
     	// Fetch the job posting (to ensure it exists)
         JobPosting jobPosting = jobPostingService.getJobPostingById(id);
@@ -102,7 +103,7 @@ public class JobPostingController {
     //employerid and jobId
     //by an employer only
     @PostMapping("/{jobId}/delete/byemployer")
-    public String deleteJobPostingByEmployerId(@PathVariable("jobId") int jobId) {
+    public String deleteJobPostingByEmployerId(@PathVariable("jobId") Integer jobId) {
     	    	
     	 // Get the currently logged-in user's username
     	String username = UserAuthorization.getLoggedInUsername();
@@ -137,7 +138,7 @@ public class JobPostingController {
     //edit job posts 
 	@GetMapping("/{jobId}/edit/by/{companyName}")
 	public String getEditForm(
-			@PathVariable("jobId") int jobId,
+			@PathVariable("jobId") Integer jobId,
 			@PathVariable("companyName") String companyName,
 			Model model) {
 
@@ -170,19 +171,23 @@ public class JobPostingController {
            System.out.println("The logged-in user does not have permission to edit job post with ID: \" + jobId");
            return "login";
        }
-       // Fetch employer details (you can remove this if not needed)
+       // Fetch employer details if it exists
        Employer employer = employerService.findByCompanyName(companyName);
-       if (employer != null) {
-           model.addAttribute("employer", employer);  // Add the employer to the model
+       if (employer == null) {
+    	   System.out.println("employer cannot edit or not the one");
        }
-       // Proceed with the job post update if all checks pass
+    // Proceed with the job post update if all checks pass 
+       List<JobCategory> categories = jobCategoryService.getAllCategories();
+       model.addAttribute("employer", employer);  
+
+       model.addAttribute("categories", categories);
        model.addAttribute("jobPosting", jobPostById);
 	    return "jobpostform";  // Name of your Thymeleaf template
 	}
 	
 	
 	@PostMapping("/{jobId}/edit/by/{companyName}")
-	public String postEditForm(@PathVariable("jobId") int jobId, @ModelAttribute("jobPosting") JobPosting updatedJobPosting, Model model) {
+	public String postEditForm(@PathVariable("jobId") Integer jobId, @ModelAttribute("jobPosting") JobPosting updatedJobPosting, Model model) {
 
 	    String loggedinusername = UserAuthorization.getLoggedInUsername();
 	    
@@ -206,7 +211,7 @@ public class JobPostingController {
 	    existingJobPosting.setLocation(updatedJobPosting.getLocation());
 	    existingJobPosting.setJobType(updatedJobPosting.getJobType());
 	    existingJobPosting.setSalaryRange(updatedJobPosting.getSalaryRange());
-	    existingJobPosting.setCategory(updatedJobPosting.getCategory());
+	    existingJobPosting.setJobCategory(updatedJobPosting.getJobCategory());
 	    existingJobPosting.setRequirements(updatedJobPosting.getRequirements());
 	    existingJobPosting.setStatus(updatedJobPosting.getStatus());
 	    existingJobPosting.setApplicationDeadline(updatedJobPosting.getApplicationDeadline());

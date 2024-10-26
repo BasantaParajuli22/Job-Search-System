@@ -12,7 +12,11 @@
             <ul>
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/jobseeker/profile}">My Profile</a></li>
-                <li><a th:href="@{/jobposts}">Jobs</a></li>
+				<!--  	-->	
+				<li><a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a></li>
+
+
+                <li><a th:href="@{/view/jobposts}">Jobs</a></li>
 				<li>
 					<form action="#" th:action="@{/logout}" method="post">
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -23,7 +27,8 @@
         </nav>
 		
 		    <h1>Welcome, Job Seeker!</h1>
-			<p>jobSeekerId: <span th:text="${jobSeeker.users.userId}"></span></p>
+			<p>jobSeekerId: <span th:text="${jobSeeker.jobSeekerId}"></span></p>
+
 			<p>Username: <span th:text="${jobSeeker.users.username}"></span></p>
 		    <p>Email: <span th:text="${jobSeeker.email}"></span></p>
 		    <p>Skills: <span th:text="${jobSeeker.skills}"></span></p>

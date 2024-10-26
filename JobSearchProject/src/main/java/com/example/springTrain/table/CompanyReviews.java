@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class CompanyReviews{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int reviewId;
+	private Integer reviewId;
 	//foreign keys
 	private int employerId;
 	private int jobSeekerId;
@@ -25,43 +25,53 @@ public class CompanyReviews{
 	
 	@CreationTimestamp
 	private Instant reviewDate;
-	
-	//getters and setters
-	public int getReviewId() {
+
+	public Integer getReviewId() {
 		return reviewId;
 	}
-	public void setReviewId(int reviewId) {
+
+	public void setReviewId(Integer reviewId) {
 		this.reviewId = reviewId;
 	}
+
 	public int getEmployerId() {
 		return employerId;
 	}
+
 	public void setEmployerId(int employerId) {
 		this.employerId = employerId;
 	}
+
 	public int getJobSeekerId() {
 		return jobSeekerId;
 	}
+
 	public void setJobSeekerId(int jobSeekerId) {
 		this.jobSeekerId = jobSeekerId;
 	}
-	public Instant getReviewDate() {
-		return reviewDate;
-	}
-	public void setReviewDate(Instant reviewDate) {
-		this.reviewDate = reviewDate;
-	}
+
 	public int getRating() {
 		return rating;
 	}
+
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+
 	public String getComment() {
 		return comment;
 	}
+
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
+	public Instant getReviewDate() {
+		return reviewDate;
+	}
+
+	public void setReviewDate(Instant reviewDate) {
+		this.reviewDate = reviewDate;
+	}
+	
 }

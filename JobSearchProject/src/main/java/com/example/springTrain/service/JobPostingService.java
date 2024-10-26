@@ -7,12 +7,17 @@ import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.JobPostingRepository;
 import com.example.springTrain.table.JobPosting;
+import com.example.springTrain.user.Employer;
 
 @Service
 public class JobPostingService {
-	@Autowired
+
     private JobPostingRepository jobPostingRepository;
 
+	@Autowired
+	public JobPostingService(JobPostingRepository jobPostingRepository) {
+		this.jobPostingRepository = jobPostingRepository;
+	}
 	//find all jobpostings
     public List<JobPosting> findAllJobPostings() {
         return jobPostingRepository.findAll();
@@ -22,7 +27,7 @@ public class JobPostingService {
         return jobPostingRepository.findByJobId(jobId);
     }
         
-    public JobPosting getJobPostingByEmployerId(int  employerId) {
+    public JobPosting getJobPostingByEmployerId(Integer  employerId) {
     	return jobPostingRepository.findByEmployer_EmployerId(employerId);
     }
     
@@ -30,20 +35,23 @@ public class JobPostingService {
 //        // Implement logic to find jobs related to the category or employer
 //        return jobPostingRepository.findByCategoryOrEmployer(category, employerId);
 //    }
-    public JobPosting getJobPostingByEmployerIdAndJobId(int employerId, Integer jobId) {
+    public JobPosting getJobPostingByEmployerIdAndJobId(Integer employerId, Integer jobId) {
     	return jobPostingRepository.findByEmployer_EmployerIdAndJobId(employerId,jobId);
     }
 
-    public JobPosting createJobPosting(JobPosting jobPosting) {
+    public JobPosting createJobPosting(JobPosting jobPosting, Employer employer) {
+    	// Set the employer for the job posting
+	    jobPosting.setEmployer(employer);
         return jobPostingRepository.save(jobPosting);
     }
 
+    
     public JobPosting updateJobPosting(Integer jobId, JobPosting jobPosting) {
         jobPosting.setJobId(jobId);
         return jobPostingRepository.save(jobPosting);
     }
     
-    public void deleteJobPostingById(int id) {
+    public void deleteJobPostingById(Integer id) {
         jobPostingRepository.deleteById(id);
     }
     
@@ -55,6 +63,12 @@ public class JobPostingService {
     //finding list of companyName in JobPosting table
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
         return jobPostingRepository.findByEmployerCompanyName(companyName);
+
+	}
+	
+	//to find all jobPostings of employer using CompanyName
+	public List<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName) {
+    	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 
 	}
     

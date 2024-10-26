@@ -22,12 +22,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="jobPosting : ${jobPostings}">
-                <td th:text="${jobPosting.jobId}"></td>
-                <td th:text="${jobPosting.title}"></td>
-                <td th:text="${jobPosting.employer.companyName}"></td>
-                <td th:text="${jobPosting.location}"></td>
-                <td th:text="${jobPosting.salaryRange}"></td>
+            <tr th:each="jobPost : ${jobPosts}">
+                <td th:text="${jobPost.jobId}"></td>
+                <td th:text="${jobPost.title}"></td>
+                <td th:text="${jobPost.employer.companyName}"></td>
+                <td th:text="${jobPost.location}"></td>
+                <td th:text="${jobPost.salaryRange}"></td>
             </tr>
         </tbody>
     </table>
@@ -47,7 +47,11 @@
                 <td th:text="${employer.employerId}"></td>
                 <td th:text="${employer.companyName}"></td>
                 <td th:text="${employer.email}"></td>
-            </tr>
+				
+			<!-- 	-->
+			<td><a th:href="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}">View all  jobs</a></td>
+			
+		</tr>
         </tbody>
     </table>
 
@@ -59,7 +63,7 @@
                 <th>Job Seeker ID</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Resume Link</th>
+            <!-- <th>Resume Link</th>-->
             </tr>
         </thead>
         <tbody>

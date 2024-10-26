@@ -10,6 +10,9 @@ import com.example.springTrain.user.Users;
 @Repository
 public interface JobSeekerRepository extends JpaRepository<JobSeeker, Integer>{
 	
+	JobSeeker findByJobSeekerId(Integer jobSeekerId);
 	JobSeeker findByEmail(String email);
 	JobSeeker findByUsers(Users user);
+	JobSeeker findByJobSeekerUsername(String jobSeekerUsername);
+	
 }

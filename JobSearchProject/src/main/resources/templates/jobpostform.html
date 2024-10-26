@@ -61,11 +61,6 @@
             <input type="text" id="salaryRange" name="salaryRange" th:field="*{salaryRange}">
         </div>
 
-        <!-- Category -->
-        <div>
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category" th:field="*{category}">
-        </div>
 
         <!-- Job Status (e.g., Active, Closed, On Hold) -->
         <div>
@@ -98,14 +93,22 @@
                 <option value="Senior">Senior</option>
             </select>
         </div>
-
-        <!-- Remote Job Checkbox 
+		
+		<!-- Job Category as foreign key -->
+		<div>
+		     <label for="category">Job Category:</label>
+		     <select id="category" th:field="*{jobCategory.categoryId}">
+		     <option th:each="category : ${categories}" th:value="${category.categoryId}" 
+			 th:text="${category.categoryName}"></option>
+		     </select><br/>
+		</div>
+		
+		-->
+		<!-- Remote Job cannot set this nullable -->
 		<div>
 		    <label for="isRemote">Is this job remote?</label>
-		    <input type="checkbox" id="isRemote" name="isRemote" th:field="*{isRemote}">
-		    <input type="hidden" name="_isRemote" value="off"/>
+		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}"> <!-- Use 'remote' here -->
 		</div>
-		-->
 		
         <!-- Start Date -->
         <div>
@@ -128,7 +131,7 @@
         <!-- Submit and Cancel Buttons -->
         <div>
             <button type="submit">Save</button>
-            <a href="/jobposts">Cancel</a>
+            <a href="/view/jobposts">Cancel</a>
         </div>
     </form>
 </body>

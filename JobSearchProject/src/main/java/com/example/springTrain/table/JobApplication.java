@@ -18,8 +18,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "application_table")
-public class ApplicationTable {
+@Table (name = "job_application")
+public class JobApplication{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,51 +38,61 @@ public class ApplicationTable {
     @JoinColumn(name = "employerId", referencedColumnName = "employerId", nullable = false)
     private Employer employer;
 
+	private String applicationStatus;//changeable by employer
 	
-	private String applicationStatus;
-	private String jobType;
-	private String coverLetter;
+	//private String coverLetter;
 	
 	@CreationTimestamp
 	private Instant appliedAt;
+
 	
-	//getters and setters
-	public JobPosting getJobPosting() {
-		return jobPosting;
-	}
-	public void setJobPosting(JobPosting jobPosting) {
-		this.jobPosting = jobPosting;
-	}
-	public String getApplicationStatus() {
-		return applicationStatus;
-	}
-	public void setApplicationStatus(String applicationStatus) {
-		this.applicationStatus = applicationStatus;
-	}
-	public String getJobType() {
-		return jobType;
-	}
-	public void setJobType(String jobType) {
-		this.jobType = jobType;
-	}
-	public String getCoverLetter() {
-		return coverLetter;
-	}
-	public void setCoverLetter(String coverLetter) {
-		this.coverLetter = coverLetter;
-	}
-	public Employer getEmployer() {
-		return employer;
-	}
-	public void setEmployer(Employer employer) {
-		this.employer = employer;
-	}
-	public int getApplicationId() {
+	
+	public Integer getApplicationId() {
 		return applicationId;
 	}
-	public void setApplicationId(int applicationId) {
+
+	public void setApplicationId(Integer applicationId) {
 		this.applicationId = applicationId;
 	}
 
-	
+	public JobSeeker getJobSeeker() {
+		return jobSeeker;
+	}
+
+	public void setJobSeeker(JobSeeker jobSeeker) {
+		this.jobSeeker = jobSeeker;
+	}
+
+	public JobPosting getJobPosting() {
+		return jobPosting;
+	}
+
+	public void setJobPosting(JobPosting jobPosting) {
+		this.jobPosting = jobPosting;
+	}
+
+	public Employer getEmployer() {
+		return employer;
+	}
+
+	public void setEmployer(Employer employer) {
+		this.employer = employer;
+	}
+
+	public String getApplicationStatus() {
+		return applicationStatus;
+	}
+
+	public void setApplicationStatus(String applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+
+	public Instant getAppliedAt() {
+		return appliedAt;
+	}
+
+	public void setAppliedAt(Instant appliedAt) {
+		this.appliedAt = appliedAt;
+	}
+
 }

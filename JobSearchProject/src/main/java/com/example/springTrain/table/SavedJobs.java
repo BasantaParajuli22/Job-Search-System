@@ -16,7 +16,7 @@ public class SavedJobs {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int savedId;
+	private Integer savedId;
 	
 	//foreign key
 	private int jobId;
@@ -25,11 +25,11 @@ public class SavedJobs {
 	@CreationTimestamp
 	private Instant savedAt;
 
-	public int getSavedId() {
+	public Integer getSavedId() {
 		return savedId;
 	}
 
-	public void setSavedId(int savedId) {
+	public void setSavedId(Integer savedId) {
 		this.savedId = savedId;
 	}
 
@@ -56,5 +56,6 @@ public class SavedJobs {
 	public void setSavedAt(Instant savedAt) {
 		this.savedAt = savedAt;
 	}
+
 
 }

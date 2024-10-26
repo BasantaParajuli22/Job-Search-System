@@ -33,7 +33,7 @@ public class ProfileController{
     }
     
     
-    @GetMapping("/jobseeker/profile")
+    @GetMapping("/jobseekers/profile")
     public String getJobseekerProfile(Model model, @AuthenticationPrincipal org.springframework.security.core.userdetails.User secureUser) {
         
         if (secureUser == null) {
@@ -56,7 +56,7 @@ public class ProfileController{
         return "jobseeker-profile";
     }
 	
-	@GetMapping("/employer/profile")
+	@GetMapping("/employers/profile")
 	public String getEmployerProfile(Model model,@AuthenticationPrincipal org.springframework.security.core.userdetails.User secureUser ) {
 		
 		if (secureUser == null) {

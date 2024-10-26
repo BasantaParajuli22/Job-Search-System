@@ -88,11 +88,12 @@ public class RegisterController {
 			      user.setUsername(jobSeekerDTO.getUsername());
 			      user.setPassword(jobSeekerDTO.getPassword());
 			      user.setEmail(jobSeekerDTO.getEmail());
-			      user.setUserType(jobSeekerDTO.getUsertype());
+			      user.setUsertype(jobSeekerDTO.getUsertype());
 
 
 			      // Create JobSeeker entity
 			      JobSeeker jobSeeker = new JobSeeker();
+			      jobSeeker.setJobSeekerUsername(jobSeekerDTO.getUsername());
 			      jobSeeker.setEmail(jobSeekerDTO.getEmail());
 			      jobSeeker.setNumber(jobSeekerDTO.getNumber());
 			      jobSeeker.setAddress(jobSeekerDTO.getAddress());
@@ -137,7 +138,7 @@ public class RegisterController {
 		        user.setUsername(employerDTO.getCompanyName());
 		        user.setPassword(employerDTO.getPassword());
 		        user.setEmail(employerDTO.getEmail());
-		        user.setUserType(employerDTO.getUsertype());
+		        user.setUsertype(employerDTO.getUsertype());
 
 
 		        Employer employer = new Employer();

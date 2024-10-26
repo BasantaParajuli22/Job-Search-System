@@ -17,10 +17,10 @@
             <li><a th:href="@{/login}">Login</a></li>
 			<!-- Profile link based on user role -->
 			   <li sec:authorize="hasRole('JOBSEEKER')">
-			       <a th:href="@{/jobseeker/profile}">JProfile</a>
+			       <a th:href="@{/jobseekers/profile}">JProfile</a>
 			   </li>
 			   <li sec:authorize="hasRole('EMPLOYER')">
-			       <a th:href="@{/employer/profile}">EProfile</a>
+			       <a th:href="@{/employers/profile}">EProfile</a>
 			   </li>
 			   <li sec:authorize="hasRole('ADMIN')">
 			       <a th:href="@{/admin/profile}">Admin Profile</a>

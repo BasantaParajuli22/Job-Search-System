@@ -1,9 +1,6 @@
 package com.example.springTrain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -23,18 +20,17 @@ public class UsersService {
 	
     private static final Logger logger = LoggerFactory.getLogger(Employer.class);
 
-    @Autowired
     private UsersRepository usersRepository;
-
-    @Autowired
     private JobSeekerRepository jobSeekerRepository;
-
-    @Autowired
     private EmployerRepository employerRepository;
    
     @Autowired
-    public UsersService(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository,
+    		JobSeekerRepository jobSeekerRepository,
+    		EmployerRepository employerRepository) {
         this.usersRepository = usersRepository;
+        this.jobSeekerRepository = jobSeekerRepository;
+        this.employerRepository = employerRepository;
     }
 
     // Method to find a user by username

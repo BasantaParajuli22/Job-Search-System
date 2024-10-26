@@ -38,6 +38,7 @@ public class EmployerService {
 	public Employer findByEmployerId(int employerId) {
 		return employerRepository.findByEmployerId(employerId);
 	}
+
 	
 	//to find all employer
     public List<Employer> findAllEmployers() {

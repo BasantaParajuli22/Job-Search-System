@@ -23,7 +23,7 @@ public class Employer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int employerId;
+	private Integer employerId;
 	
 	@OneToOne
     @JoinColumn(name = "userId", referencedColumnName="userId", nullable = false)
@@ -43,70 +43,88 @@ public class Employer {
 	
 	@CreationTimestamp
 	private Instant createdAt;
-	
-	
-	//getters and setters
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getWebsite() {
-		return website;
-	}
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-	public Users getUsers() {
-		return users;
-	}
-	public void setUsers(Users users) {
-		this.users = users;
-	}
-	public String getCompanyName() {
-		return companyName;
-	}
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-	public String getCompanyDescription() {
-		return companyDescription;
-	}
-	public void setCompanyDescription(String companyDescription) {
-		this.companyDescription = companyDescription;
-	}
-	public String getContactNumber() {
-		return contactNumber;
-	}
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public List<JobPosting> getJobPosting() {
-		return jobPosting;
-	}
-	public void setJobPosting(List<JobPosting> jobPosting) {
-		this.jobPosting = jobPosting;
-	}
-	public Instant getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Instant createdAt) {
-		this.createdAt = createdAt;
-	}
-	public int getEmployerId() {
+
+	public Integer getEmployerId() {
 		return employerId;
 	}
-	public void setEmployerId(int employerId) {
+
+	public void setEmployerId(Integer employerId) {
 		this.employerId = employerId;
 	}
 
+	public Users getUsers() {
+		return users;
+	}
 
+	public void setUsers(Users users) {
+		this.users = users;
+	}
+
+	public List<JobPosting> getJobPosting() {
+		return jobPosting;
+	}
+
+	public void setJobPosting(List<JobPosting> jobPosting) {
+		this.jobPosting = jobPosting;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getCompanyDescription() {
+		return companyDescription;
+	}
+
+	public void setCompanyDescription(String companyDescription) {
+		this.companyDescription = companyDescription;
+	}
+
+	public String getContactNumber() {
+		return contactNumber;
+	}
+
+	public void setContactNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	public Instant getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Instant createdAt) {
+		this.createdAt = createdAt;
+	}
+	
+	
+	
 }
  
