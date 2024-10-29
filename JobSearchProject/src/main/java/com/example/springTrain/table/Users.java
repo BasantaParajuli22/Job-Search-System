@@ -1,4 +1,4 @@
-package com.example.springTrain.user;
+package com.example.springTrain.table;
 
 import java.time.Instant;
 

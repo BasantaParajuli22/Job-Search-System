@@ -7,8 +7,6 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.example.springTrain.user.Employer;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +37,9 @@ public class JobPosting {
 	//JobApplication should have foreign key of jobPosting 
 	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobApplication> JobApplication = new ArrayList<>();
+
+	@OneToMany(mappedBy ="jobPosting", cascade = CascadeType.ALL)
+	private List<SavedJobs> savedJobs;
 
 	private String title;
 	private String location;
@@ -184,6 +185,12 @@ public class JobPosting {
 	}
 	public void setRemote(boolean remote) {
 		this.remote = remote;
+	}
+	public List<SavedJobs> getSavedJobs() {
+		return savedJobs;
+	}
+	public void setSavedJobs(List<SavedJobs> savedJobs) {
+		this.savedJobs = savedJobs;
 	}
 
 }

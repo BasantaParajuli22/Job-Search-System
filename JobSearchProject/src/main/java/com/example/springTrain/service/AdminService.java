@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.AdminRepository;
-import com.example.springTrain.user.Admin;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Admin;
+import com.example.springTrain.table.Users;
 
 @Service
 public class AdminService {

@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,9 +20,13 @@ public class SavedJobs {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer savedId;
 	
-	//foreign key
-	private int jobId;
-	private int job_seekerId;
+	@ManyToOne
+	@JoinColumn(name = "jobSeekerId", referencedColumnName ="jobSeekerId",nullable = false)
+	private JobSeeker jobSeeker;
+	
+	@ManyToOne
+	@JoinColumn(name = "jobId", referencedColumnName ="jobId", nullable =false)
+	private JobPosting jobPosting;
 	
 	@CreationTimestamp
 	private Instant savedAt;
@@ -33,21 +39,6 @@ public class SavedJobs {
 		this.savedId = savedId;
 	}
 
-	public int getJobId() {
-		return jobId;
-	}
-
-	public void setJobId(int jobId) {
-		this.jobId = jobId;
-	}
-
-	public int getJob_seekerId() {
-		return job_seekerId;
-	}
-
-	public void setJob_seekerId(int job_seekerId) {
-		this.job_seekerId = job_seekerId;
-	}
 
 	public Instant getSavedAt() {
 		return savedAt;
@@ -57,5 +48,20 @@ public class SavedJobs {
 		this.savedAt = savedAt;
 	}
 
+	public JobSeeker getJobSeeker() {
+		return jobSeeker;
+	}
+
+	public void setJobSeeker(JobSeeker jobSeeker) {
+		this.jobSeeker = jobSeeker;
+	}
+
+	public JobPosting getJobPosting() {
+		return jobPosting;
+	}
+
+	public void setJobPosting(JobPosting jobPosting) {
+		this.jobPosting = jobPosting;
+	}
 
 }

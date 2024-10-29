@@ -1,11 +1,10 @@
-package com.example.springTrain.user;
+package com.example.springTrain.table;
 
 
 import java.time.Instant;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.example.springTrain.table.JobApplication;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -27,9 +27,18 @@ public class JobSeeker {
 	@OneToOne
 	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
 	private Users users;
-		
-	@OneToOne(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-	private JobApplication jobApplication;
+	
+	//The owning side manages the relationship, defined with @JoinColumn.
+	//The inverse side is the side that simply mirrors the relationship using mappedBy.
+	//mappedBy is  used on the inverse side to specify the field name
+	// in the owning entity that "owns" the relationship.
+	
+	//one jobSeeker can apply to many jobApplication
+	@OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
+	private List<JobApplication> jobApplication;
+	
+	@OneToMany(mappedBy ="jobSeeker", cascade = CascadeType.ALL)
+	private List<SavedJobs> savedJobs;
 	
 	private String jobSeekerUsername;
 	private String email;
@@ -55,14 +64,6 @@ public class JobSeeker {
 
 	public void setUsers(Users users) {
 		this.users = users;
-	}
-
-	public JobApplication getJobApplication() {
-		return jobApplication;
-	}
-
-	public void setJobApplication(JobApplication jobApplication) {
-		this.jobApplication = jobApplication;
 	}
 
 	public String getEmail() {
@@ -109,5 +110,21 @@ public class JobSeeker {
 	}
 	public void setJobSeekerUsername(String jobSeekerUsername) {
 		this.jobSeekerUsername = jobSeekerUsername;
+	}
+
+	public List<JobApplication> getJobApplication() {
+		return jobApplication;
+	}
+
+	public void setJobApplication(List<JobApplication> jobApplication) {
+		this.jobApplication = jobApplication;
+	}
+
+	public List<SavedJobs> getSavedJobs() {
+		return savedJobs;
+	}
+
+	public void setSavedJobs(List<SavedJobs> savedJobs) {
+		this.savedJobs = savedJobs;
 	}
 }	

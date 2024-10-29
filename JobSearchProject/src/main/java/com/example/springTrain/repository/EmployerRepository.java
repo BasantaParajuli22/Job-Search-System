@@ -3,8 +3,8 @@ package com.example.springTrain.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Employer;
+import com.example.springTrain.table.Users;
 
 @Repository
 public interface EmployerRepository extends JpaRepository<Employer, Integer>{

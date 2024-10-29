@@ -47,14 +47,16 @@
 					    <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
 					    <button type="submit" class="btn btn-danger">EditByCompany</button>
 					</form>
-				</td>					       
+				</td>		
+				<!-- Deletes any jobPost -->	
+			<!--
 				<td>
-					<!--<a th:href="@{/jobposts/{id}/edit(id=${job.jobId})}">Edit</a> |-->
 					<form th:action="@{/jobposts/{id}/delete(id=${job.jobId})}" method="post" style="display:inline;">
-				    	<!--  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> -->
+				    	  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> 
 						<button type="submit" class="btn btn-danger">Delete</button>
 					</form>
 				</td>
+			-->
 				<td> 
 					<form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${job.jobId})}" method="post" style="display:inline;">
 					    <!-- Uncomment if CSRF protection is needed -->
@@ -76,6 +78,15 @@
 					    <!-- Uncomment if CSRF protection is needed -->
 					    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 					    <button type="submit">Apply</button>
+					</form>
+				</td>
+				<!-- only display if jobSeeker object is not null-->
+				<td>
+					<form th:if="${jobSeeker != null}"
+						th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${job.jobId})}" method="post">
+						 <!-- Uncomment if CSRF protection is needed -->
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<button type="submit">Save job</button>
 					</form>
 				</td>			
             </tr>

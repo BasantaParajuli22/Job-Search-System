@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobCategoryService;
 import com.example.springTrain.service.JobPostingService;
+import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobCategory;
 import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.user.Employer;
 import com.example.springTrain.util.UserAuthorization;
 
 @Controller
@@ -109,8 +109,11 @@ public class JobPostingController {
     	String username = UserAuthorization.getLoggedInUsername();
         // Fetch the Employer entity using the username
         Employer loggedInEmployer = employerService.findByCompanyName(username);  // Assuming employerService is injected
+        if(loggedInEmployer == null) {
+        	System.out.println(loggedInEmployer);
+        	return "login";
+        }
         int employerId = loggedInEmployer.getEmployerId();
-        System.out.println("Employer ID: " + employerId);
 
         if(employerId == 0 || loggedInEmployer == null) {
             System.out.println("Employer ID: " + employerId);

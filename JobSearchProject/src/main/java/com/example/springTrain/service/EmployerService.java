@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.EmployerRepository;
+import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Users;
 
 
 @Service

@@ -9,10 +9,10 @@ import com.example.springTrain.repository.EmployerRepository;
 import com.example.springTrain.repository.JobApplicationRepository;
 import com.example.springTrain.repository.JobPostingRepository;
 import com.example.springTrain.repository.JobSeekerRepository;
+import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
+import com.example.springTrain.table.JobSeeker;
 
 @Service
 public class JobApplicationService {

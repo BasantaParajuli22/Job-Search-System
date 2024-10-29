@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.JobPostingRepository;
+import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.user.Employer;
 
 @Service
 public class JobPostingService {

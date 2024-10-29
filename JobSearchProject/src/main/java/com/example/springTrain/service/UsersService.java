@@ -9,9 +9,9 @@ import org.slf4j.LoggerFactory;
 import com.example.springTrain.repository.EmployerRepository;
 import com.example.springTrain.repository.JobSeekerRepository;
 import com.example.springTrain.repository.UsersRepository;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Employer;
+import com.example.springTrain.table.JobSeeker;
+import com.example.springTrain.table.Users;
 
 import jakarta.transaction.Transactional;
 

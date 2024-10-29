@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.repository.UsersRepository;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Users;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -29,7 +29,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                    .roles(user.getUsertype().name())  // Assign roles from the database
                    .build();
     }
-    
-    
     
 }

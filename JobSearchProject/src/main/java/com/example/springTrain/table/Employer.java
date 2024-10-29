@@ -1,11 +1,9 @@
-package com.example.springTrain.user;
+package com.example.springTrain.table;
 
 import java.time.Instant;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.example.springTrain.table.JobPosting;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

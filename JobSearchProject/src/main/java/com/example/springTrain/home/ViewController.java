@@ -15,10 +15,10 @@ import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
+import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
+import com.example.springTrain.table.JobSeeker;
 import com.example.springTrain.util.UserAuthorization;
 
 
@@ -60,38 +60,38 @@ public class ViewController {
 	//display all lists of employers
 	@GetMapping("employers")
 	public String listAllEmployers(Model model) {
-		 List<Employer> employers = employerService.findAllEmployers();
-		 model.addAttribute("employers",employers); 
-		return "employerslist";
+		List<Employer> employers = employerService.findAllEmployers();
+		model.addAttribute("employers",employers); 
+		return "employers-list";
 	}
-	
 	//display specific employers profile
 	@GetMapping("/employers/profile/{employerId}")
 	public String listSpecificEmployer(Model model,
 			@PathVariable ("employerId") Integer employerId) {
 		
-		 Employer employer = employerService.findByEmployerId(employerId);
-		 model.addAttribute("employer",employer);	        
-		return "employerslist";
+		Employer employer = employerService.findByEmployerId(employerId);
+		model.addAttribute("employer",employer);	        
+		return "employers-list";
 	}
+	
 	
 	//display all lists of jobseekers
 	@GetMapping("/jobseekers")
 	public String listAllJobseekers(Model model) {
-		 List<JobSeeker> jobseekers = jobSeekerService.findAllJobSeekers();
-		 model.addAttribute("jobseekers",jobseekers);	        
-		return "jobseekerslist";
+		 List<JobSeeker> jobSeekers = jobSeekerService.findAllJobSeekers();
+		 model.addAttribute("jobSeekers",jobSeekers);	        
+		return "jobseekers-list";
 	}
-	
-	
 	//display specific jobseekers profile
 	@GetMapping("/jobseekers/profile/{jobSeekerId}")
 	public String listSpecificJobseeker(Model model,
 			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
+		
 		 JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		 model.addAttribute("jobSeeker",jobSeeker);	        
-		return "jobseekerslist";
+		return "jobseekers-list";
 	}
+	
 	
 	//view all jobposts without restrictions
 	//no login required

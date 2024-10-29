@@ -9,4 +9,14 @@ public class UserAuthorization {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();  // Get the username of the logged-in user
     }
+	
+	public static String getLoggedInJobSeekerUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();  // Get the username of the logged-in user
+    }
+	
+	public static String getLoggedInEmployerUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();  // Get the username of the logged-in user
+    }
 }

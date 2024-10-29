@@ -5,16 +5,12 @@ import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,7 +21,7 @@ public class JobApplication{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer applicationId;
 	
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name = "jobSeekerId", referencedColumnName="jobSeekerId", nullable = false)
 	private JobSeeker jobSeeker;
 	
@@ -40,7 +36,6 @@ public class JobApplication{
 
 	private String applicationStatus;//changeable by employer
 	
-	//private String coverLetter;
 	
 	@CreationTimestamp
 	private Instant appliedAt;

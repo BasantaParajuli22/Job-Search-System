@@ -10,10 +10,10 @@ import com.example.springTrain.service.AdminService;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
-import com.example.springTrain.user.Admin;
-import com.example.springTrain.user.Employer;
-import com.example.springTrain.user.JobSeeker;
-import com.example.springTrain.user.Users;
+import com.example.springTrain.table.Admin;
+import com.example.springTrain.table.Employer;
+import com.example.springTrain.table.JobSeeker;
+import com.example.springTrain.table.Users;
 
 
 @Controller
