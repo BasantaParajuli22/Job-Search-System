@@ -22,5 +22,4 @@ public class JobCategoryService {
 		return jobCategoryRepository.findAll();
 	}
 	
-	
 }

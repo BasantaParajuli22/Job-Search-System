@@ -3,6 +3,7 @@ package com.example.springTrain.table;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class JobCategory {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer categoryId;
 	
+	//this will make everything uinque
+	 @Column(unique = true) 
 	private String categoryName;
 
 	@OneToMany(mappedBy ="jobCategory", cascade = CascadeType.ALL)

@@ -48,26 +48,21 @@ public class UsersService {
     public void createJobSeeker(Users user, JobSeeker jobSeeker) {
         // Encode the user's password before saving 
     	//we save password only on user table
-        user.setPassword(passwordEncoder.encode(user.getPassword())); 
+       user.setPassword(passwordEncoder.encode(user.getPassword())); 
 
-        // Save the user first to generate the user_id
-        Users savedUser = usersRepository.save(user);
-
-        // Set the role for JobSeeker
-        jobSeeker.setUsers(savedUser);
-        jobSeekerRepository.save(jobSeeker);
+       // Save the user and associate it with the JobSeeker
+       usersRepository.save(user);
+       jobSeeker.setUsers(user);
+       jobSeekerRepository.save(jobSeeker);
     }
 
     @Transactional
     public void createEmployer(Users user, Employer employer) {
-        // Encode the user's password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword())); 
 
-        // Save the user first to generate the user_id
-        Users savedUser = usersRepository.save(user);
-
-        // Set the role for Employer
-        employer.setUsers(savedUser);
+        // Save the user first to generate the user_id and associate it with employer
+        usersRepository.save(user);
+        employer.setUsers(user);
         employerRepository.save(employer);
     }
 

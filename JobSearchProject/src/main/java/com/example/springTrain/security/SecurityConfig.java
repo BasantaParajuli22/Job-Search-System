@@ -1,4 +1,4 @@
-package com.example.springTrain.config;
+package com.example.springTrain.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +34,13 @@ public class SecurityConfig {
                  .invalidateHttpSession(true) // Invalidate session
                  .deleteCookies("JSESSIONID") // Delete the session cookie
                 .permitAll()
-            );  
-        
+            )
+         // Using custom AccessDeniedHandler
+            //to redirect user whose role doesnot match the content based on role
+            //or requires different role
+            .exceptionHandling(exception -> exception
+            		.accessDeniedHandler(new CustomAccessDeniedHandler()))
+        ;
         return http.build();
     }
 
@@ -51,23 +56,4 @@ public class SecurityConfig {
         authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
-    
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        // Define users for testing. In a real-world application, you would fetch these from a database.
-//        return new InMemoryUserDetailsManager(
-//            User.withUsername("jobseeker")
-//                .password(passwordEncoder().encode("password")) // Encode password
-//                .roles("JOBSEEKER")
-//                .build(),
-//            User.withUsername("employer")
-//                .password(passwordEncoder().encode("password")) // Encode password
-//                .roles("EMPLOYER")
-//                .build(),
-//            User.withUsername("admin")
-//                .password(passwordEncoder().encode("adminpassword")) // Encode password
-//                .roles("ADMIN")
-//                .build()
-//        );  // Add all users to in-memory storage
-//    }
 }

@@ -1,11 +1,14 @@
-package com.example.springTrain.home;
+package com.example.springTrain.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
@@ -16,12 +19,11 @@ import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
 import com.example.springTrain.table.JobSeeker;
 import com.example.springTrain.table.SavedJobs;
-import com.example.springTrain.table.SavedJobs;
-import com.example.springTrain.util.UserAuthorization;
 
 @Controller
 public class JobApplicationController {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private JobPostingService jobPostingService;
@@ -38,8 +40,7 @@ public class JobApplicationController {
 	//to apply for jobposts of employer
 	//jobposts id required
 	//jobseekerId required
-	//make changes to application
-	
+	//make changes to jobApplication
 	@PostMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{companyName}")
 	public String applyForJobPosts(Model model,
 					@PathVariable("jobSeekerId") Integer jobSeekerId,
@@ -54,29 +55,22 @@ public class JobApplicationController {
 		JobSeeker submittedUsername = jobSeekerService.findByJobSeekerId(jobSeekerId);
 
 		if(!loggedJobSeeker.equals(submittedUsername)) {
-            System.out.println("Not same jobSeeker cannot apply");
+			logger.warn("Not same jobSeeker so cannot apply");
 			return "redirect:/view/jobposts";
 		}
 
 		//if employer or jobposting not found // exit //
         Employer employer = employerService.findByCompanyName(companyName); 
-         if(employer == null) {
-            System.out.println("compannyName not found");
+        JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
+         if(employer == null ||jobPosting == null) {
+ 			logger.warn("Not same employer or jobId");
             return "redirect:/view/jobposts";
          }  
-         
-         JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
-         if(jobPosting == null) {
-             System.out.println("JobPost not available");
-             return "redirect:/view/jobposts";
-          }
-         
          //only apply if it hasnot applied 
          //only one jobSeekerId to one jobId
          JobApplication jobApplication = jobApplicationService.getJobSeekerByIdAndJobId(jobSeekerId,jobId); 
          if(jobApplication != null) {
-             System.out.println("JobSeeker cannot apply again to jobpost" +jobSeekerId+jobId);
-             System.out.println();
+  			logger.warn(" Same JobSeeker cannot apply again to jobpost ");
              return "redirect:/view/jobposts";
           }
          
@@ -85,8 +79,7 @@ public class JobApplicationController {
 
 	}
 	
-	
-	//save jobPost by JobSeeker 
+	//Save jobPost by JobSeeker 
 	//needs JobSeeker to login
 	@PostMapping("/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}")
 	public String saveJobsByJobSeeker(Model model,
@@ -98,26 +91,20 @@ public class JobApplicationController {
 		       
 		JobSeeker loggedJobSeeker = jobSeekerService.findByUsername(username);
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 		if(!loggedJobSeeker.equals(submittedJobSeeker)) {
-		     System.out.println("Not same jobSeeker cannot save");
 			return "redirect:/view/jobposts";
 		}
 
-		//if jobSeeker or jobposting not found // exit //
-         if(submittedJobSeeker == null) {
-            System.out.println("jobSeeker not found");
+		//ifsubmittedJobSeeker is null then// exit //
+         if(submittedJobSeeker == null|| jobPosting == null ) {
+   			logger.warn(" jobSeeker not found or jobPost not found to save");
             return "redirect:/view/jobposts";
-         }  
-         JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
-         if(jobPosting == null) {
-             System.out.println("JobPost not available");
-             return "redirect:/view/jobposts";
-          }    
-         
+         }   
          
          SavedJobs alreadySaved= savedJobsService.findBySavedIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
          if(alreadySaved != null) {
-        	 System.out.println("JobPost already saved by JobSeeker");
+    		logger.info(" JobPost already saved by JobSeeker");
              return "redirect:/view/jobposts";
          }
          

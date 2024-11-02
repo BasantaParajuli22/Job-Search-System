@@ -1,7 +1,9 @@
-package com.example.springTrain.home;
+package com.example.springTrain.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
@@ -19,13 +22,13 @@ import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
 import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.util.UserAuthorization;
 
 
 @RequestMapping("/view")
 @Controller
 public class ViewController {
 
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private JobPostingService jobPostingService;
@@ -45,16 +48,10 @@ public class ViewController {
 		 List<Employer> employers = employerService.findAllEmployers();
 		 List<JobSeeker> jobseekers = jobSeekerService.findAllJobSeekers();
 
-		 System.out.println("JobPostings::" + jobPosts); 
-		 System.out.println("Employers::::" + employers); 
-		 System.out.println("jobseekers:::" + jobseekers); 
-
 		 model.addAttribute("jobPosts",jobPosts); 
 		 model.addAttribute("employers",employers);    
 		 model.addAttribute("jobseekers",jobseekers);    
 
-		 
-		 
 		 return "dashboard";
 	}
 	//display all lists of employers
@@ -87,8 +84,8 @@ public class ViewController {
 	public String listSpecificJobseeker(Model model,
 			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
 		
-		 JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		 model.addAttribute("jobSeeker",jobSeeker);	        
+		JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		model.addAttribute("jobSeeker",jobSeeker);	        
 		return "jobseekers-list";
 	}
 	
@@ -107,12 +104,9 @@ public class ViewController {
 	        if (jobSeeker != null) {
 	            model.addAttribute("jobSeeker", jobSeeker);
 	        } else {
-	            System.out.println("No JobSeeker found for username: " + username);
-	            // Optionally handle this case if needed
+	        	logger.warn("No JobSeeker found for username: "+ username);
 	        }
-	    } else {
-	        System.out.println("No user is logged in.");
-	    }
+	    } 
 	    model.addAttribute("jobPosts",jobPosts); 
 		return "jobpost";
 	}
@@ -134,7 +128,7 @@ public class ViewController {
 		model.addAttribute("jobPost", jobPost);
 
 		//model.addAttribute("relatedJobs", relatedJobs);  
-		return "jobListing";  // Thymeleaf template
+		return "jobListing";  
 	}
 	
 	//view all jobposts of specific employer
@@ -152,7 +146,7 @@ public class ViewController {
 	        List<JobPosting> myJobPosts = jobPostingService.findAllJobPostingsByEmployer_CompanyName(companyName);
 	        model.addAttribute("myJobPosts", myJobPosts);
 	    } else {
-	    	System.out.println("companyName not found");
+        	logger.warn("No companyName found for username: ");
 	        return "login";
 	    }
 		return "employers-jobposts";
@@ -166,10 +160,15 @@ public class ViewController {
 			@PathVariable ("employerId") Integer employerId) {
 			
 		String username = UserAuthorization.getLoggedInUsername();
-		//loggedin companyName
-		Employer employer = employerService.findByCompanyName(username);
+
+		Employer loggedinEmployer = employerService.findByCompanyName(username);
+		Employer submittedEmployer = employerService.findByEmployerId(employerId);
+		if(!loggedinEmployer.equals(submittedEmployer)) {	
+        	logger.warn("Not a same employerId so cannot view jobposts ");
+			return "redirect:/view/jobposts";
+		}
 		
-		String companyName = employer.getCompanyName();
+		String companyName = submittedEmployer.getCompanyName();
 		//to findAllJobPostingsByEmployer
 		List<JobPosting> myJobPosts =jobPostingService.findAllJobPostingsByEmployer_CompanyName(companyName);
 		
@@ -188,19 +187,17 @@ public class ViewController {
 			@PathVariable ("employerId") Integer employerId) {
 			
 		String username = UserAuthorization.getLoggedInUsername();
-		//loggedin companyName
+		
 		Employer companyName = employerService.findByCompanyName(username);
-		  
-		//pathVariable comapanyName
-		Employer urlCompanyName = employerService.findByEmployerId(employerId);
-
-		if(!companyName.equals(urlCompanyName)) {	
-			System.out.println("not same employerId so cannot view jobApplicants");
+		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
+		if(!companyName.equals(submittedCompanyName)) {	
+        	logger.warn("Not a same employerId so cannot view jobApplicants ");
 			return "redirect:/view/jobposts";
 		}
 		
 		 List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployer(companyName);
 		if(allJobApplications == null) {
+        	logger.warn("Couldnot find the jobApplications");
 			return "redirect:/view/jobposts";
 		}
 		 model.addAttribute("allJobApplications",allJobApplications);	        
@@ -210,17 +207,22 @@ public class ViewController {
 	//view all lists of myJobPosts Applicants submitted  by the jobseeker
 	//viewing all aplications i applied to 
 	//login required
-	//
 	@GetMapping("application/submittedby/jobseeker/{jobSeekerId}")
 	public String listAllOfMyAppliedJobPosts(Model model,
 			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
 			
-		//String username = UserAuthorization.getLoggedInUsername();
-		//loggedin companyName
-		JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		  
-		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeeker(jobSeeker);
+		String username = UserAuthorization.getLoggedInUsername();
+		
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
+		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
+        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeeker(loggedinJobSeeker);
 		if(allJobApplicants == null) {
+        	logger.warn("Couldnot find the jobApplications ");
 			return "redirect:/view/jobposts";
 		}
 
@@ -244,13 +246,7 @@ public class ViewController {
 
 
 	//view a certain jobseeker details for searching purposes
-	
-	
-	//view jobposting of specific employer 
-	//recieves and uses id of employer id  
-	//finds the list of jobpostings from id
-	//or sends jobposting not found 
-	
+
 	//view a certain employer details for searching purposes
 		
 }

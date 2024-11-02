@@ -71,6 +71,10 @@ public class JobPostingService {
     	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 
 	}
+	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
+    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
+
+	}
     
 
 }

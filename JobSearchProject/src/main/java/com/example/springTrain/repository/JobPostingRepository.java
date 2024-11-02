@@ -19,8 +19,10 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	List<JobPosting> findByEmployerCompanyName(String companyName);
 
 	List<JobPosting> findByEmployer(Employer employer); // Use the employer object directly
-	//List<JobPosting> findByCategoryOrEmployer(String category, Integer employerId);
+
 	List<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName);
+
+	List<JobPosting> findAllJobPostingByJobCategory_CategoryId(Integer categoryId);
 
     
 }

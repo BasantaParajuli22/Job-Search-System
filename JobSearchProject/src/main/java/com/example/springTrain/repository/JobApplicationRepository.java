@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
-import com.example.springTrain.table.JobSeeker;
 
 public interface JobApplicationRepository extends JpaRepository<JobApplication,Integer>{
 

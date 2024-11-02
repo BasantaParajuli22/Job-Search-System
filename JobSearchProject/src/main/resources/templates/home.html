@@ -38,6 +38,10 @@
 	    <form th:action="@{/search}" method="get">
 	        <label for="keyword">Search for jobs:</label>
 	        <input type="text" id="keyword" name="keyword" placeholder="Enter job title, skills, or company name">
+			<select>
+				<option th:each="category : ${jobCategory}"
+				th:text="${category.categoryName}"></option>
+			</select>
 	        <button type="submit">Search</button>
 	    </form>
 
