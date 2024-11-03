@@ -7,8 +7,14 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.example.springTrain.dto.CityLocation;
+import com.example.springTrain.dto.ExperienceLevel;
+import com.example.springTrain.dto.JobType;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,156 +48,175 @@ public class JobPosting {
 	private List<SavedJobs> savedJobs;
 
 	private String title;
-	private String location;
 	private String requirements;
 	private String jobDescription;
-	private String jobType;  // Full-Time, Part-Time, Contract
 	private String salaryRange;
-	private String status;  // active, closed, on hold
 	private LocalDate applicationDeadline;
-	
+	private String contactEmail;
 	private String skills;
-	
-	private String experienceLevel;  // Entry, Mid, Senior
 	private boolean remote;
 	
-	private LocalDate startDate;
-	private LocalDate endDate;
-	private String contactEmail;
+	@Enumerated(EnumType.STRING)
+	private CityLocation cityLocation;
+
+	@Enumerated(EnumType.STRING)
+	private JobType jobType;  // Full-Time, Part-Time, Contract
+	
+	@Enumerated(EnumType.STRING)
+	private ExperienceLevel experienceLevel;  // Entry, Mid, Senior
 	
 	@CreationTimestamp
-	private String createdAt;
+	private LocalDate createdAt;
+	
 	@UpdateTimestamp
-	private String updatedAt;
-	
-	
-	
+	private LocalDate updatedAt;
+
 	public Integer getJobId() {
 		return jobId;
 	}
+
 	public void setJobId(Integer jobId) {
 		this.jobId = jobId;
 	}
+
 	public Employer getEmployer() {
 		return employer;
 	}
+
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
 	}
-	public List<JobApplication> getJobApplication() {
-		return JobApplication;
-	}
-	public void setJobApplication(List<JobApplication> jobApplication) {
-		JobApplication = jobApplication;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	public String getRequirements() {
-		return requirements;
-	}
-	public void setRequirements(String requirements) {
-		this.requirements = requirements;
-	}
-	public String getJobDescription() {
-		return jobDescription;
-	}
-	public void setJobDescription(String jobDescription) {
-		this.jobDescription = jobDescription;
-	}
-	public String getJobType() {
-		return jobType;
-	}
-	public void setJobType(String jobType) {
-		this.jobType = jobType;
-	}
-	public String getSalaryRange() {
-		return salaryRange;
-	}
-	public void setSalaryRange(String salaryRange) {
-		this.salaryRange = salaryRange;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	public LocalDate getApplicationDeadline() {
-		return applicationDeadline;
-	}
-	public void setApplicationDeadline(LocalDate applicationDeadline) {
-		this.applicationDeadline = applicationDeadline;
-	}
-	public String getExperienceLevel() {
-		return experienceLevel;
-	}
-	public void setExperienceLevel(String experienceLevel) {
-		this.experienceLevel = experienceLevel;
-	}
-	public LocalDate getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
-	public String getContactEmail() {
-		return contactEmail;
-	}
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
-	}
-	public String getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(String createdAt) {
-		this.createdAt = createdAt;
-	}
-	public String getUpdatedAt() {
-		return updatedAt;
-	}
-	public void setUpdatedAt(String updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-	public String getSkills() {
-		return skills;
-	}
-	public void setSkills(String skills) {
-		this.skills = skills;
-	}
+
 	public JobCategory getJobCategory() {
 		return jobCategory;
 	}
+
 	public void setJobCategory(JobCategory jobCategory) {
 		this.jobCategory = jobCategory;
 	}
-	public boolean isRemote() {
-		return remote;
+
+	public List<JobApplication> getJobApplication() {
+		return JobApplication;
 	}
-	public void setRemote(boolean remote) {
-		this.remote = remote;
+
+	public void setJobApplication(List<JobApplication> jobApplication) {
+		JobApplication = jobApplication;
 	}
+
 	public List<SavedJobs> getSavedJobs() {
 		return savedJobs;
 	}
+
 	public void setSavedJobs(List<SavedJobs> savedJobs) {
 		this.savedJobs = savedJobs;
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+
+	public String getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(String requirements) {
+		this.requirements = requirements;
+	}
+
+	public String getJobDescription() {
+		return jobDescription;
+	}
+
+	public void setJobDescription(String jobDescription) {
+		this.jobDescription = jobDescription;
+	}
+
+	public String getSalaryRange() {
+		return salaryRange;
+	}
+
+	public void setSalaryRange(String salaryRange) {
+		this.salaryRange = salaryRange;
+	}
+
+	public LocalDate getApplicationDeadline() {
+		return applicationDeadline;
+	}
+
+	public void setApplicationDeadline(LocalDate applicationDeadline) {
+		this.applicationDeadline = applicationDeadline;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
+	}
+
+	public String getSkills() {
+		return skills;
+	}
+
+	public void setSkills(String skills) {
+		this.skills = skills;
+	}
+
+	public boolean isRemote() {
+		return remote;
+	}
+
+	public void setRemote(boolean remote) {
+		this.remote = remote;
+	}
+
+	public JobType getJobType() {
+		return jobType;
+	}
+
+	public void setJobType(JobType jobType) {
+		this.jobType = jobType;
+	}
+
+	public ExperienceLevel getExperienceLevel() {
+		return experienceLevel;
+	}
+
+	public void setExperienceLevel(ExperienceLevel experienceLevel) {
+		this.experienceLevel = experienceLevel;
+	}
+
+	public LocalDate getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDate createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDate getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDate updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+
+	public CityLocation getCityLocation() {
+		return cityLocation;
+	}
+
+	public void setCityLocation(CityLocation cityLocation) {
+		this.cityLocation = cityLocation;
+	}
+	
 
 }
 	

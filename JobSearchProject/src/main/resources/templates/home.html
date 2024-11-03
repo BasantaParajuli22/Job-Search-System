@@ -12,9 +12,9 @@
         <ul>
             <li><a th:href="@{/}">Home</a></li>
 			<li><a th:href="@{/view/jobposts}">All Jobs</a></li>
+			<li><a th:href="@{/view/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
-            <li><a th:href="@{/employer/register}">Register as Employer</a></li>
-            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/employer/register}">Register as Employer</a></li> 
 			<!-- Profile link based on user role -->
 			   <li sec:authorize="hasRole('JOBSEEKER')">
 			       <a th:href="@{/jobseekers/profile}">JProfile</a>
@@ -25,7 +25,9 @@
 			   <li sec:authorize="hasRole('ADMIN')">
 			       <a th:href="@{/admin/profile}">Admin Profile</a>
 			   </li>        
+		   <li><a th:href="@{/login}">Login</a></li>
 		   </ul>
+		   
     </nav>
 
 	<!-- Main Content -->
@@ -47,9 +49,49 @@
 
 	    <!-- Search Results (if any) -->
 	    <div th:if="${keyword}">
-	        <h2 th:text="${message}"></h2>
+	        <h2 th:text="${keyword}"></h2>
 	        <!-- You can add code here to loop through and display search results -->
 	    </div>
+	</div>
+	
+	<!-- Options to find jobPosts-->
+	<div> 
+		<h1>Job Categories</h1>
+	    	<ul>
+	        	<li th:each="jobCategory : ${jobCategory}">
+	            	<a th:href="@{/search/byjobcategoryName/{categoryName}
+					(categoryName=${jobCategory.categoryName})}" th:text="${jobCategory.categoryName}">Category Name</a>
+	        	</li>
+	    	</ul>
+	</div>
+	<div> 
+		<h1>Job Types</h1>
+	    	<ul th:if="${jobTypes}">			
+	        	<li th:each="jobTypes : ${jobTypes}">
+	            	<a th:href="@{/search/byjobType/{jobTypes}
+					(jobTypes=${jobTypes})}" th:text="${jobTypes}">jobType</a>
+	        	</li>
+	    	</ul>
+	</div>
+	<div> 
+		<h1>experienceLevel</h1>
+		
+	    	<ul th:if="${experienceLevel}">			
+	        	<li th:each="expLevel : ${experienceLevel}">
+	            	<a th:href="@{/search/byexperiencelevel/{expLevel}
+					(expLevel=${expLevel})}" th:text="${expLevel}">jobType</a>
+	        	</li>
+	    	</ul>
+	</div>
+	<div> 
+		<h1>Location</h1>
+		
+		<ul th:if="${cityLocation}">			
+			<li th:each="location : ${cityLocation}">
+		    	<a th:href="@{/search/bylocation/{location}
+				(location=${location})}" th:text="${location}">bylocation</a>
+			</li>
+		</ul>
 	</div>
 	<!-- Footer -->
 	   <footer>

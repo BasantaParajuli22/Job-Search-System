@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.dto.CityLocation;
+import com.example.springTrain.dto.CityLocation;
+import com.example.springTrain.dto.ExperienceLevel;
+import com.example.springTrain.dto.JobType;
 import com.example.springTrain.repository.JobPostingRepository;
 import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobPosting;
@@ -23,6 +27,18 @@ public class JobPostingService {
         return jobPostingRepository.findAll();
     }
 
+    public JobType[] getAllJobTypes() {
+        return JobType.values(); // Get all job types
+    }
+    
+    public ExperienceLevel[] getAllExperienceLevel() {
+        return ExperienceLevel.values(); // Get all ExperienceLevel
+    }
+    
+    public CityLocation[] getAllCityLocation() {
+        return CityLocation.values(); // Get all CityLocation
+    }
+    
     public JobPosting getJobPostingById(Integer jobId) {
         return jobPostingRepository.findByJobId(jobId);
     }
@@ -35,6 +51,7 @@ public class JobPostingService {
 //        // Implement logic to find jobs related to the category or employer
 //        return jobPostingRepository.findByCategoryOrEmployer(category, employerId);
 //    }
+    
     public JobPosting getJobPostingByEmployerIdAndJobId(Integer employerId, Integer jobId) {
     	return jobPostingRepository.findByEmployer_EmployerIdAndJobId(employerId,jobId);
     }
@@ -45,7 +62,6 @@ public class JobPostingService {
         return jobPostingRepository.save(jobPosting);
     }
 
-    
     public JobPosting updateJobPosting(Integer jobId, JobPosting jobPosting) {
         jobPosting.setJobId(jobId);
         return jobPostingRepository.save(jobPosting);
@@ -60,14 +76,17 @@ public class JobPostingService {
         jobPostingRepository.delete(jobPosting);
     }
     
-    //finding list of companyName in JobPosting table
+    //finding specific list of JobPosting of companyName
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
         return jobPostingRepository.findByEmployerCompanyName(companyName);
 
 	}
 	
-	//to find all jobPostings of employer using CompanyName
-	public List<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName) {
+	
+	//methods 
+	//to find all jobPostings according to search category
+	
+	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
     	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 
 	}
@@ -75,6 +94,33 @@ public class JobPostingService {
     	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
 
 	}
+	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
+    	return jobPostingRepository.findAllJobPostingByTitle(title);
+
+	}
+	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
+    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
+
+	}
+
+
+	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
+    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
+	}
+	
+	public List<JobPosting> findAllJobPostingByCityLocation(CityLocation location) {
+		return jobPostingRepository.findAllJobPostingByCityLocation(location);
+		
+	}
+	public List<JobPosting> findAllJobPostingByJobType(JobType jobType) {
+    	return jobPostingRepository.findAllJobPostingByJobType(jobType);
+
+	}
+	public List<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel) {
+    	return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel);
+
+	}
+
     
 
 }

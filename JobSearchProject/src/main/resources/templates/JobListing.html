@@ -17,7 +17,7 @@
 
         <div class="location-info">
             <i class="fas fa-map-marker-alt icon"></i> 
-            <span th:text="${jobPost.location}"></span> | 
+            <span th:text="${jobPost.cityLocation}"></span> | 
             <span>Salary: <span th:text="${jobPost.salaryRange}"></span></span>
         </div>
 
@@ -43,13 +43,6 @@
 		<div class="job-info-section">
 		    <h3>Work Type</h3>
 		    <p th:text="${jobPost.isRemote ? 'Remote' : 'Onsite'}"></p>
-		</div>
-		
-		<!-- Job Duration Section -->
-		<div class="job-info-section">
-		    <h3>Job Duration</h3>
-		    <p th:text="'Start Date: ' + ${jobPost.startDate}"></p>
-		    <p th:if="${jobPost.endDate != null}" th:text="'End Date: ' + ${jobPost.endDate}"></p>
 		</div>
 
 		<!-- Contact Info -->

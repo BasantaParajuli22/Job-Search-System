@@ -39,37 +39,10 @@
             <textarea id="requirements" name="requirements" rows="4" th:field="*{requirements}" ></textarea>
         </div>
 
-        <!-- Job Location -->
-        <div>
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" th:field="*{location}" >
-        </div>
-
-        <!-- Job Type (e.g., Full-time, Part-time, Contract) -->
-        <div>
-            <label for="jobType">Job Type:</label>
-            <select id="jobType" name="jobType" th:field="*{jobType}">
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
-                <option value="Contract">Contract</option>
-            </select>
-        </div>
-
         <!-- Salary Range -->
         <div>
             <label for="salaryRange">Salary Range:</label>
             <input type="text" id="salaryRange" name="salaryRange" th:field="*{salaryRange}">
-        </div>
-
-
-        <!-- Job Status (e.g., Active, Closed, On Hold) -->
-        <div>
-            <label for="status">Status:</label>
-            <select id="status" name="status" th:field="*{status}">
-                <option value="active">Active</option>
-                <option value="closed">Closed</option>
-                <option value="on hold">On Hold</option>
-            </select>
         </div>
 
         <!-- Application Deadline -->
@@ -83,14 +56,40 @@
             <label for="skills">Skills (comma-separated):</label>
             <input type="text" id="skills" name="skills" th:field="*{skills}" placeholder="e.g., Java, SQL, Communication">
         </div>
-
+		
+		<!-- Job Location -->
+		<div>
+		    <label for="cityLocation">Location:</label>
+			<select id="cityLocation" name="cityLocation" th:field="*{cityLocation}">
+				<option value="KATHMANDU">KATHMANDU</option>
+				<option value="BHAKTAPUR">BHAKTAPUR</option>
+				<option value="RUPANDEHI">RUPANDEHI</option>
+				<option value="HIMALAYAN_REGION">HIMALAYAN_REGION</option>
+				<option value="TERAI_REGION">TERAI_REGION</option>
+				<option value="HILLY_REGION">HILLY_REGION</option>
+				<option value="OUTSIDE_NEPAL">OUTSIDE_NEPAL</option>
+				<option value="OTHER_SPECIFY">OTHERS</option>
+			</select>
+		</div>
+		
+		<!-- Job Type (e.g., Full-time, Part-time, Contract) -->
+		 <div>
+		     <label for="jobType">Job Type:</label>
+		     <select id="jobType" name="jobType" th:field="*{jobType}">
+		         <option value="FULL_TIME">Full-Time</option>
+		         <option value="PART_TIME">Part-Time</option>
+		         <option value="CONTRACT">Contract</option>
+				<option value="TEMPORARY">Temporary</option>
+		     </select>
+		 </div>
+		 
         <!-- Experience Level -->
         <div>
             <label for="experienceLevel">Experience Level:</label>
             <select id="experienceLevel" name="experienceLevel" th:field="*{experienceLevel}">
-                <option value="Entry">Entry</option>
-                <option value="Mid">Mid</option>
-                <option value="Senior">Senior</option>
+                <option value="ENTRY">Entry</option>
+                <option value="MID">Mid</option>
+                <option value="SENIOR">Senior</option>
             </select>
         </div>
 		
@@ -103,30 +102,19 @@
 		     </select><br/>
 		</div>
 		
-		-->
-		<!-- Remote Job cannot set this nullable -->
-		<div>
-		    <label for="isRemote">Is this job remote?</label>
-		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}"> <!-- Use 'remote' here -->
-		</div>
-		
-        <!-- Start Date -->
-        <div>
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" th:field="*{startDate}">
-        </div>
-
-        <!-- End Date (optional) -->
-        <div>
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" th:field="*{endDate}">
-        </div>
-
         <!-- Contact Email -->
         <div>
             <label for="contactEmail">Contact Email:</label>
             <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}">
         </div>
+		
+		<!-- Remote Job cannot set this nullable -->
+		<div>
+		    <label for="isRemote">Is this job remote?if Yes</label>
+		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}"> <!-- Use 'remote' here -->
+		</div>
+		
+
 
         <!-- Submit and Cancel Buttons -->
         <div>

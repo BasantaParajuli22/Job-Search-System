@@ -143,7 +143,7 @@ public class ViewController {
 		
 		if (employer != null) {
 			String companyName = employer.getCompanyName();
-	        List<JobPosting> myJobPosts = jobPostingService.findAllJobPostingsByEmployer_CompanyName(companyName);
+	        List<JobPosting> myJobPosts = jobPostingService.findAllJobPostingByCompanyName(companyName);
 	        model.addAttribute("myJobPosts", myJobPosts);
 	    } else {
         	logger.warn("No companyName found for username: ");
@@ -170,7 +170,7 @@ public class ViewController {
 		
 		String companyName = submittedEmployer.getCompanyName();
 		//to findAllJobPostingsByEmployer
-		List<JobPosting> myJobPosts =jobPostingService.findAllJobPostingsByEmployer_CompanyName(companyName);
+		List<JobPosting> myJobPosts =jobPostingService.findAllJobPostingByCompanyName(companyName);
 		
 		
 		model.addAttribute("myJobPosts",myJobPosts);	        

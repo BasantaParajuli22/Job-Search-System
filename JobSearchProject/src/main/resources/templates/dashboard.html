@@ -10,7 +10,7 @@
     <h1>Dashboard</h1>
 
     <!-- Job Postings Section -->
-    <h2>Job Postings</h2>
+    <h2>All Job Posts</h2>
     <table border="1">
         <thead>
             <tr>
@@ -28,12 +28,17 @@
                 <td th:text="${jobPost.employer.companyName}"></td>
                 <td th:text="${jobPost.location}"></td>
                 <td th:text="${jobPost.salaryRange}"></td>
+				<td>
+					<form th:action="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" method="get" style="display:inline;">
+						<button type="submit" class="btn btn-danger">View</button>
+					</form>
+				</td>
             </tr>
         </tbody>
     </table>
 
     <!-- Employers Section -->
-    <h2>Employers</h2>
+    <h2>Employers and their jobPosts</h2>
     <table border="1">
         <thead>
             <tr>
@@ -49,7 +54,11 @@
                 <td th:text="${employer.email}"></td>
 				
 			<!-- 	-->
-			<td><a th:href="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}">View all  jobs</a></td>
+			<td>
+				<form th:action="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" method="get" style="display:inline;">
+					<button type="submit" class="btn btn-danger">View all  jobs</button>
+				</form>
+			</td>
 			
 		</tr>
         </tbody>

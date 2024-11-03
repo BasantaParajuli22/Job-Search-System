@@ -196,17 +196,14 @@ public class JobPostingController {
 	    // Copy updated values from the form (updatedJobPosting) to existingJobPosting
 	    existingJobPosting.setTitle(updatedJobPosting.getTitle());
 	    existingJobPosting.setJobDescription(updatedJobPosting.getJobDescription());
-	    existingJobPosting.setLocation(updatedJobPosting.getLocation());
+	    existingJobPosting.setCityLocation(updatedJobPosting.getCityLocation());
 	    existingJobPosting.setJobType(updatedJobPosting.getJobType());
 	    existingJobPosting.setSalaryRange(updatedJobPosting.getSalaryRange());
 	    existingJobPosting.setJobCategory(updatedJobPosting.getJobCategory());
 	    existingJobPosting.setRequirements(updatedJobPosting.getRequirements());
-	    existingJobPosting.setStatus(updatedJobPosting.getStatus());
 	    existingJobPosting.setApplicationDeadline(updatedJobPosting.getApplicationDeadline());
 	    existingJobPosting.setExperienceLevel(updatedJobPosting.getExperienceLevel());
 	    existingJobPosting.setRemote(updatedJobPosting.isRemote());
-	    existingJobPosting.setStartDate(updatedJobPosting.getStartDate());
-	    existingJobPosting.setEndDate(updatedJobPosting.getEndDate());
 	    existingJobPosting.setContactEmail(updatedJobPosting.getContactEmail());
 
 	    // Save the updated job post
