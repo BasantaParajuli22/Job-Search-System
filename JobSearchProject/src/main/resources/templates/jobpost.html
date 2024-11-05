@@ -2,9 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Job Postings</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+	<!-- Navigation Bar -->
+	<header th:replace="fragments/nav :: nav"></header>
+
     <h1>Job Postings</h1>
 	<!-- display message from SearchController -->
 	<div th:if="${keyword}">

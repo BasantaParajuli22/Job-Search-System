@@ -206,6 +206,7 @@ public class JobPostingController {
 	    existingJobPosting.setRemote(updatedJobPosting.isRemote());
 	    existingJobPosting.setContactEmail(updatedJobPosting.getContactEmail());
 
+
 	    // Save the updated job post
 	    jobPostingService.updateJobPosting(jobId, existingJobPosting);
 

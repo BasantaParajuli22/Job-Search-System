@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,12 @@ import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
+import com.example.springTrain.service.SavedJobsService;
 import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
 import com.example.springTrain.table.JobSeeker;
+import com.example.springTrain.table.SavedJobs;
 
 
 @RequestMapping("/view")
@@ -38,7 +41,25 @@ public class ViewController {
 	private JobSeekerService jobSeekerService;
 	@Autowired
 	private JobApplicationService jobApplicationService;
+	@Autowired
+	private SavedJobsService savedJobsService;
 	
+	
+	//@ModelAttribute Method: The addJobSeekerToModel() method 
+	//will be executed before any request handler in this controller,
+	// adding jobSeeker to the model if a user is logged in.
+    @ModelAttribute
+    public void addJobSeekerToModel(Model model) {
+        String username = UserAuthorization.getLoggedInUsername();
+        if (username != null) {
+            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
+            if (jobSeeker != null) {
+                model.addAttribute("jobSeeker", jobSeeker);
+            } else {
+                logger.warn("No JobSeeker found for username: " + username);
+            }
+        }
+    }
 	
 	//Dashboard which displays all data
 	@GetMapping("/dashboard")
@@ -96,18 +117,8 @@ public class ViewController {
 	public String listAllJobPostings(Model model) {
 		
 		 List<JobPosting> jobPosts = jobPostingService.findAllJobPostings();		 	
-		String username = UserAuthorization.getLoggedInUsername();
-
-		// If username is present, retrieve the corresponding JobSeeker
-	    if (username != null) {
-	        JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-	        if (jobSeeker != null) {
-	            model.addAttribute("jobSeeker", jobSeeker);
-	        } else {
-	        	logger.warn("No JobSeeker found for username: "+ username);
-	        }
-	    } 
-	    model.addAttribute("jobPosts",jobPosts); 
+		 model.addAttribute("jobPosts",jobPosts); 
+		 
 		return "jobpost";
 	}
 	
@@ -121,12 +132,12 @@ public class ViewController {
 		
 		// Fetch the job post by ID
 	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
+	    model.addAttribute("jobPost", jobPost);
 	    
 	    // Fetch related jobs, for example by category or employer
 		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
 		// Add the job details to the model
-		model.addAttribute("jobPost", jobPost);
-
+		
 		//model.addAttribute("relatedJobs", relatedJobs);  
 		return "jobListing";  
 	}
@@ -245,6 +256,32 @@ public class ViewController {
 	}
 
 
+	
+	//view all lists of myJobPosts Saved submitted  by the jobseeker
+	//viewing all aplications i Saved to 
+	//login required
+	@GetMapping("/savedjobs/submittedby/jobseeker/{jobSeekerId}")
+	public String listAllOfMySavedJobPosts(Model model,
+			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
+			
+		String username = UserAuthorization.getLoggedInUsername();
+		
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
+		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
+        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		List<SavedJobs> savedPosts = savedJobsService.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
+		if(savedPosts == null) {
+        	logger.warn("Couldnot find the savedJobs ");
+			return "redirect:/view/jobposts";
+		}
+
+		model.addAttribute("savedPosts",savedPosts);	        
+		return "savedJobs";
+	}
 	//view a certain jobseeker details for searching purposes
 
 	//view a certain employer details for searching purposes

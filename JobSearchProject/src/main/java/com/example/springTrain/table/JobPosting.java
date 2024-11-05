@@ -208,7 +208,6 @@ public class JobPosting {
 		this.updatedAt = updatedAt;
 	}
 
-
 	public CityLocation getCityLocation() {
 		return cityLocation;
 	}
@@ -216,7 +215,6 @@ public class JobPosting {
 	public void setCityLocation(CityLocation cityLocation) {
 		this.cityLocation = cityLocation;
 	}
-	
 
 }
 	

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.dto.CityLocation;
 import com.example.springTrain.dto.ExperienceLevel;
@@ -162,8 +163,8 @@ public class SearchController {
 	
 	
 	//search all jobPostings by jobTitle
-	@GetMapping("/search/bytitle/{title}")
-	 public String searchByJobTitle(@PathVariable("title") String title, Model model) { 
+	@GetMapping("/search/bytitle")
+	 public String searchByJobTitle(@RequestParam("title") String title, Model model) { 
 
 		List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByJobTitle(title);
 	    model.addAttribute("jobPosts",jobPosts);
@@ -172,8 +173,8 @@ public class SearchController {
 	}
 	
 	//search all jobPostings by companyName
-	@GetMapping("/search/bycompanyName/{companyName}")
-	 public String searchByCompanyName(@PathVariable("companyName") String companyName, Model model) { 
+	@GetMapping("/search/bycompanyName")
+	 public String searchByCompanyName(@RequestParam("companyName") String companyName, Model model) { 
 		
 	    List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByCompanyName(companyName);
 	    model.addAttribute("jobPosts",jobPosts);
@@ -184,8 +185,8 @@ public class SearchController {
 	//this will all come under the filter
 	//like if specified search like that
 	//search all jobPostings by Salary
-	@GetMapping("/search/bysalary/{salary}")
-	 public String searchBySalary( @PathVariable("salary") String salary, Model model) { 
+	@GetMapping("/search/bysalary")
+	 public String searchBySalary( @RequestParam("salary") String salary, Model model) { 
 
 		List<JobPosting> jobPosts = jobPostingService.findAllJobPostingBySalary(salary);
 	    model.addAttribute("jobPosts",jobPosts);

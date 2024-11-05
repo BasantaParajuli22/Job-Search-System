@@ -7,26 +7,24 @@
     <link rel="stylesheet" th:href="@{/css/profile.css}">
 </head>
 <body>
-    <div class="mainContainer">
-        <nav>
-            <ul>
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/employers/profile}">My Profile</a></li>
-                <li><a th:href="@{/view/jobposts}">All Posts</a></li>
-				<li><a th:href="@{/view/jobposts/self/{employerId}(employerId=${employer.employerId})}">My jobs</a></li>
-				<li><a th:href="@{/view/applications/submittedto/employer/{employerId}(employerId=${employer.employerId})}">View Applicants</a></li>
-				<li><a th:href="@{/jobposts/new/create}">Create Job Posts</a></li>
-
-				
-
+   
+    <nav>
+         <ul>
+            <li><a th:href="@{/}">Home</a></li>
+            <li><a th:href="@{/employers/profile}">My Profile</a></li>
+            <li><a th:href="@{/view/jobposts}">All Posts</a></li>
+			<li><a th:href="@{/view/jobposts/self/{employerId}(employerId=${employer.employerId})}">My jobs</a></li>
+			<li><a th:href="@{/view/applications/submittedto/employer/{employerId}(employerId=${employer.employerId})}">View Applicants</a></li>
+			<li><a th:href="@{/jobposts/new/create}">Create Job Posts</a></li>
 				<li>
 					<form action="#" th:action="@{/logout}" method="post">
 					    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					    <button type="submit">Logout</button>
 					</form>
 				</li>
-            </ul>
-        </nav>
+         </ul>
+	</nav>
+		<div class="mainContainer">
 		    <h1>Welcome, Employer!</h1>
 			
 			<p>User ID: <span th:text="${employer.users.userId}"></span></p>

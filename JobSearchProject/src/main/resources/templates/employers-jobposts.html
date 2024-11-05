@@ -2,10 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Employer Job Posts</title>
+	<link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
-    <h1>Job Posts by [[${myJobPosts[0].employer.companyName}]]</h1>
-    
+	<!-- Navigation Bar -->
+	<header th:replace="fragments/nav :: nav"></header>
+
     <div th:if="${myJobPosts.isEmpty()}">
         <p>No job posts available for this employer.</p>
     </div>
@@ -20,7 +22,7 @@
                 </h3>
                 
                 <!-- Limited job details -->
-                <p><strong>Location:</strong> <span th:text="${jobPost.location}">Location</span></p>
+                <p><strong>Location:</strong> <span th:text="${jobPost.cityLocation}">Location</span></p>
                 <p><strong>Job Type:</strong> <span th:text="${jobPost.jobType}">Job Type</span></p>
                 <p><strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}">Experience Level</span></p>
                 <p><strong>Application Deadline:</strong> <span th:text="${jobPost.applicationDeadline}">Deadline</span></p>

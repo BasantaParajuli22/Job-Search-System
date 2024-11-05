@@ -2,8 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>All Applications for Employer's Job Posts</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+	<!-- Navigation Bar -->
+	<header th:replace="fragments/nav :: nav"></header>
+
+		
     <h1>Applications Submitted to Your Job Posts</h1>
 
     <div th:if="${allJobApplications.isEmpty()}">

@@ -1,28 +1,28 @@
-*{
+/* Reset some default styles */
+body, h1, p, ul {
     margin: 0;
     padding: 0;
 }
-/* General Styling */
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4; 
-}
-
-.maincontainer{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-	height: 100vh;
-    width: 100%;
-}
-.headtitle{
-    flex-direction: column;
-}
-
-h2, h4{
-	padding: 12px;
-    text-align: center;
+    background-color: #f4f4f4;
     color: #333;
+    line-height: 1.6;
+	
+}
+
+.backImage img{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-size: cover;
+	background-repeat: repeat-x;
+	position: absolute;
+	width: 100%;
+	height: 120vh;
+	z-index: -1;
+	filter: blur(5px);
 }
 
 /* Navigation Bar */
@@ -51,19 +51,22 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-/* Form Container */
-form {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-.formtable{
+.maincontainer{
     display: flex;
     justify-content: center;
     align-items: center;
+	margin-top: 10%;
+	height: 100vh;
+    width: 100%;
+}
+.headtitle{
+    flex-direction: column;
+}
+
+h2, h4{
+	padding: 12px;
+    text-align: center;
+    color: #333;
 }
 /* Form Inputs */
 div {

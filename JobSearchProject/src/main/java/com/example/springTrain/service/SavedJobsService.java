@@ -1,5 +1,7 @@
 package com.example.springTrain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,11 @@ public class SavedJobsService  {
 
 	public SavedJobs findBySavedIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId) {
 		return savedJobsRepository.findBySavedIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
+	}
+
+	public List<SavedJobs> findAllSavedJobsByJobSeeker(JobSeeker loggedinJobSeeker) {
+		return savedJobsRepository.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
+
 	}
 
 }

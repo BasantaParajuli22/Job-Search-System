@@ -50,7 +50,7 @@ public class RegisterController {
 	  @GetMapping("/jobseeker/register")
 	  public String getemployeeform(Model model) {
 		    model.addAttribute("jobSeekerDTO", new JobSeekerDTO()); // Ensure this matches the th:object in your form
-	      return "jobform";
+	      return "jobseeker-form";
 	  }
 
 	  @PostMapping("/jobseeker/register")
@@ -74,7 +74,7 @@ public class RegisterController {
 	  	// Re-add the input data to the model to repopulate the form
 	  		model.addAttribute("jobSeekerDTO", jobSeekerDTO);
 	  		model.addAttribute("error", validationError);//sending both errors in 1 error variable
-	  		return "jobform";
+	  		return "jobseeker-form";
 	  	}else {
 	  		
 	  		// Create User entity

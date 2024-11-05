@@ -2,8 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Job Seekers List</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+	<!-- Navigation Bar -->
+	<header th:replace="fragments/nav :: nav"></header>
+
     <h1>Job Seekers</h1>
 	<div th:if="${jobSeekers != null}">
 	     <p>All JobSeekers.</p>

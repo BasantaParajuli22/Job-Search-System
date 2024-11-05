@@ -1,0 +1,20 @@
+ <!-- fragments/nav.html -->
+<nav>
+    <ul>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
+        <li><a th:href="@{/view/dashboard}">Dashboard</a></li>
+        <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
+        <li><a th:href="@{/employer/register}">Register as Employer</a></li> 
+        <li sec:authorize="hasRole('JOBSEEKER')">
+            <a th:href="@{/jobseekers/profile}">JProfile</a>
+        </li>
+        <li sec:authorize="hasRole('EMPLOYER')">
+            <a th:href="@{/employers/profile}">EProfile</a>
+        </li>
+        <li sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/profile}">Admin Profile</a>
+        </li>        
+        <li><a th:href="@{/login}">Login</a></li>
+    </ul>
+</nav>

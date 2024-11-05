@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/Edit Job Posting</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+	<!-- Navigation Bar -->
+	<header th:replace="fragments/nav :: nav"></header>
+
     <!-- Header to determine if it's an edit or create form -->
     <h1 th:text="${jobPosting.jobId != null} ? 'Edit Job Posting' : 'Create Job Posting'"></h1>
 
