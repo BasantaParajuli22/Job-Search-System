@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
     <div class="mainContainer">
-        <nav>
-            <ul>
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/admin/profile}">My Profile</a></li>
-                <li><a th:href="@{/posts}">Jobs</a></li>
-                <li><a th:href="@{/logout}">Logout</a></li>
-            </ul>
-        </nav>
+		<header th:replace="~{fragments/nav :: nav}"></header>
+
 		<h1>Welcome, Admin!</h1>
 
 		    <p>Admin Name: <span th:text="${admin.name}"></span></p>

@@ -4,39 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Vacancy</title>
-    <link rel="stylesheet" th:href="@{/css/jobListing.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 	<!-- Navigation Bar -->
-	    <nav>
-	        <ul>
-	            <li><a th:href="@{/}">Home</a></li>
-				<li><a th:href="@{/view/jobposts}">All Jobs</a></li>
-				<li><a th:href="@{/view/dashboard}">Dashboard</a></li>
-	            <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
-	            <li><a th:href="@{/employer/register}">Register as Employer</a></li> 
-				<!-- Profile link based on user role -->
-				   <li sec:authorize="hasRole('JOBSEEKER')">
-				       <a th:href="@{/jobseekers/profile}">JProfile</a>
-				   </li>
-				   <li sec:authorize="hasRole('EMPLOYER')">
-				       <a th:href="@{/employers/profile}">EProfile</a>
-				   </li>
-				   <li sec:authorize="hasRole('ADMIN')">
-				       <a th:href="@{/admin/profile}">Admin Profile</a>
-				   </li>        
-			   <li><a th:href="@{/login}">Login</a></li>
-			   </ul>
-			   
-	    </nav>
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
 		
     <div class="job-container">
         <div class="job-header">
-            <h1 th:text="${jobPost.title}">Vacancy for the Waiter</h1>
+            <h1 th:text="${jobPost.title}">Title</h1>
             <span class="urgent-badge">Urgent</span>
-            <span class="deadline" th:text="'Application deadline: ' + ${jobPost.applicationDeadline}"></span>
-        </div>
+			<span class="deadline" th:text="'Application deadline: ' + ${jobPost.applicationDeadline}"></span>
+            <span class="deadline" th:text="'total days left : '+ ${deadlineDays}"></span>
+			 </div>
 
         <div class="location-info">
             <i class="fas fa-map-marker-alt icon"></i> 

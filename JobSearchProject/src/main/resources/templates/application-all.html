@@ -6,8 +6,7 @@
 </head>
 <body>
 	<!-- Navigation Bar -->
-	<header th:replace="fragments/nav :: nav"></header>
-
+	<header th:replace="~{fragments/nav :: nav}"></header>
 		
     <h1>Applications Submitted to Your Job Posts</h1>
 
@@ -20,7 +19,8 @@
             <thead>
                 <tr>
                     <th>Job Seeker</th>
-                    <th>Job Title</th>
+					<th>Title</th>
+                    <th>Send email</th>
                     <th>Application Status</th>
                     <th>Actions</th>
                 </tr>
@@ -28,10 +28,16 @@
             <tbody>
                 <tr th:each="jobApplication : ${allJobApplications}">
                     <td th:text="${jobApplication.jobSeeker.jobSeekerUsername}">Job Seeker Name</td>
-                    <td th:text="${jobApplication.jobPosting.title}">Job Title</td>
+					<td th:text="${jobApplication.jobPosting.title}">Job Title</td>
+					<td>
+					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.email}}"
+					       th:text="${jobApplication.jobSeeker.email}">Send email</a>
+					</td>
                     <td th:text="${jobApplication.applicationStatus}">Application Status</td>
-                    <td>
-                        <form th:action="@{/view/applications/submittedto/employer/statusUpdate(applicationId=${jobApplication.applicationId})}" method="post">
+                    <!-- Change or updating statuts of jobApplication -->
+					<td>
+                        <form th:action="@{/applications/submittedto/employer/statusUpdate(applicationId=${jobApplication.applicationId})}" method="post">
+							<!-- sending applicationId and employerId to update-->
 							<input type="hidden" name="applicationId" th:value="${jobApplication.applicationId}" />
 							<input type="hidden" name="employerId" th:value="${jobApplication.employer.employerId}" />
 

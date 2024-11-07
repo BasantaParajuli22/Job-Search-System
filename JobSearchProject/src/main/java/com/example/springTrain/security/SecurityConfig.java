@@ -34,13 +34,13 @@ public class SecurityConfig {
                  .invalidateHttpSession(true) // Invalidate session
                  .deleteCookies("JSESSIONID") // Delete the session cookie
                 .permitAll()
-            )
+            );
          // Using custom AccessDeniedHandler
-            //to redirect user whose role doesnot match the content based on role
-            //or requires different role
-            .exceptionHandling(exception -> exception
-            		.accessDeniedHandler(new CustomAccessDeniedHandler()))
-        ;
+//            to redirect user whose role doesnot match the content based on role
+//            or requires different role
+//            .exceptionHandling(exception -> exception
+//            		.accessDeniedHandler(new CustomAccessDeniedHandler()))
+//        ;
         return http.build();
     }
 

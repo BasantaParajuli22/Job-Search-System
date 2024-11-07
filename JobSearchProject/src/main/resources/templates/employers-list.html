@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Employers List</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
-	<header th:replace="fragments/nav :: nav"></header>
+	<header th:replace="~{fragments/nav :: nav}"></header>
 
 	<div th:if="${employers != null}">
 	    <h1>All Employers</h1>

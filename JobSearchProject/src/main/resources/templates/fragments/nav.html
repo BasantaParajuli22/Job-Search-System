@@ -1,20 +1,70 @@
  <!-- fragments/nav.html -->
-<nav>
-    <ul>
-        <li><a th:href="@{/}">Home</a></li>
-        <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
-        <li><a th:href="@{/view/dashboard}">Dashboard</a></li>
-        <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
-        <li><a th:href="@{/employer/register}">Register as Employer</a></li> 
-        <li sec:authorize="hasRole('JOBSEEKER')">
-            <a th:href="@{/jobseekers/profile}">JProfile</a>
-        </li>
-        <li sec:authorize="hasRole('EMPLOYER')">
-            <a th:href="@{/employers/profile}">EProfile</a>
-        </li>
-        <li sec:authorize="hasRole('ADMIN')">
-            <a th:href="@{/admin/profile}">Admin Profile</a>
-        </li>        
-        <li><a th:href="@{/login}">Login</a></li>
-    </ul>
-</nav>
+ <nav>
+     <ul>
+         <li><a th:href="@{/}">Home</a></li>
+
+         <!-- Profile Link (for logged-in Job Seekers and Employers) -->
+         <li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+             <a th:href="@{/jobseekers/profile}">My Profile</a>
+         </li>
+         <li sec:authorize="hasRole('ROLE_EMPLOYER')">
+             <a th:href="@{/employers/profile}">My Profile</a>
+         </li>
+         
+         <!-- Admin Profile -->
+         <li sec:authorize="hasRole('ROLE_ADMIN')">
+             <a th:href="@{/admin/profile}">Admin Profile</a>
+         </li>
+
+         <!-- Job Seeker Specific Links -->
+		 <li th:if="${jobSeeker != null}">
+			<ul>
+         		<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+         			<a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
+         		</li>
+         		<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+         			<a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
+         		</li>
+				<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+					<a th:href="@{/jobseekers/profile/edit/{jobSeekerUsername}(jobSeekerUsername=${jobSeeker.jobSeekerUsername})}">Edit Profile</a>
+				</li>
+			</ul>
+		 </li>
+		 <!-- Employer Specific Links -->
+		 <li th:if="${employer != null}">
+			<ul>
+		  		<li sec:authorize="hasRole('ROLE_EMPLOYER')">
+					<a th:href="@{/view/jobposts/self/{employerId}(employerId=${employer.employerId})}">My jobs</a>
+		  		</li>
+		  		<li sec:authorize="hasRole('ROLE_EMPLOYER')">
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}(employerId=${employer.employerId})}">View Applicants</a>
+		  		</li>
+				<li sec:authorize="hasRole('ROLE_EMPLOYER')">
+					<a th:href="@{/employers/profile/edit/{CompanyName}(CompanyName=${employer.CompanyName})}">Edit Profile</a>
+				</li>
+		  	</ul>
+		 </li>
+         <!-- All Jobs (visible to all users) -->
+         <li><a th:href="@{/view/jobposts}">Jobs</a></li>
+
+         <!-- Register Links (only for non-authenticated users) for them to register -->
+         <li sec:authorize="!isAuthenticated()">
+             <a th:href="@{/jobseeker/register}">Register as Job Seeker</a>
+         </li>
+         <li sec:authorize="!isAuthenticated()">
+             <a th:href="@{/employer/register}">Register as Employer</a>
+         </li>
+
+         <!-- Login/Logout -->
+         <li sec:authorize="!isAuthenticated()">
+             <a th:href="@{/login}">Login</a>
+         </li>
+		 <!-- Logout needs to send by post method for Spring Security -->
+         <li sec:authorize="isAuthenticated()">
+             <form th:action="@{/logout}" method="post" style="display:inline;">
+                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                 <button type="submit">Logout</button>
+             </form>
+         </li>
+     </ul>
+ </nav>

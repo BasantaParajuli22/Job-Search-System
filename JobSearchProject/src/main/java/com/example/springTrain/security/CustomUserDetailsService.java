@@ -15,10 +15,7 @@ import com.example.springTrain.table.Users;
  * Locates the user based on the username.
  *  we will override with our own
  *  UserDetails loadUserByUsername(String username) throws UsernameNotFoundException; 
- * 
  */
-
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

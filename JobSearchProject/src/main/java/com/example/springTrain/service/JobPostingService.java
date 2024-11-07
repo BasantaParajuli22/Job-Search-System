@@ -1,11 +1,12 @@
 package com.example.springTrain.service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.springTrain.dto.CityLocation;
 import com.example.springTrain.dto.CityLocation;
 import com.example.springTrain.dto.ExperienceLevel;
 import com.example.springTrain.dto.JobType;
@@ -27,16 +28,17 @@ public class JobPostingService {
         return jobPostingRepository.findAll();
     }
 
+    //get values from JobType, ExperienceLevel, CityLocation enum values
     public JobType[] getAllJobTypes() {
-        return JobType.values(); // Get all job types
+        return JobType.values(); 
     }
     
     public ExperienceLevel[] getAllExperienceLevel() {
-        return ExperienceLevel.values(); // Get all ExperienceLevel
+        return ExperienceLevel.values(); 
     }
     
     public CityLocation[] getAllCityLocation() {
-        return CityLocation.values(); // Get all CityLocation
+        return CityLocation.values(); 
     }
     
     public JobPosting getJobPostingById(Integer jobId) {
@@ -79,7 +81,6 @@ public class JobPostingService {
     //finding specific list of JobPosting of companyName
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
         return jobPostingRepository.findByEmployerCompanyName(companyName);
-
 	}
 	
 	
@@ -88,39 +89,54 @@ public class JobPostingService {
 	
 	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
     	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
-
-	}
-	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
-    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
-
-	}
-	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
-    	return jobPostingRepository.findAllJobPostingByTitle(title);
-
-	}
-	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
-    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
-
-	}
-
-
-	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
-    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
 	}
 	
+	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
+    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
+	}
+	
+	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
+		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
+	}
+	
+	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
+    	return jobPostingRepository.findAllJobPostingByTitle(title);
+	}
+	
+	public List<JobPosting> findAllJobPostingBySkills(String skills) {
+    	return jobPostingRepository.findAllJobPostingBySkills(skills);
+	}
+	
+	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
+    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
+	}
+
+	
+	//finding JobPosting By enum values 
 	public List<JobPosting> findAllJobPostingByCityLocation(CityLocation location) {
 		return jobPostingRepository.findAllJobPostingByCityLocation(location);
-		
 	}
+	
 	public List<JobPosting> findAllJobPostingByJobType(JobType jobType) {
     	return jobPostingRepository.findAllJobPostingByJobType(jobType);
-
 	}
+	
 	public List<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel) {
     	return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel);
-
 	}
 
-    
+    //method to calculate remaining time to apply for job
+	public String getRemainingTime(LocalDate applicationDeadline) {
+		 
+		//if deadline is before current time 
+		//applying time has passed already
+		if (applicationDeadline.isBefore(LocalDate.now())) {
+	        return "Application deadline has passed";
+	    }
+		
+		//return days between applicationDeadline and current Date
+		long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), applicationDeadline);
+	    return daysLeft + " days ";		
+	}
 
 }

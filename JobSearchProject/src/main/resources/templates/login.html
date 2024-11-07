@@ -4,24 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" th:href="@{/css/login.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-	<div class="mainContainer">
-        <nav>
-            <ul>
-                <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
-                <li><a th:href="@{/employer/register}">Register as Employer</a></li>
-                <li><a th:href="@{/login}">Login</a></li>
-            </ul>
-        </nav>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+	
+		<div class="mainContainer">
+
     <div class="headtitle">
         <h2>Welcome Back!!</h2>
         <h4>Please Log in to Continue</h4>
     </div>
     <div class="formtable">
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/login}" method="post" class="form-register">
             <div class="form-group">
                 <input type="text" id="username" name="username" placeholder="Your Username" required th:value="${username}">
 				
@@ -32,7 +28,7 @@
                 <input type="password" id="password" name="password" placeholder="Enter your Password" required th:value="${password}">
 				
 				<p th:if="${error?.password != null}"><span th:text="${error.password}" class="error"></span></p>
-                <button type="button" id="togglePassword" class="passButton">Show</button>
+                <button type="button" id="togglePassword" class="passButton" style="color: blue;">Show</button>
             </div>
             
             <div class="form-group">
@@ -50,7 +46,7 @@
             </div>
             
             <div class="form-group">
-                <button type="submit" id="loginButton" class="button-type1">Login</button>
+                <button type="submit" id="loginButton" >Login</button>
             </div>
          </form>
             <div class="form-group">

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Job Search System</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 	<div class="backImage"><img src="photo/freeimageai.jpg" ></div>
 	<!-- Navigation Bar -->
-	<header th:replace="fragments/nav :: nav"></header>
+	<header th:replace="~{fragments/nav :: nav}"></header>
 
 
 	<!-- Main Content -->
@@ -18,16 +18,13 @@
 	    <p>Your one-stop solution to finding the perfect job or the ideal candidate.</p>
 
 	    <!-- Search Form -->
+		<!-- -->
 	    <form th:action="@{/search}" method="get">
 	        <label for="keyword">Search for jobs:</label>
 	        <input type="text" id="keyword" name="keyword" placeholder="Enter job title, skills, or company name">
-			<select>
-				<option th:each="category : ${jobCategory}"
-				th:text="${category.categoryName}"></option>
-			</select>
 	        <button type="submit">Search</button>
 	    </form>
-
+		
 	    <!-- Search Results (if any) -->
 	    <div th:if="${keyword}">
 	        <h2 th:text="${keyword}"></h2>

@@ -4,20 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Validator</title>
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
-	<header th:replace="fragments/nav :: nav"></header>
+	<header th:replace="~{fragments/nav :: nav}"></header>
 
 	<div class="maincontainer">
-        <div class="headtitle">
+        <div class="headtitle" th:if="${!isEditMode}">
             <h2>Get started with Us</h2>
             <h4>Employer Registration</h4>
         </div>
         <div class="formtable">
-            <form th:action="@{/employer/register}" method="post" id="registrationForm" th:object="${employerDTO}">
-                <div class="form-group">
+			<form th:action="@{${!isEditMode} ? '/employer/register' : '/employers/profile/edit/' +${employerDTO.companyName}}" method="post" id="registrationForm"  th:object="${employerDTO}" class="form-register">
+
+                <div class="form-group" th:if="${!isEditMode}">
                     <label for="companyName">Company/Organization Name:</label>
                     <input type="text" name="companyName" id="name" placeholder="Enter your Company/Organization" th:field="*{companyName}">
                     <span id="nameError" class="error"></span>
@@ -52,23 +53,23 @@
                     <input type="text" name="companyDescription" id="companyDescription" placeholder="Company Description: Best company" th:field="*{companyDescription}">
                     <span id="companyDescriptionError" class="error"></span>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" placeholder="Enter your password" th:field="*{password}">
-                    <span id="passwordError" class="error"></span>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password:</label>
-                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" th:field="*{confirmPassword}">
-                    <span id="confirmPasswordError" class="error"></span>
-                </div>
-
+				<div th:if="${!isEditMode}">
+                	<div class="form-group">
+                    	<label for="password">Password:</label>
+                    	<input type="password" name="password" id="password" placeholder="Enter your password" th:field="*{password}">
+                    	<span id="passwordError" class="error"></span>
+                	</div>
+                	<div class="form-group">
+                   	 	<label for="confirmPassword">Confirm Password:</label>
+                    	<input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" th:field="*{confirmPassword}">
+                    	<span id="confirmPasswordError" class="error"></span>
+                	</div>
+				</div>
                 <div class="form-group">
                     <input type="hidden" name="usertype" id="usertype" value="EMPLOYER">
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" th:if="${!isEditMode}">
                     <label for="terms">Terms and Conditions:</label>
                     <input type="checkbox" id="terms" name="terms" checked> I accept all the terms and conditions 
                     <a th:href="@{/}">terms and conditions</a>

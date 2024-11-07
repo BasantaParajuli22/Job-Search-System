@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/Edit Job Posting</title>
-    <link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -19,7 +19,7 @@
 	<form th:action="@{${jobPosting.jobId != null} ? 
 	    '/jobposts/' + ${jobPosting.jobId} + '/edit/by/' + ${jobPosting.employer.companyName} : 
 	    '/jobposts/new/create'}" 
-	    method="post" th:object="${jobPosting}">
+	    method="post" th:object="${jobPosting}" class="form-register">
     
         <!-- Hidden field for employerId (assuming employer is provided in the model) -->
         <input type="hidden" th:value="${employer.employerId}" name="employerId">

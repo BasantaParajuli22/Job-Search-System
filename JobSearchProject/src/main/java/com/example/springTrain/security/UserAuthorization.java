@@ -19,7 +19,7 @@ public class UserAuthorization {
    }
 	
 	public static String getLoggedInEmployerUsername() {
-       return getUsernameIfRoleMatches("ROLE_JOBSEEKER");
+       return getUsernameIfRoleMatches("ROLE_EMPLOYER");
     }
 
 	

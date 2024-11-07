@@ -39,12 +39,16 @@ public class RegisterController {
 	public String getLogin() {
 	    return "login"; // Redirect back to login
 	}
-	
+	@GetMapping("/logout")
+    public String logout() {
+        // Any custom logic before redirecting to the login page (optional)
+        return "redirect:/login?logout"; // Redirect to login page with a logout message
+    }
 	// to register as employers
 	  @GetMapping("/employer/register")
 	  public String getemployform(Model model) {
 		    model.addAttribute("employerDTO", new EmployerDTO()); // Ensure this matches the th:object in your form
-	      return "employeeform";
+	      return "employer-form";
 	  }
 	// to register as jobseekers
 	  @GetMapping("/jobseeker/register")
@@ -60,7 +64,7 @@ public class RegisterController {
 	  	validationError.clear();
 	  		
 	  	//username should be unique in user table
-	  	Users existinguser = usersRepository.findByUsername(jobSeekerDTO.getUsername());
+	  	Users existinguser = usersRepository.findByUsername(jobSeekerDTO.getJobSeekerUsername());
 	  	if(existinguser != null) {
 	  		validationError.setUsername("Sorry username is already taken ");
 	  	}
@@ -78,15 +82,16 @@ public class RegisterController {
 	  	}else {
 	  		
 	  		// Create User entity
+	  		//getting data from DTO and setting entities and saving
 	  		Users user = new Users();
-	  		user.setUsername(jobSeekerDTO.getUsername());
+	  		user.setUsername(jobSeekerDTO.getJobSeekerUsername());
 	  		user.setPassword(jobSeekerDTO.getPassword());
 	  		user.setEmail(jobSeekerDTO.getEmail());
 	  		user.setUsertype(jobSeekerDTO.getUsertype());
 
 	  		// Create JobSeeker entity
 	  		JobSeeker jobSeeker = new JobSeeker();
-	  		jobSeeker.setJobSeekerUsername(jobSeekerDTO.getUsername());
+	  		jobSeeker.setJobSeekerUsername(jobSeekerDTO.getJobSeekerUsername());
 	  		jobSeeker.setEmail(jobSeekerDTO.getEmail());
 	  		jobSeeker.setNumber(jobSeekerDTO.getNumber());
 	  		jobSeeker.setAddress(jobSeekerDTO.getAddress());
@@ -124,7 +129,7 @@ public class RegisterController {
 	  		model.addAttribute("employerDTO", employerDTO);
 	  		//sending both errors in 1 error variable
 	  		model.addAttribute("error", validationError);
-	  		return "employeeform";
+	  		return "employer-form";
 	  	}else {
 	  		Users user = new Users();
 	  		user.setUsername(employerDTO.getCompanyName());

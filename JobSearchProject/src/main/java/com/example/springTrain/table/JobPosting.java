@@ -3,6 +3,7 @@ package com.example.springTrain.table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -71,6 +72,29 @@ public class JobPosting {
 	@UpdateTimestamp
 	private LocalDate updatedAt;
 
+	
+	//auto generating hasCode and equals method
+	//to check if there is unique jobPosting or not
+	//based on hash code
+	//comparing jobPost object with another jobPost object
+	@Override
+	public int hashCode() {
+		return Objects.hash(jobId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JobPosting other = (JobPosting) obj;
+		return Objects.equals(jobId, other.jobId);
+	}
+
+	
 	public Integer getJobId() {
 		return jobId;
 	}

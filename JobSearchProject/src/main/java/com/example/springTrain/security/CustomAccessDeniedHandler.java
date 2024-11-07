@@ -20,8 +20,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 			AccessDeniedException accessDeniedException)
 			throws IOException, ServletException {
 
-		response.sendRedirect(request.getContextPath() + "access-denied");
+		response.sendRedirect(request.getContextPath() + "/access-denied");
 	}
-	
-
 }

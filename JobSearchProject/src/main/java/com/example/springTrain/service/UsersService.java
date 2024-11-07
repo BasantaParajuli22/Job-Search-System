@@ -65,5 +65,16 @@ public class UsersService {
         employer.setUsers(user);
         employerRepository.save(employer);
     }
+    
+    //for updating 
+    public void updateJobSeeker(JobSeeker jobSeeker) {
+        jobSeekerRepository.save(jobSeeker); 
+    }
+    public void updateEmployer(Employer submittedEmployer) {
+    	employerRepository.save(submittedEmployer); 
+    }
+    public void updateUsers(Users user) {
+    	usersRepository.save(user); 
+    }
 
 }

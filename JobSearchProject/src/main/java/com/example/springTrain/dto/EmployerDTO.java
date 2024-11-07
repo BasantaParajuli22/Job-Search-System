@@ -1,7 +1,7 @@
 package com.example.springTrain.dto;
 
 public class EmployerDTO {
-	private String username;
+//	private String username;
 	private String companyName;
     private String password;//for getting data from form not to SAVE//
     private String confirmPassword;
@@ -13,12 +13,12 @@ public class EmployerDTO {
     private Usertype usertype;
 
     
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+//	public String getUsername() {
+//		return username;
+//	}
+//	public void setUsername(String username) {
+//		this.username = username;
+//	}
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -73,5 +73,6 @@ public class EmployerDTO {
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
+
 
 }

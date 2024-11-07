@@ -1,5 +1,6 @@
 package com.example.springTrain.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -50,17 +51,38 @@ public class ViewController {
 	// adding jobSeeker to the model if a user is logged in.
     @ModelAttribute
     public void addJobSeekerToModel(Model model) {
-        String username = UserAuthorization.getLoggedInUsername();
-        if (username != null) {
+    	//getting LoggedInJobSeekerUsername in string
+        String username = UserAuthorization.getLoggedInJobSeekerUsername();
+        if (username != null) {//if found finding in jobSeeker entity
             JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-            if (jobSeeker != null) {
+            if (jobSeeker != null) {//if found adding to model
                 model.addAttribute("jobSeeker", jobSeeker);
-            } else {
-                logger.warn("No JobSeeker found for username: " + username);
-            }
+            } 
         }
     }
-	
+    
+    @ModelAttribute
+    public void addEmployerToModel(Model model) {
+    	//getting loggedinEmployerUsername in string
+        String username = UserAuthorization.getLoggedInEmployerUsername();
+        if (username != null) {//if found finding in employer entity
+            Employer employer = employerService.findByCompanyName(username);
+            if (employer != null) {//if found adding to model
+                model.addAttribute("employer", employer);
+            } 
+        }
+    }
+//    @ModelAttribute
+//    public void addAdminToModel(Model model) {
+//        String username = UserAuthorization.getLoggedInUsername();
+//        if (username != null) {
+//            Admin admin = adminService.findByCompanyName(username);
+//            if (admin != null) {
+//                model.addAttribute("admin", admin);
+//            } 
+//        }
+//    }
+    
 	//Dashboard which displays all data
 	@GetMapping("/dashboard")
 	public String dashBoard(Model model) {
@@ -138,8 +160,16 @@ public class ViewController {
 		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
 		// Add the job details to the model
 		
-		//model.addAttribute("relatedJobs", relatedJobs);  
-		return "jobListing";  
+		//model.addAttribute("relatedJobs", relatedJobs); 
+	    
+	    //getting applicationDeadline and checking remaining time
+	    LocalDate applicationDeadline = jobPost.getApplicationDeadline();
+	    
+	    if(applicationDeadline != null) {
+		    String deadlineDays = jobPostingService.getRemainingTime(applicationDeadline);
+			model.addAttribute("deadlineDays", deadlineDays);
+	    }
+	    return "jobListing";  
 	}
 	
 	//view all jobposts of specific employer
@@ -182,7 +212,6 @@ public class ViewController {
 		String companyName = submittedEmployer.getCompanyName();
 		//to findAllJobPostingsByEmployer
 		List<JobPosting> myJobPosts =jobPostingService.findAllJobPostingByCompanyName(companyName);
-		
 		
 		model.addAttribute("myJobPosts",myJobPosts);	        
 		return "employers-jobposts";

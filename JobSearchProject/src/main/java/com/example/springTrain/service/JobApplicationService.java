@@ -91,6 +91,7 @@ public class JobApplicationService {
 	
 	//finding applicationId and setting its status and saving it
 	public void updateStatus(Integer applicationId, String applicationStatus) {
+		//if matches setting new Status and saving
 		JobApplication application = jobApplicationRepository.findByApplicationId(applicationId);
         application.setApplicationStatus(applicationStatus);
 		jobApplicationRepository.save(application);

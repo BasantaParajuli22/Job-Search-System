@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Saved Job Posts</title>
-    <link rel="stylesheet" href="path/to/your/css/styles.css" />
+	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
 
     <h1>My Saved Job Posts</h1>
     
@@ -32,8 +34,11 @@
                     <td th:text="${savedPost.jobPosting.employer.companyName}">Company Name</td>
                     <td th:text="${savedPost.jobPosting.cityLocation}">Location</td>
                     <td th:text="${savedPost.jobPosting.jobType}">Job Type</td>
-                    <td th:text="${#dates.format(savedPost.jobPosting.applicationDeadline, 'yyyy-MM-dd')}">Deadline</td>
-                </tr>
+					<!-- use thymeleaf date format-->
+					<td th:if="${savedPost.jobPosting.applicationDeadline != null}" 
+					    th:text="${#temporals.format(savedPost.jobPosting.applicationDeadline, 'yyyy-MM-dd')}"></td>
+					<td th:if="${savedPost.jobPosting.applicationDeadline == null}">No deadline</td>
+				</tr>
             </tbody>
         </table>
     </div>

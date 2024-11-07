@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
@@ -112,4 +113,18 @@ public class JobApplicationController {
 		return "redirect:/view/jobposts";
 	}
 	
+	// Update application status for a specific job application
+	//of jobSeeker by employer
+	@PostMapping("/applications/submittedto/employer/statusUpdate")
+	public String updateApplicationStatus(
+	    @RequestParam("applicationId") Integer applicationId,
+	    @RequestParam("applicationStatus") String applicationStatus,
+	    @RequestParam("employerId") Integer employerId) {
+		
+		//calling to save changed status 
+		jobApplicationService.updateStatus(applicationId,applicationStatus);
+	    
+	    // Redirect back to the list of job applications for the specific employer
+	    return "redirect:/view/applications/submittedto/employer/" + employerId;
+	}
 }
