@@ -8,6 +8,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -98,36 +99,18 @@ public class SearchController {
 		return "home";
 	}
 	
-	//Search by givng input can be title companyName
+	//Search by givng input can be 
+	//title or
+	//companyName
 	@GetMapping("/search")
 	public String getSearchByKeyword(Model model,
+			@RequestParam(name ="page", defaultValue = "0") int page, 
+	        @RequestParam(name ="size", defaultValue = "2") int size, 
 			@RequestParam("keyword")String keyword) {
-		System.out.println(keyword);
-		//Same title or companyName or skills could be found
-		List<JobPosting> titlePosts = jobPostingService.findAllJobPostingByJobTitle(keyword);
-		List<JobPosting> companyPosts = jobPostingService.findAllJobPostingByCompanyName(keyword);
-		List<JobPosting> skillPosts = jobPostingService.findAllJobPostingBySkills(keyword);
-		
-		//need to make new list and add all to it
-		//should be unique
-		HashSet<JobPosting> uniquePosts = new HashSet<>();
-		
-		if(titlePosts != null) {
-			uniquePosts.addAll(titlePosts);
-		}
-		if(companyPosts != null) {
-			uniquePosts.addAll(companyPosts);
-		}
-		if(skillPosts != null) {
-			uniquePosts.addAll(skillPosts);
-		}
 
-		//Converting unique HashSet back to ArrayList due to compatibility for model
-	    List<JobPosting> allPosts = new ArrayList<>(uniquePosts);
-
-	    if(uniquePosts != null) {
-	    	model.addAttribute("jobPosts",allPosts);
-	    }
+		Page<JobPosting> uniquejobPosts = jobPostingService.findAllJobPostingByKeyword(keyword,page,size);
+		
+	    model.addAttribute("jobPosts",uniquejobPosts);
 		return "jobPost";
 	}
 	
@@ -136,11 +119,13 @@ public class SearchController {
 	//takes categoryName to display categoryName
 	@GetMapping("/search/byjobcategoryName/{categoryName}")
 	 public String searchByCategoryId(@PathVariable("categoryName") String categoryName,
+			 @RequestParam(name ="page", defaultValue = "0") int page, 
+	         @RequestParam(name ="size", defaultValue = "2") int size, 
 			 Model model) { 
 
-		List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByCategoryName(categoryName);
-	    
-		model.addAttribute("jobPosts",jobPosts);
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCategoryName(categoryName,page, size);
+        model.addAttribute("jobPosts", jobPostingPage);
+        
 	    model.addAttribute("categoryName",categoryName);
 	    
 	    return "jobpost";
@@ -148,32 +133,38 @@ public class SearchController {
 	
 	//search all jobPostings by jobType
 	@GetMapping("/search/byjobType/{jobType}")
-	 public String searchByJobType(@PathVariable("jobType") JobType jobType, Model model) { 
+	 public String searchByJobType(@PathVariable("jobType") JobType jobType, 
+			 @RequestParam(name ="page", defaultValue = "0") int page, 
+	            @RequestParam(name ="size", defaultValue = "2") int size, 
+			 Model model) { 
 	    
-		List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByJobType(jobType);
-	  
-	    model.addAttribute("jobPosts",jobPosts);
-
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(jobType,page, size);
+        model.addAttribute("jobPosts", jobPostingPage);
+        
 	    return "jobpost";
 	}
 	
 	//search all jobPostings by experiencelevel
 	@GetMapping("/search/byexperiencelevel/{expLevel}")
-	 public String searchByExperiencelevel(@PathVariable("expLevel") ExperienceLevel expLevel, Model model) { 
-	    
-		List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByExperienceLevel(expLevel);
-	    
-	    model.addAttribute("jobPosts",jobPosts);
-
+	 public String searchByExperiencelevel(@PathVariable("expLevel") ExperienceLevel expLevel,
+			 @RequestParam(name ="page", defaultValue = "0") int page, 
+	            @RequestParam(name ="size", defaultValue = "2") int size, 
+	            Model model) { 
+		
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByExpLevel(expLevel,page, size);
+        model.addAttribute("jobPosts", jobPostingPage);
+        
 	    return "jobpost";
 	}
 	
 	@GetMapping("/search/bylocation/{location}")
-	 public String searchByLocation(@PathVariable("location") CityLocation location, Model model) { 
+	 public String searchByLocation(@PathVariable("location") CityLocation location,
+			 @RequestParam(name ="page", defaultValue = "0") int page, 
+	            @RequestParam(name ="size", defaultValue = "2") int size, 
+	            Model model) { 
 		
-	    List<JobPosting> jobPosts = jobPostingService.findAllJobPostingByCityLocation(location);
-	    model.addAttribute("jobPosts",jobPosts);
-	    
+	    Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCityLocation(location,page, size);
+        model.addAttribute("jobPosts", jobPostingPage);
 	    return "jobpost";
 	}
 	

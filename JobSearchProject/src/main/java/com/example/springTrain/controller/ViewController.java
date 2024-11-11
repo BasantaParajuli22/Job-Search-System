@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -133,16 +134,33 @@ public class ViewController {
 	}
 	
 	
-	//view all jobposts without restrictions
-	//no login required
+//	//view all jobposts without restrictions
+//	//no login required
+//	@GetMapping("/jobposts")
+//	public String listAllJobPostings(Model model) {
+//		
+//		 List<JobPosting> jobPosts = jobPostingService.findAllByOrderByCreatedAtDesc();		 	
+//		 model.addAttribute("jobPosts",jobPosts); 
+//		 
+//		return "jobpost";
+//	}
+	
+	
+	//displaying jobPosts in Pages
 	@GetMapping("/jobposts")
-	public String listAllJobPostings(Model model) {
-		
-		 List<JobPosting> jobPosts = jobPostingService.findAllJobPostings();		 	
-		 model.addAttribute("jobPosts",jobPosts); 
-		 
-		return "jobpost";
-	}
+    public String getPaginatedJobPostings(
+            @RequestParam(name ="page", defaultValue = "0") int page, 
+            @RequestParam(name ="size", defaultValue = "2") int size, 
+            Model model) {
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingInDesc(page, size);
+        model.addAttribute("jobPosts", jobPostingPage);
+        System.out.println("Total Pages: " + jobPostingPage.getTotalPages());
+        System.out.println("Current Page: " + jobPostingPage.getNumber());
+        System.out.println("Job Posts Content: " + jobPostingPage.getContent().size());
+        System.out.println("Is Empty: " + jobPostingPage.isEmpty());
+
+        return "jobpost";
+    }
 	
 	//view Specific jobpost
 	//no login required
@@ -164,7 +182,6 @@ public class ViewController {
 	    
 	    //getting applicationDeadline and checking remaining time
 	    LocalDate applicationDeadline = jobPost.getApplicationDeadline();
-	    
 	    if(applicationDeadline != null) {
 		    String deadlineDays = jobPostingService.getRemainingTime(applicationDeadline);
 			model.addAttribute("deadlineDays", deadlineDays);

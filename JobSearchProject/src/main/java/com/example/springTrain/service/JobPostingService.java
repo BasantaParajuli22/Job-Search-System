@@ -5,6 +5,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.dto.CityLocation;
@@ -27,7 +30,10 @@ public class JobPostingService {
     public List<JobPosting> findAllJobPostings() {
         return jobPostingRepository.findAll();
     }
-
+    public List<JobPosting> findAllByOrderByCreatedAtDesc() {
+        return jobPostingRepository.findAllByOrderByCreatedAtDesc();
+    }
+    
     //get values from JobType, ExperienceLevel, CityLocation enum values
     public JobType[] getAllJobTypes() {
         return JobType.values(); 
@@ -86,17 +92,17 @@ public class JobPostingService {
 	
 	//methods 
 	//to find all jobPostings according to search category
-	
-	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
-    	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
-	}
-	
 	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
     	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
 	}
 	
 	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
 		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
+	}
+
+	
+	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
+    	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 	}
 	
 	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
@@ -139,4 +145,42 @@ public class JobPostingService {
 	    return daysLeft + " days ";		
 	}
 
+	
+	//to get page and size
+	public Page<JobPosting> getPaginatedJobPostingInDesc(int page, int size) {
+		
+		Pageable pageable = PageRequest.of(page, size);
+		System.out.println("Page Requested: " + page);
+		System.out.println("Page Size: " + size);
+
+		return jobPostingRepository.findAllByOrderByCreatedAtDesc(pageable);
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByCategoryName(String categoryName,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName,pageable);
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
+	}
+	
+
+	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);
+    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
+	}
+	
+	
 }
