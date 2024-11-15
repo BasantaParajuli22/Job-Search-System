@@ -46,7 +46,6 @@ public class ViewController {
 	@Autowired
 	private SavedJobsService savedJobsService;
 	
-	
 	//@ModelAttribute Method: The addJobSeekerToModel() method 
 	//will be executed before any request handler in this controller,
 	// adding jobSeeker to the model if a user is logged in.
@@ -150,7 +149,7 @@ public class ViewController {
 	@GetMapping("/jobposts")
     public String getPaginatedJobPostings(
             @RequestParam(name ="page", defaultValue = "0") int page, 
-            @RequestParam(name ="size", defaultValue = "2") int size, 
+            @RequestParam(name ="size", defaultValue = "9") int size, 
             Model model) {
         Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingInDesc(page, size);
         model.addAttribute("jobPosts", jobPostingPage);

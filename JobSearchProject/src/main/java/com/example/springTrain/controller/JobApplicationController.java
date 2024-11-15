@@ -14,12 +14,15 @@ import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
+import com.example.springTrain.service.NotificationService;
 import com.example.springTrain.service.SavedJobsService;
+import com.example.springTrain.service.UsersService;
 import com.example.springTrain.table.Employer;
 import com.example.springTrain.table.JobApplication;
 import com.example.springTrain.table.JobPosting;
 import com.example.springTrain.table.JobSeeker;
 import com.example.springTrain.table.SavedJobs;
+import com.example.springTrain.table.Users;
 
 @Controller
 public class JobApplicationController {
@@ -36,6 +39,10 @@ public class JobApplicationController {
 	private JobSeekerService jobSeekerService;
 	@Autowired
 	private SavedJobsService savedJobsService;
+	@Autowired
+	private NotificationService notificationService;
+	@Autowired
+	private UsersService userService;
 
 	
 	//to apply for jobposts of employer
@@ -67,7 +74,7 @@ public class JobApplicationController {
  			logger.warn("Not same employer or jobId");
             return "redirect:/view/jobposts";
          }  
-         //only apply if it hasnot applied 
+         //only apply if jobSeeker hasnot applied already
          //only one jobSeekerId to one jobId
          JobApplication jobApplication = jobApplicationService.getJobSeekerByIdAndJobId(jobSeekerId,jobId); 
          if(jobApplication != null) {
@@ -75,7 +82,18 @@ public class JobApplicationController {
              return "redirect:/view/jobposts";
           }
          
-        jobApplicationService.applyForJobPost(jobId,companyName,jobSeekerId);
+         jobApplicationService.applyForJobPost(jobId,companyName,jobSeekerId);
+        
+        // Send a notification to the employer
+        String message = "You have a new application for the job: " + jobPosting.getTitle();
+        Users user = userService.findByUsername(companyName); //finding companyName in User entity
+        if(user == null) {
+        	logger.warn("no user found to send notification");
+        	return"login";
+        }
+        System.out.println("now go to create notification");
+        notificationService.createNotification(user, message);
+
     	return "redirect:/view/jobposts";
 
 	}
@@ -113,8 +131,8 @@ public class JobApplicationController {
 		return "redirect:/view/jobposts";
 	}
 	
-	// Update application status for a specific job application
-	//of jobSeeker by employer
+	// Update application status for a specific job application of jobSeeker by employer
+	//send application reviewed notification by employer to jobSeeker
 	@PostMapping("/applications/submittedto/employer/statusUpdate")
 	public String updateApplicationStatus(
 	    @RequestParam("applicationId") Integer applicationId,
@@ -123,8 +141,30 @@ public class JobApplicationController {
 		
 		//calling to save changed status 
 		jobApplicationService.updateStatus(applicationId,applicationStatus);
-	    
-	    // Redirect back to the list of job applications for the specific employer
+		
+		JobApplication jobApplication = jobApplicationService.findById(applicationId);
+		if(jobApplication== null) {
+			logger.warn("jobApplication couldnot be found");
+			return"login";
+		}
+		
+		// Send a notification to the jobSeeker by employer
+		//get the jobApplication jobseeker users entity for notification
+        Users jobSeekerUser = jobApplication.getJobSeeker().getUsers();
+        if(jobSeekerUser == null) {
+        	logger.warn("jobSeekerUser couldnot be found");
+			return"login";
+        }
+        Employer employer = employerService.findByEmployerId(employerId);
+        if(employer == null) {
+        	logger.warn("employer couldnot be found");
+			return"login";
+        }
+        String message = "Your application for the jobPost:" + jobApplication.getJobPosting().getTitle() +" has been reviewed:"
+        		+ "Status: " + applicationStatus +"by"+ employer.getCompanyName();
+
+        notificationService.createNotification(jobSeekerUser, message);
+	    // Redirect back to the list of job applications of the specific employerId
 	    return "redirect:/view/applications/submittedto/employer/" + employerId;
 	}
 }

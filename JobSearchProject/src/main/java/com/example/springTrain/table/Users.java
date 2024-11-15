@@ -1,8 +1,10 @@
 package com.example.springTrain.table;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+
 import com.example.springTrain.dto.Usertype;
 
 import jakarta.persistence.CascadeType;
@@ -12,6 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -26,15 +29,14 @@ public class Users {
 	private String password;
 	private String email;
 		
-	// Constructor for creating a Users object
-		
 	@Enumerated(EnumType.STRING)  // Store the enum as a String in the database
 	private Usertype usertype;
 	
-	@CreationTimestamp
-	private Instant createdAt;		
-
-	//this means that Employer and JobSeeker class needs to have users 
+	//one user can have many  notification
+	@OneToMany(mappedBy ="users", cascade = CascadeType.ALL)
+	private List<NotificationMessage> notification;
+	
+	//this means that Employer and JobSeeker entity class needs to have users 
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private Employer employer;
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
@@ -42,6 +44,8 @@ public class Users {
 	
 	//private String session;
 	
+	@CreationTimestamp
+	private Instant createdAt;	
 	
 	
 	public Integer getUserId() {
@@ -91,6 +95,12 @@ public class Users {
 	}
 	public void setJobSeeker(JobSeeker jobSeeker) {
 		this.jobSeeker = jobSeeker;
+	}
+	public List<NotificationMessage> getNotification() {
+		return notification;
+	}
+	public void setNotification(List<NotificationMessage> notification) {
+		this.notification = notification;
 	}
 	    
 	

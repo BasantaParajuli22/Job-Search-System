@@ -27,8 +27,14 @@
             </thead>
             <tbody>
                 <tr th:each="jobApplication : ${allJobApplications}">
-                    <td th:text="${jobApplication.jobSeeker.jobSeekerUsername}">Job Seeker Name</td>
-					<td th:text="${jobApplication.jobPosting.title}">Job Title</td>
+					<td>
+						<a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}" 
+							th:text="${jobApplication.jobSeeker.jobSeekerUsername}"></a>					
+					</td>
+                    <td>
+						<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobApplication.jobPosting.jobId})}" 
+							th:text="${jobApplication.jobPosting.title}"></a>					
+					</td>
 					<td>
 					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.email}}"
 					       th:text="${jobApplication.jobSeeker.email}">Send email</a>

@@ -77,4 +77,8 @@ public class UsersService {
     	usersRepository.save(user); 
     }
 
+	public Users findByUser(Employer employer) {
+		return usersRepository.findByEmployer(employer);
+	}
+
 }

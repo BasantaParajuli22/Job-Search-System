@@ -8,21 +8,25 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "notification_message")
-public class NotificationMessage {
+@Table (name = "notification")
+public class NotificationMessage{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer notificationId;
 	
-	private String message;
-	private String status;
+	@ManyToOne
+	@JoinColumn(name ="userId",referencedColumnName ="userId", nullable = false)
+	private Users users;
 	
-	//foreign key
-	private String userId;
+	private String message;
+	private String status;//read or no read
+	
 	@CreationTimestamp
 	private Instant messageAt;
 	
@@ -45,17 +49,18 @@ public class NotificationMessage {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+
 	public Instant getMessageAt() {
 		return messageAt;
 	}
 	public void setMessageAt(Instant messageAt) {
 		this.messageAt = messageAt;
+	}
+	public Users getUsers() {
+		return users;
+	}
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 	
 	

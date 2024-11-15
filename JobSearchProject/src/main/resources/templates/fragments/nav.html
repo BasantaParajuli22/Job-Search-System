@@ -54,6 +54,10 @@
          <li sec:authorize="!isAuthenticated()">
              <a th:href="@{/employer/register}">Register as Employer</a>
          </li>
+		 <!--Notification Message Link only if authenticated-->
+		 <li sec:authorize="isAuthenticated()">
+			<a th:href="@{/notification/all}">Notification</a>
+		 </li>
 
          <!-- Login/Logout -->
          <li sec:authorize="!isAuthenticated()">

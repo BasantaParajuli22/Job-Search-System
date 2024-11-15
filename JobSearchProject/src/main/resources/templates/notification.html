@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notification</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+	<!-- if notification is null or empty-->
+	<div th:if="${allNotification == null || allNotification.isEmpty()}" >
+		<p th:text="'No notifications found'"></p>
+	</div>
+	
+	<!-- if notification is present and not empty-->
+	<ul th:if ="${allNotification != null && !allNotification.isEmpty()}">
+		<form method="post" th:action="@{/notification/deleteAllOf/{userId}(userId=${userId})}">
+			<button type="submit">DeleteAll</button>
+		</form>	
+    	<li th:each="notification : ${allNotification}">
+			<form method="post" th:action="@{/notification/read/{notificationId}(notificationId =${notification.notificationId})}">
+				<button th:text="${notification.message}" type="submit">message</button>
+			</form>
+			<form method="post" th:action="@{/notification/delete/{notificationId}(notificationId =${notification.notificationId})}">
+				<button type="submit">Delete</button>
+			</form>	
+    	</li>
+	</ul>
+
+</body>
+</html>

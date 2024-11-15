@@ -106,6 +106,7 @@ public class ProfileController{
        jobSeekerDTO.setSkills(submittedjobSeeker.getSkills());
        
        model.addAttribute("jobSeekerDTO",jobSeekerDTO);
+       //this will be false during registration but true in edit
        model.addAttribute("isEditMode",true);
 
        //here submitted jobSeeker will not be same as new one
