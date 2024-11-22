@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM gradle:7.5.1-jdk17 AS build
+FROM gradle:8.8-jdk17 AS build
 WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY src ./src

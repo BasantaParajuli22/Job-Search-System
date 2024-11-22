@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import com.example.springTrain.dto.CityLocation;
 import com.example.springTrain.dto.ExperienceLevel;
 import com.example.springTrain.dto.JobType;
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.repository.JobPostingRepository;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobPosting;
 
 @Service
 public class JobPostingService {
@@ -182,5 +182,10 @@ public class JobPostingService {
     	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
 	}
 	
+	
+	public Integer countJobPostingByCategoryName(String categoryName) {
+		return jobPostingRepository.countJobPostingByJobCategory_CategoryName(categoryName);
+
+	}
 	
 }

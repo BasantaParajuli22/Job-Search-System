@@ -12,8 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 	
-	
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -34,9 +32,24 @@ public class SecurityConfig {
             	.logoutUrl("/logout") // Custom logout URL
                  .logoutSuccessUrl("/login?logout") // Redirect after successful logout
                  .invalidateHttpSession(true) // Invalidate session
-                 .deleteCookies("JSESSIONID") // Delete the session cookie
+                 .deleteCookies("JSESSIONID","remember-me") // Delete the session cookie
                 .permitAll()
-            );
+            )
+            //when clicked remember me in login form temporarily storing users username and password
+            .rememberMe(rememberMe ->rememberMe
+            		.key("secretKey")
+            		.tokenValiditySeconds(10)//for 10 days
+            		.rememberMeParameter("rememberMe")
+            		.useSecureCookie(true)//for transfering cookie over https only
+            		
+            )
+            .sessionManagement(session ->session
+            		.invalidSessionUrl("/logout")
+            		.maximumSessions(1)
+            		.expiredUrl("/logout")
+            		)
+            ;
+        
          // Using custom AccessDeniedHandler
 //            to redirect user whose role doesnot match the content based on role
 //            or requires different role

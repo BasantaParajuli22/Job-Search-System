@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.example.springTrain.dto.CityLocation;
 import com.example.springTrain.dto.ExperienceLevel;
 import com.example.springTrain.dto.JobType;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobPosting;
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobPosting;
 
 @Repository
 public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>{
@@ -53,4 +53,7 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	Page<JobPosting> findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(String keyword, String keyword2,
 			String keyword3, Pageable pageable);
     
+	
+	Integer countJobPostingByJobCategory_CategoryName(String categoryName);
+
 }

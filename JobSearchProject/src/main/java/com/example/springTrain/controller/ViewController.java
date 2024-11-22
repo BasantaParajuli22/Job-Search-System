@@ -16,17 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobApplication;
+import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.SavedJobs;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.SavedJobsService;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobApplication;
-import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.SavedJobs;
 
 
 @RequestMapping("/view")
@@ -133,7 +133,7 @@ public class ViewController {
 	}
 	
 	
-//	//view all jobposts without restrictions
+//	//view all jobposts without restrictions in desc order
 //	//no login required
 //	@GetMapping("/jobposts")
 //	public String listAllJobPostings(Model model) {

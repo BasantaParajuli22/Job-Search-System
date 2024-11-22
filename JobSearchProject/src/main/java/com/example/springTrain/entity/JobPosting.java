@@ -1,4 +1,4 @@
-package com.example.springTrain.table;
+package com.example.springTrain.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

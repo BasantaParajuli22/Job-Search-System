@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.EmployerRepository;
 import com.example.springTrain.repository.JobSeekerRepository;
 import com.example.springTrain.repository.UsersRepository;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.Users;
 
 import jakarta.transaction.Transactional;
 

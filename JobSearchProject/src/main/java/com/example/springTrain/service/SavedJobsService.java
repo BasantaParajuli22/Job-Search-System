@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.SavedJobs;
 import com.example.springTrain.repository.SavedJobsRepository;
-import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.SavedJobs;
 
 @Service
 public class SavedJobsService  {

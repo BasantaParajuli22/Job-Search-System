@@ -4,24 +4,24 @@ services:
   backend:
     build: .
     ports:
-      - "8081:8080"  # Mapping container port 8080 to host port 8081
+      - "8081:8080"
     depends_on:
-      - db  # Ensures that db service is started before backend
+      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jobsearch  # Use the correct internal port
-      SPRING_DATASOURCE_USERNAME: jobsearch  # Environment variables for Spring Boot
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jobsearch
+      SPRING_DATASOURCE_USERNAME: jobsearch
       SPRING_DATASOURCE_PASSWORD: jobsearch
     networks:
       - jobsearch-network
 
   db:
-    image: postgres:15
+    image: postgres:16.4
     environment:
-      POSTGRES_DB: jobsearch  # Database name for your project
-      POSTGRES_USER: jobsearch  # Database username
-      POSTGRES_PASSWORD: jobsearch  # Database password
+      POSTGRES_DB: jobsearch
+      POSTGRES_USER: jobsearch
+      POSTGRES_PASSWORD: jobsearch
     ports:
-      - "5435:5432"  # Mapping PostgreSQL port 5432 (container) to host port 5435
+      - "5435:5432"
     networks:
       - jobsearch-network
 

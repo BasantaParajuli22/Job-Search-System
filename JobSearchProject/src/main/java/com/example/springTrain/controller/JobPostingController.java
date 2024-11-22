@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobCategory;
+import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobCategoryService;
 import com.example.springTrain.service.JobPostingService;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobCategory;
-import com.example.springTrain.table.JobPosting;
 
 @Controller
 @RequestMapping("/jobposts")

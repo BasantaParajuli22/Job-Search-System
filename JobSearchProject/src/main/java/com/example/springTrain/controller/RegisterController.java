@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.UsersRepository;
 import com.example.springTrain.service.UsersService;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.Users;
 import com.example.springTrain.validation.ValidationError;
 
 @Controller
@@ -42,7 +42,7 @@ public class RegisterController {
 	@GetMapping("/logout")
     public String logout() {
         // Any custom logic before redirecting to the login page (optional)
-        return "redirect:/login?logout"; // Redirect to login page with a logout message
+        return "redirect:/login?logout"; 
     }
 	// to register as employers
 	  @GetMapping("/employer/register")

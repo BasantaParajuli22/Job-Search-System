@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.UsersRepository;
-import com.example.springTrain.table.Users;
 /***
  * UserDetailsService interface only has only method which
  * Locates the user based on the username.

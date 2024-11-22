@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.SavedJobs;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.SavedJobs;
 
 public interface SavedJobsRepository extends JpaRepository<SavedJobs,Integer> {
 

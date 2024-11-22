@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.NotificationMessage;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
@@ -20,10 +24,6 @@ import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.NotificationService;
 import com.example.springTrain.service.SavedJobsService;
 import com.example.springTrain.service.UsersService;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.NotificationMessage;
-import com.example.springTrain.table.Users;
 
 @Controller
 public class NotificationController {

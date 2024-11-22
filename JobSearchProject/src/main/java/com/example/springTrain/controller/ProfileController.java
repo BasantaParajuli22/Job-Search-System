@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
+import com.example.springTrain.entity.Admin;
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.AdminService;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
-import com.example.springTrain.table.Admin;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.Users;
 
 
 @Controller

@@ -1,4 +1,4 @@
-package com.example.springTrain.table;
+package com.example.springTrain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

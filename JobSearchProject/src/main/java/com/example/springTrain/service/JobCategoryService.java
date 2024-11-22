@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.JobCategory;
 import com.example.springTrain.repository.JobCategoryRepository;
-import com.example.springTrain.table.JobCategory;
 
 @Service
 public class JobCategoryService {

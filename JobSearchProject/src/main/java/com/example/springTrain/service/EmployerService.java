@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.EmployerRepository;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.Users;
 
 
 @Service

@@ -5,10 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobApplication;
+import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.SavedJobs;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
@@ -17,12 +24,6 @@ import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.NotificationService;
 import com.example.springTrain.service.SavedJobsService;
 import com.example.springTrain.service.UsersService;
-import com.example.springTrain.table.Employer;
-import com.example.springTrain.table.JobApplication;
-import com.example.springTrain.table.JobPosting;
-import com.example.springTrain.table.JobSeeker;
-import com.example.springTrain.table.SavedJobs;
-import com.example.springTrain.table.Users;
 
 @Controller
 public class JobApplicationController {
@@ -167,4 +168,12 @@ public class JobApplicationController {
 	    // Redirect back to the list of job applications of the specific employerId
 	    return "redirect:/view/applications/submittedto/employer/" + employerId;
 	}
+	
+	
+	//cv upload
+//	@GetMapping("/upload/files")
+//	public String uploadFilesFormByJobSeeker(Model model) {
+//		
+//		return "";
+//	}
 }
