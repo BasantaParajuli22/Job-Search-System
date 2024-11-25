@@ -38,9 +38,9 @@ public class SecurityConfig {
             //when clicked remember me in login form temporarily storing users username and password
             .rememberMe(rememberMe ->rememberMe
             		.key("secretKey")
-            		.tokenValiditySeconds(10)//for 10 days
+            		.tokenValiditySeconds(10 * 24 * 60 * 60)//for 10 days
             		.rememberMeParameter("rememberMe")
-            		.useSecureCookie(true)//for transfering cookie over https only
+            		.useSecureCookie(false)//for transfering cookie over https only
             		
             )
             .sessionManagement(session ->session

@@ -7,11 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.springTrain.dto.CityLocation;
-import com.example.springTrain.dto.ExperienceLevel;
-import com.example.springTrain.dto.JobType;
-import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.enums.CityLocation;
+import com.example.springTrain.enums.ExperienceLevel;
+import com.example.springTrain.enums.JobCategory;
+import com.example.springTrain.enums.JobType;
 
 @Repository
 public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>{
@@ -25,35 +25,32 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	List<JobPosting> findAllByOrderByCreatedAtAsc(); 
 	
 	//finding in Jobposting employer companyName 
-	List<JobPosting> findByEmployerCompanyName(String companyName);
-
-	List<JobPosting> findByEmployer(Employer employer); // Use the employer object directly
-
+	List<JobPosting> findByEmployer_CompanyName(String companyName);
+//	List<JobPosting> findByEmployer(Employer employer); 
 	List<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName);
-	List<JobPosting> findAllJobPostingByJobCategory_CategoryName(String categoryName);
-	List<JobPosting> findAllJobPostingByJobCategory_CategoryId(Integer categoryId);
-	List<JobPosting> findAllJobPostingByTitle(String title);
-	List<JobPosting> findAllJobPostingBySkills(String skills);
-	List<JobPosting> findAllJobPostingBySalaryRange(String salaryRange);
-	
+//	List<JobPosting> findAllJobPostingByTitle(String title);
+//	List<JobPosting> findAllJobPostingBySkills(String skills);
+//	List<JobPosting> findAllJobPostingBySalaryRange(String salaryRange);
+//	
 	List<JobPosting> findAllJobPostingByJobType(JobType jobType);
 	List<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel);
 	List<JobPosting> findAllJobPostingByCityLocation(CityLocation location);
-
+	List<JobPosting> findAllJobPostingByJobCategory(JobCategory jobCategory);
+	
 	//to display jobPostings in pages
 	Page<JobPosting> findAll(Pageable page);
 	Page<JobPosting> findAllByOrderByCreatedAtDesc(Pageable pageable);
-	Page<JobPosting> findAllJobPostingByJobCategory_CategoryName(String categoryName, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByJobType(JobType jobType, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByJobCategory(JobCategory jobCategory, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByCityLocation(CityLocation location, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel, Pageable pageable);
 	Page<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByTitle(String title, Pageable pageable);
 	Page<JobPosting> findAllJobPostingBySkills(String skills, Pageable pageable);
-	Page<JobPosting> findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(String keyword, String keyword2,
-			String keyword3, Pageable pageable);
-    
+//	Page<JobPosting> findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(String keyword, String keyword2,
+//			String keyword3, Pageable pageable);
+//    
+	Integer countJobPostingByJobCategory(JobCategory jobCategory);
 	
-	Integer countJobPostingByJobCategory_CategoryName(String categoryName);
 
 }

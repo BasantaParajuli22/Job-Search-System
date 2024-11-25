@@ -1,4 +1,4 @@
-package com.example.springTrain.dto;
+package com.example.springTrain.enums;
 
 public enum CityLocation {
 	KATHMANDU,
@@ -10,5 +10,5 @@ public enum CityLocation {
 	TERAI_REGION,
 	HILLY_REGION,
 	OUTSIDE_NEPAL,
-	OTHER_SPECIFY,
+	OTHER_SPECIFY
 }

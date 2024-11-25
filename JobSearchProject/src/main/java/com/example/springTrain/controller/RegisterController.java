@@ -1,5 +1,7 @@
 package com.example.springTrain.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,7 @@ import com.example.springTrain.validation.ValidationError;
 @Controller
 public class RegisterController {
 
-	//need to use 
-	// usersService properly and remove usersRepository
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private UsersRepository usersRepository;
@@ -62,6 +63,7 @@ public class RegisterController {
 	  @PostMapping("/jobseeker/register")
 	  public String registerJobSeeker(@ModelAttribute JobSeekerDTO jobSeekerDTO, Model model) {
 	  		
+		  logger.warn("jobseeker mapping  post ");
 	  	ValidationError validationError = new ValidationError();
 	  	validationError.clear();
 	  		

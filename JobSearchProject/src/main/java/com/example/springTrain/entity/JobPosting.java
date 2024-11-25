@@ -8,9 +8,10 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.example.springTrain.dto.CityLocation;
-import com.example.springTrain.dto.ExperienceLevel;
-import com.example.springTrain.dto.JobType;
+import com.example.springTrain.enums.CityLocation;
+import com.example.springTrain.enums.ExperienceLevel;
+import com.example.springTrain.enums.JobCategory;
+import com.example.springTrain.enums.JobType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -37,10 +38,6 @@ public class JobPosting {
     @JoinColumn(name = "employerId", referencedColumnName = "employerId", nullable = false)
 	private Employer employer;
 	
-	@ManyToOne
-    @JoinColumn(name = "categoryId", referencedColumnName = "categoryId", nullable = false)
-	private JobCategory jobCategory;
-
 	//JobApplication should have foreign key of jobPosting 
 	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<JobApplication> JobApplication = new ArrayList<>();
@@ -65,6 +62,9 @@ public class JobPosting {
 	
 	@Enumerated(EnumType.STRING)
 	private ExperienceLevel experienceLevel;  // Entry, Mid, Senior
+	
+	@Enumerated(EnumType.STRING)
+	private JobCategory jobCategory; 
 	
 	@CreationTimestamp
 	private LocalDate createdAt;
@@ -109,14 +109,6 @@ public class JobPosting {
 
 	public void setEmployer(Employer employer) {
 		this.employer = employer;
-	}
-
-	public JobCategory getJobCategory() {
-		return jobCategory;
-	}
-
-	public void setJobCategory(JobCategory jobCategory) {
-		this.jobCategory = jobCategory;
 	}
 
 	public List<JobApplication> getJobApplication() {
@@ -238,6 +230,14 @@ public class JobPosting {
 
 	public void setCityLocation(CityLocation cityLocation) {
 		this.cityLocation = cityLocation;
+	}
+
+	public JobCategory getJobCategory() {
+		return jobCategory;
+	}
+
+	public void setJobCategory(JobCategory jobCategory) {
+		this.jobCategory = jobCategory;
 	}
 
 }

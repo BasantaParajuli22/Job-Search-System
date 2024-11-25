@@ -24,7 +24,8 @@ public class JobApplicationService {
 	
 	
 	@Autowired
-	public JobApplicationService(JobApplicationRepository jobApplicationRepository,
+	public JobApplicationService(
+			JobApplicationRepository jobApplicationRepository,
 			JobSeekerRepository jobSeekerRepository,
 			JobPostingRepository jobPostingRepository,
 			EmployerRepository employerRepository

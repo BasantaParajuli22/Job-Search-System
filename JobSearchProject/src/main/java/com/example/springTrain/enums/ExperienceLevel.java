@@ -1,4 +1,4 @@
-package com.example.springTrain.dto;
+package com.example.springTrain.enums;
 
 public enum ExperienceLevel {
     ENTRY,

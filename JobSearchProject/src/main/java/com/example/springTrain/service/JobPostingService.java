@@ -10,11 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.example.springTrain.dto.CityLocation;
-import com.example.springTrain.dto.ExperienceLevel;
-import com.example.springTrain.dto.JobType;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.enums.CityLocation;
+import com.example.springTrain.enums.ExperienceLevel;
+import com.example.springTrain.enums.JobCategory;
+import com.example.springTrain.enums.JobType;
 import com.example.springTrain.repository.JobPostingRepository;
 
 @Service
@@ -47,6 +48,9 @@ public class JobPostingService {
         return CityLocation.values(); 
     }
     
+	public JobCategory[] getAllCategories() {
+		 return JobCategory.values(); 
+	}
     public JobPosting getJobPostingById(Integer jobId) {
         return jobPostingRepository.findByJobId(jobId);
     }
@@ -86,36 +90,34 @@ public class JobPostingService {
     
     //finding specific list of JobPosting of companyName
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
-        return jobPostingRepository.findByEmployerCompanyName(companyName);
+        return jobPostingRepository.findByEmployer_CompanyName(companyName);
 	}
-	
-	
-	//methods 
-	//to find all jobPostings according to search category
-	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
-    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
-	}
-	
-	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
-		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
+	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
+		return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 	}
 
 	
-	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
-    	return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
-	}
-	
-	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
-    	return jobPostingRepository.findAllJobPostingByTitle(title);
-	}
-	
-	public List<JobPosting> findAllJobPostingBySkills(String skills) {
-    	return jobPostingRepository.findAllJobPostingBySkills(skills);
-	}
-	
-	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
-    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
-	}
+//	//methods 
+//	//to find all jobPostings according to search category
+//	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
+//    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
+//	}
+//	
+//	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
+//		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
+//	}
+//
+//	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
+//    	return jobPostingRepository.findAllJobPostingByTitle(title);
+//	}
+//	
+//	public List<JobPosting> findAllJobPostingBySkills(String skills) {
+//    	return jobPostingRepository.findAllJobPostingBySkills(skills);
+//	}
+//	
+//	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
+//    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
+//	}
 
 	
 	//finding JobPosting By enum values 
@@ -130,6 +132,11 @@ public class JobPostingService {
 	public List<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel) {
     	return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel);
 	}
+
+	public List<JobPosting> findAllJobPostingByJobCategory(JobCategory jobCategory) {
+		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory);
+	}
+	
 
     //method to calculate remaining time to apply for job
 	public String getRemainingTime(LocalDate applicationDeadline) {
@@ -156,9 +163,9 @@ public class JobPostingService {
 		return jobPostingRepository.findAllByOrderByCreatedAtDesc(pageable);
 	}
 	
-	public Page<JobPosting> getPaginatedJobPostingByCategoryName(String categoryName,int page,int size) {
+	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName,pageable);
+		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
@@ -177,15 +184,17 @@ public class JobPostingService {
 	}
 	
 
-	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);
-    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
-	}
+//	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
+//		Pageable pageable = PageRequest.of(page, size);
+//    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
+//	}
+//	
 	
-	
-	public Integer countJobPostingByCategoryName(String categoryName) {
-		return jobPostingRepository.countJobPostingByJobCategory_CategoryName(categoryName);
+	public Integer countJobPostingByJobCategory(JobCategory jobCategory) {
+		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
 
 	}
+
+
 	
 }

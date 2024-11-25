@@ -1,9 +1,5 @@
 package com.example.springTrain.entity;
 
-import java.time.Instant;
-
-import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,8 +19,8 @@ public class CompanyReviews{
 	private int rating;
 	private String comment;
 	
-	@CreationTimestamp
-	private Instant reviewDate;
+//	@CreationTimestamp
+//	private Instant reviewDate;
 
 	public Integer getReviewId() {
 		return reviewId;
@@ -66,12 +62,6 @@ public class CompanyReviews{
 		this.comment = comment;
 	}
 
-	public Instant getReviewDate() {
-		return reviewDate;
-	}
 
-	public void setReviewDate(Instant reviewDate) {
-		this.reviewDate = reviewDate;
-	}
 	
 }

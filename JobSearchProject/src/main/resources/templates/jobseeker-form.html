@@ -12,19 +12,20 @@
 
 	<div class="maincontainer">
 		<!-- if not edit mode display -->
-    	<div class="headtitle" th:if="${!isEditMode}">
+    	<div class="headtitle" th:if="${isEditMode != null and !isEditMode}">
         	<h2>Get started with Us</h2>
         	<h4>JobSeeker Registration</h4>
     	</div>
     <div class="formtable">
 		<!-- url by string concatation-->
-        <form th:action="@{${!isEditMode} ? '/jobseeker/register' : '/jobseekers/profile/edit/' +${jobSeekerDTO.jobSeekerUsername}}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
-            <div class="form-group" th:if="${!isEditMode}"> 
-				
-				<!-- Name input -->
+			
+			<form th:action="@{${!isEditMode} ? '/jobseeker/register' : '/jobseekers/profile/edit/' +${jobSeekerDTO.jobSeekerUsername}}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
+            
+			<div class="form-group" th:if="${!isEditMode}"> 
+				<!-- cannot change username once created  -->
 				<label for="username">Name:</label>
 				<input type="text" id="username" th:field="*{jobSeekerUsername}" th:placeholder="${isEditMode}? 'Need to relogin if username is changed' : 'Enter your name'">
-
+				
 				<span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
 					<!--if there is no username in register table it wiil show error -->

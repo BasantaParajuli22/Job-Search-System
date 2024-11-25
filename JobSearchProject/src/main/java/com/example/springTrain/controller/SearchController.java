@@ -1,7 +1,5 @@
 package com.example.springTrain.controller;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +11,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.springTrain.dto.CityLocation;
-import com.example.springTrain.dto.ExperienceLevel;
-import com.example.springTrain.dto.JobType;
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobCategory;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.enums.CityLocation;
+import com.example.springTrain.enums.ExperienceLevel;
+import com.example.springTrain.enums.JobCategory;
+import com.example.springTrain.enums.JobType;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
-import com.example.springTrain.service.JobCategoryService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
 
@@ -31,8 +28,6 @@ public class SearchController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private JobCategoryService jobCategoryService;
 	@Autowired
 	private JobPostingService jobPostingService;
 	@Autowired
@@ -77,8 +72,9 @@ public class SearchController {
 	//HomePage
 	@GetMapping("/")
 	public String getHomepage(Model model) {
-		List<JobCategory> jobCategories = jobCategoryService.getAllCategories();
-		model.addAttribute("jobCategory", jobCategories);
+		
+		JobCategory[] jobCategories = jobPostingService.getAllCategories();
+		model.addAttribute("jobCategories", jobCategories);
 		
 		JobType[] jobTypes = jobPostingService.getAllJobTypes();
 		if(jobTypes!= null) {	
@@ -100,34 +96,34 @@ public class SearchController {
 	//Search by givng input can be 
 	//title or
 	//companyName
-	@GetMapping("/search")
-	public String getSearchByKeyword(Model model,
-			@RequestParam(name ="page", defaultValue = "0") int page, 
-	        @RequestParam(name ="size", defaultValue = "9") int size, 
-			@RequestParam("keyword")String keyword) {
-
-		Page<JobPosting> uniquejobPosts = jobPostingService.findAllJobPostingByKeyword(keyword,page,size);
-		
-	    model.addAttribute("jobPosts",uniquejobPosts);
-		return "jobPost";
-	}
-	
+//	@GetMapping("/search")
+//	public String getSearchByKeyword(Model model,
+//			@RequestParam(name ="page", defaultValue = "0") int page, 
+//	        @RequestParam(name ="size", defaultValue = "9") int size, 
+//			@RequestParam("keyword")String keyword) {
+//
+//		Page<JobPosting> uniquejobPosts = jobPostingService.findAllJobPostingByKeyword(keyword,page,size);
+//		
+//	    model.addAttribute("jobPosts",uniquejobPosts);
+//		return "jobPost";
+//	}
+//	
 	
 	//takes categoryName to display categoryName
-	@GetMapping("/search/byjobcategoryName/{categoryName}")
-	 public String searchByCategoryId(@PathVariable("categoryName") String categoryName,
+	@GetMapping("/search/byjobcategory/{jobCategory}")
+	 public String searchByCategoryId(@PathVariable("jobCategory") JobCategory jobCategory,
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
 	         @RequestParam(name ="size", defaultValue = "9") int size, 
 			 Model model) { 
 
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCategoryName(categoryName,page, size);
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(jobCategory,page, size);
         model.addAttribute("jobPosts", jobPostingPage);
         
         //to display total posts counts
-        Integer totalPosts = jobPostingService.countJobPostingByCategoryName(categoryName);
+        Integer totalPosts = jobPostingService.countJobPostingByJobCategory(jobCategory);
         model.addAttribute("totalPosts",totalPosts);
         
-	    model.addAttribute("filterName",categoryName);//jobPosts category/type/location/xplvl/location
+	    model.addAttribute("filterName",jobCategory);//jobPosts category/type/location/xplvl/location
 	    
 	    return "jobpost";
 	}

@@ -36,9 +36,9 @@
 	<div> 
 		<h1>Job Categories</h1>
 	    	<ul>
-	        	<li th:each="jobCategory : ${jobCategory}">
-	            	<a th:href="@{/search/byjobcategoryName/{categoryName}
-					(categoryName=${jobCategory.categoryName})}" th:text="${jobCategory.categoryName}">Category Name</a>
+	        	<li th:each="jobCategory : ${jobCategories}">
+	            	<a th:href="@{/search/byjobcategory/{jobCategory}
+					(jobCategory=${jobCategory})}" th:text="${jobCategory}">jobCategory</a>
 	        	</li>
 	    	</ul>
 	</div>

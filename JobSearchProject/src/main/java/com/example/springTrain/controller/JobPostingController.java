@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobCategory;
 import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
-import com.example.springTrain.service.JobCategoryService;
 import com.example.springTrain.service.JobPostingService;
 
 @Controller
@@ -33,9 +32,7 @@ public class JobPostingController {
 	private JobPostingService jobPostingService;
 	@Autowired
 	private EmployerService employerService;
-	@Autowired
-	private JobCategoryService jobCategoryService;
-	
+
 	//to create a jobposting 
 	//user must be authenticated and should be employer
 	@GetMapping("/new/create")
@@ -43,7 +40,6 @@ public class JobPostingController {
 	    
    	 	// Get the currently logged-in user's username
 		String username = UserAuthorization.getLoggedInUsername();
-
         // Find your custom User entity using the username           
         Employer employer = employerService.findByCompanyName(username); // Your custom method to find the User entity
         // If no employer is found or user is not authorized, redirect to login   
@@ -51,12 +47,7 @@ public class JobPostingController {
         	 logger.warn("User not suitable for creating jobposting");
             return "login";
          }
-        List<JobCategory> categories = jobCategoryService.getAllCategories();
-        if(categories == null) {
-       	 logger.warn("categories, data.sql may not has been exceuted");
-            return "login";
-         }
-        model.addAttribute("categories", categories);
+
         model.addAttribute("employer", employer);
         model.addAttribute("jobPosting", new JobPosting());  // Pass a new JobPosting object
         return "jobpostform";
@@ -110,8 +101,8 @@ public class JobPostingController {
           	 logger.warn("User not suitable for deleting jobposting");
         	return "login";
         }
-        Integer employerId = loggedInEmployer.getEmployerId();
         
+        Integer employerId = loggedInEmployer.getEmployerId();
         // Fetch the logged-in employerId andjob posting by jobId 
         JobPosting jobPosting = jobPostingService.getJobPostingByEmployerIdAndJobId(employerId, jobId);
         if (jobPosting == null) {
@@ -164,12 +155,10 @@ public class JobPostingController {
     	   logger.warn("employer cannot edit or not the one");
     	   return "login";
        }
-    // Proceed with the job post update if all checks pass 
-       List<JobCategory> categories = jobCategoryService.getAllCategories();
-       model.addAttribute("employer", employer);  
-
-       model.addAttribute("categories", categories);
-       model.addAttribute("jobPosting", jobPostId);
+       
+		model.addAttribute("employer", employer);  
+		model.addAttribute("jobPosting", jobPostId);
+		
 	    return "jobpostform";  
 	}
 	

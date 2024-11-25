@@ -1,6 +1,9 @@
 package com.example.springTrain.dto;
 
+import com.example.springTrain.enums.Usertype;
+
 public class JobSeekerDTO {
+	
 	private String jobSeekerUsername;
     private String password;
     private String confirmPassword;

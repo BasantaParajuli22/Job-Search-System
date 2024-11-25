@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.example.springTrain.dto.Usertype;
+import com.example.springTrain.enums.Usertype;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;

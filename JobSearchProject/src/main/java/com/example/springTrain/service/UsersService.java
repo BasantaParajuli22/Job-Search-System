@@ -3,8 +3,6 @@ package com.example.springTrain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
@@ -18,7 +16,6 @@ import jakarta.transaction.Transactional;
 @Service
 public class UsersService {
 	
-    private static final Logger logger = LoggerFactory.getLogger(Employer.class);
 
     private UsersRepository usersRepository;
     private JobSeekerRepository jobSeekerRepository;

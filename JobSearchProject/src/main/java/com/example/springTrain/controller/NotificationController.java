@@ -18,11 +18,8 @@ import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
-import com.example.springTrain.service.JobApplicationService;
-import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.NotificationService;
-import com.example.springTrain.service.SavedJobsService;
 import com.example.springTrain.service.UsersService;
 
 @Controller

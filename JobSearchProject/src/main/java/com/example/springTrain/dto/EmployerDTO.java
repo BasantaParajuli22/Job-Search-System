@@ -1,5 +1,7 @@
 package com.example.springTrain.dto;
 
+import com.example.springTrain.enums.Usertype;
+
 public class EmployerDTO {
 //	private String username;
 	private String companyName;

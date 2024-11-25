@@ -5,16 +5,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.NotificationRepository;
 
 @Service
 public class NotificationService {
+	
+	private NotificationRepository notificationRepository;
 
 	@Autowired
-	private NotificationRepository notificationRepository;
+	public NotificationService(NotificationRepository notificationRepository) {
+		this.notificationRepository = notificationRepository;
+	}
 	
 	//create notification by user and
 	//setting message and unread status and saving
