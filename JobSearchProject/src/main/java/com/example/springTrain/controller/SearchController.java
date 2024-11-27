@@ -109,66 +109,66 @@ public class SearchController {
 //	}
 //	
 	
-	//takes categoryName to display categoryName
-	@GetMapping("/search/byjobcategory/{jobCategory}")
-	 public String searchByCategoryId(@PathVariable("jobCategory") JobCategory jobCategory,
-			 @RequestParam(name ="page", defaultValue = "0") int page, 
-	         @RequestParam(name ="size", defaultValue = "9") int size, 
-			 Model model) { 
-
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(jobCategory,page, size);
-        model.addAttribute("jobPosts", jobPostingPage);
-        
-        //to display total posts counts
-        Integer totalPosts = jobPostingService.countJobPostingByJobCategory(jobCategory);
-        model.addAttribute("totalPosts",totalPosts);
-        
-	    model.addAttribute("filterName",jobCategory);//jobPosts category/type/location/xplvl/location
-	    
-	    return "jobpost";
-	}
-	
-	//search all jobPostings by jobType
-	@GetMapping("/search/byjobType/{jobType}")
-	 public String searchByJobType(@PathVariable("jobType") JobType jobType, 
-			 @RequestParam(name ="page", defaultValue = "0") int page, 
-	            @RequestParam(name ="size", defaultValue = "9") int size, 
-			 Model model) { 
-	    
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(jobType,page, size);
-        model.addAttribute("jobPosts", jobPostingPage);
-        
-	    model.addAttribute("filterName",jobType);
-	    return "jobpost";
-	}
-	
-	//search all jobPostings by experiencelevel
-	@GetMapping("/search/byexperiencelevel/{expLevel}")
-	 public String searchByExperiencelevel(@PathVariable("expLevel") ExperienceLevel expLevel,
-			 @RequestParam(name ="page", defaultValue = "0") int page, 
-	            @RequestParam(name ="size", defaultValue = "9") int size, 
-	            Model model) { 
-		
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByExpLevel(expLevel,page, size);
-        model.addAttribute("jobPosts", jobPostingPage);
-        
-	    model.addAttribute("filterName",expLevel);
-	    return "jobpost";
-	}
-	
-	@GetMapping("/search/bylocation/{location}")
-	 public String searchByLocation(@PathVariable("location") CityLocation location,
-			 @RequestParam(name ="page", defaultValue = "0") int page, 
-	            @RequestParam(name ="size", defaultValue = "9") int size, 
-	            Model model) { 
-		
-	    Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCityLocation(location,page, size);
-        model.addAttribute("jobPosts", jobPostingPage);
-        
-	    model.addAttribute("filterName",location);
-	    return "jobpost";
-	}
-	
+//	//takes categoryName to display categoryName
+//	@GetMapping("/search/byjobcategory/{jobCategory}")
+//	 public String searchByCategoryId(@PathVariable("jobCategory") JobCategory jobCategory,
+//			 @RequestParam(name ="page", defaultValue = "0") int page, 
+//	         @RequestParam(name ="size", defaultValue = "9") int size, 
+//			 Model model) { 
+//
+//        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(jobCategory,page, size);
+//        model.addAttribute("jobPosts", jobPostingPage);
+//        
+//        //to display total posts counts
+//        Integer totalPosts = jobPostingService.countJobPostingByJobCategory(jobCategory);
+//        model.addAttribute("totalPosts",totalPosts);
+//        
+//	    model.addAttribute("filterName",jobCategory);//jobPosts category/type/location/xplvl/location
+//	    
+//	    return "jobpost";
+//	}
+//	
+//	//search all jobPostings by jobType
+//	@GetMapping("/search/byjobType/{jobType}")
+//	 public String searchByJobType(@PathVariable("jobType") JobType jobType, 
+//			 @RequestParam(name ="page", defaultValue = "0") int page, 
+//	            @RequestParam(name ="size", defaultValue = "9") int size, 
+//			 Model model) { 
+//	    
+//        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(jobType,page, size);
+//        model.addAttribute("jobPosts", jobPostingPage);
+//        
+//	    model.addAttribute("filterName",jobType);
+//	    return "jobpost";
+//	}
+//	
+//	//search all jobPostings by experiencelevel
+//	@GetMapping("/search/byexperiencelevel/{expLevel}")
+//	 public String searchByExperiencelevel(@PathVariable("expLevel") ExperienceLevel expLevel,
+//			 @RequestParam(name ="page", defaultValue = "0") int page, 
+//	            @RequestParam(name ="size", defaultValue = "9") int size, 
+//	            Model model) { 
+//		
+//        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByExpLevel(expLevel,page, size);
+//        model.addAttribute("jobPosts", jobPostingPage);
+//        
+//	    model.addAttribute("filterName",expLevel);
+//	    return "jobpost";
+//	}
+//	
+//	@GetMapping("/search/bylocation/{location}")
+//	 public String searchByLocation(@PathVariable("location") CityLocation location,
+//			 @RequestParam(name ="page", defaultValue = "0") int page, 
+//	            @RequestParam(name ="size", defaultValue = "9") int size, 
+//	            Model model) { 
+//		
+//	    Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCityLocation(location,page, size);
+//        model.addAttribute("jobPosts", jobPostingPage);
+//        
+//	    model.addAttribute("filterName",location);
+//	    return "jobpost";
+//	}
+//	
 	
 //	//Search by givng input can be title companyName
 //	@GetMapping("/search/filter")

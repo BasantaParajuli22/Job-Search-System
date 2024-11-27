@@ -27,6 +27,7 @@ public class JobPostingService {
 	public JobPostingService(JobPostingRepository jobPostingRepository) {
 		this.jobPostingRepository = jobPostingRepository;
 	}
+	
 	//find all jobpostings
     public List<JobPosting> findAllJobPostings() {
         return jobPostingRepository.findAll();
@@ -91,9 +92,6 @@ public class JobPostingService {
     //finding specific list of JobPosting of companyName
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
         return jobPostingRepository.findByEmployer_CompanyName(companyName);
-	}
-	public List<JobPosting> findAllJobPostingByCompanyName(String companyName) {
-		return jobPostingRepository.findAllJobPostingsByEmployer_CompanyName(companyName);
 	}
 
 	
@@ -163,25 +161,25 @@ public class JobPostingService {
 		return jobPostingRepository.findAllByOrderByCreatedAtDesc(pageable);
 	}
 	
-	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
-	}
-	
-	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
-	}
-	
-	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
-	}
-	
-	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
-	}
+//	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
+//		Pageable pageable = PageRequest.of(page, size);		
+//		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
+//	}
+//	
+//	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
+//		Pageable pageable = PageRequest.of(page, size);		
+//		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
+//	}
+//	
+//	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
+//		Pageable pageable = PageRequest.of(page, size);		
+//		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
+//	}
+//	
+//	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
+//		Pageable pageable = PageRequest.of(page, size);		
+//		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
+//	}
 	
 
 //	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
@@ -190,10 +188,10 @@ public class JobPostingService {
 //	}
 //	
 	
-	public Integer countJobPostingByJobCategory(JobCategory jobCategory) {
-		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
-
-	}
+//	public Integer countJobPostingByJobCategory(JobCategory jobCategory) {
+//		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
+//
+//	}
 
 
 	

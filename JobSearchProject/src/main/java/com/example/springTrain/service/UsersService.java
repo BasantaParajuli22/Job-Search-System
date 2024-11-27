@@ -41,7 +41,7 @@ public class UsersService {
     //for storing data in User table first to generate id
     //and storing user_id in jobseeker and employer table for foreign key purposes
     //and storing data on jobseeker and employer table respectively
-    @Transactional
+    
     public void createJobSeeker(Users user, JobSeeker jobSeeker) {
         // Encode the user's password before saving 
     	//we save password only on user table
@@ -53,7 +53,7 @@ public class UsersService {
        jobSeekerRepository.save(jobSeeker);
     }
 
-    @Transactional
+    
     public void createEmployer(Users user, Employer employer) {
         user.setPassword(passwordEncoder.encode(user.getPassword())); 
 

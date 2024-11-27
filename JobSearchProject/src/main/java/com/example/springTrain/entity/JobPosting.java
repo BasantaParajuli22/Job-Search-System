@@ -39,7 +39,7 @@ public class JobPosting {
 	private Employer employer;
 	
 	//JobApplication should have foreign key of jobPosting 
-	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL)
     private List<JobApplication> JobApplication = new ArrayList<>();
 
 	@OneToMany(mappedBy ="jobPosting", cascade = CascadeType.ALL)

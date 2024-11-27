@@ -36,7 +36,6 @@ public class JobApplication{
 
 	private String applicationStatus;//changeable by employer
 	
-	
 	@CreationTimestamp
 	private Instant appliedAt;
 
