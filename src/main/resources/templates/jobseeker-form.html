@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job seeker form</title>
+	<link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+	<div class="maincontainer">
+		<!-- if not edit mode display -->
+    	<div class="headtitle">
+        	<h2>Get started with Us</h2>
+        	<h4>JobSeeker Registration</h4>
+    	</div>
+    <div class="formtable">
+		<!-- url by string concatation-->
+			
+			<form th:action="@{/jobseeker/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
+            
+			<div class="form-group"> 
+				<!-- cannot change username once created  -->
+				<label for="username">Name:</label>
+				<input type="text" id="username" th:field="*{jobSeekerUsername}" placeholder="Enter your username">
+				
+				<span id="nameError" class="error"></span>
+				<p th:if="${error?.username != null}">
+					<!--if there is no username in register table it wiil show error -->
+					<span th:text="${error.username}" class="error"></span>
+				</p>
+            </div>
+
+			<div class="form-group">
+				<!-- Email input -->
+				<label for="email">Email:</label>
+				<input type="text" id="email" th:field="*{email}" placeholder="example@example.com">
+				<span id="emailError" class="error"></span>
+				<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
+			    <p th:if="${error?.email != null}">
+			        <span th:text="${error.email}" class="error"></span>
+			    </p>
+			</div>
+
+            <div class="form-group">
+                <label for="number">Number:</label>
+                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:field="*{number}">
+                <span id="numberError" class="error"></span>
+            </div>
+
+			<div  class="form-group">
+			    <label for="address">Address:</label>
+			    <input type="text" name="address" id="address" placeholder="Enter your full address" value="Nepal" th:field="*{address}">
+			    <span id="addressError" class="error"></span>
+			</div>
+			<div  class="form-group">
+				    <label for="skills">Skills:</label>
+				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}">
+				    <span id="skillsError" class="error"></span>
+			</div>	
+				
+			<div  class="form-group">
+			    <label for="password">Password:</label>
+			    <input type="password" name="password" id="password" placeholder="Enter your password"  th:field="*{password}">
+			    <span id="passwordError" class="error"></span>
+			</div>
+
+			<div class="form-group">
+			        <label for="confirmPassword">Password:</label>
+					<input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm your password">
+					<span id="confirmpasswordError" class="error"></span>
+			</div>
+
+			
+			<div><input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" ></div>
+			
+            <div class="form-group">
+                <label for="terms">Terms and conditoins:</label><br>
+                <input type="checkbox" id="terms" name="terms" checked> I accept all the  
+                <a th:href="@{/}">terms and conditions</a>
+				<div id="termsError" class="error"></div>
+            </div>
+
+            <div class="form-group"><button type="submit">Register</button></div>
+            
+            <div class="form-group"> Already have an account <a th:href="@{/login}">Log in</a></div>
+        </form>
+    </div>
+</div>
+    <script th:src="@{/js/jobvalidate.js}"></script>
+</body>
+</html>

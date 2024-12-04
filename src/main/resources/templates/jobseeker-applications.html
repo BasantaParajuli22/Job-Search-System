@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Job Applications</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+    <main>
+        <!-- Display applied job applications -->
+        <div th:unless="${#lists.isEmpty(allJobApplicants)}">
+			<h1>My All Job Applications</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Status</th>
+                        <th>Applied At</th>
+						<th>Applied At</th>
+
+                        <th>Days Left</th> <!-- Days until the deadline -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="jobApplication, iterStat : ${allJobApplicants}">
+                        <td th:text="${jobApplication.jobPosting.title}">Job Title</td>
+                        <td th:text="${jobApplication.applicationStatus}">Status</td>
+                        <td th:text="${jobApplication.appliedAt}">JobPost CreatedAt</td>
+						<td th:text="${jobApplication.jobPosting.applicationDeadline}">Deadline</td>
+                        <td th:text="${applicationDeadline[iterStat.index]}">Days Left</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- Display saved job posts if they exist -->
+        <div th:unless="${#lists.isEmpty(savedPosts)}">
+			<h1>Saved Job Posts</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Application Deadline</th>
+						<th>Days left</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="savedPost,iterStat : ${savedPosts}">
+                        <td th:text="${savedPost.jobPosting.title}">Job Title</td>
+                        <td th:text="${savedPost.jobPosting.employer.companyName}">Company Name</td>
+                        <td th:text="${savedPost.jobPosting.cityLocation}">Location</td>
+                        <td th:text="${savedPost.jobPosting.jobType}">Job Type</td>
+						<td th:if="${savedDeadline != null}" th:text="${savedPost.jobPosting.applicationDeadline}">Deadline</td>
+						<td  th:if="${savedDeadline != null}"  th:text="${savedDeadline[iterStat.index]}">days left</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>       
+    </main>
+
+    <!-- Footer 
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+    -->
+</body>
+</html>

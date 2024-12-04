@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Applications for Employer's Job Posts</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+		
+    <h1>Applications Submitted to Your Job Posts</h1>
+
+    <div th:if="${allJobApplications.isEmpty()}">
+        <p>No applications found for your job posts.</p>
+    </div>
+
+    <div th:unless="${allJobApplications.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Job Seeker</th>
+					<th>Title</th>
+                    <th>Send email</th>
+                    <th>Application Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="jobApplication : ${allJobApplications}">
+					<td>
+						<a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}" 
+							th:text="${jobApplication.jobSeeker.jobSeekerUsername}"></a>					
+					</td>
+                    <td>
+						<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobApplication.jobPosting.jobId})}" 
+							th:text="${jobApplication.jobPosting.title}"></a>					
+					</td>
+					<td>
+					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.email}}"
+					       th:text="${jobApplication.jobSeeker.email}">Send email</a>
+					</td>
+                    <td th:text="${jobApplication.applicationStatus}">Application Status</td>
+                    <!-- Change or updating statuts of jobApplication -->
+					<td>
+                        <form th:action="@{/applications/submittedto/employer/statusUpdate(applicationId=${jobApplication.applicationId})}" method="post">
+							<!-- sending applicationId and employerId to update-->
+							<input type="hidden" name="applicationId" th:value="${jobApplication.applicationId}" />
+							<input type="hidden" name="employerId" th:value="${jobApplication.employer.employerId}" />
+
+							<select name="applicationStatus">
+                                <option value="Pending" th:selected="${jobApplication.applicationStatus == 'Pending'}">Pending</option>
+                                <option value="Reviewed" th:selected="${jobApplication.applicationStatus == 'Reviewed'}">Reviewed</option>
+                                <option value="Accepted" th:selected="${jobApplication.applicationStatus == 'Accepted'}">Accepted</option>
+                                <option value="Rejected" th:selected="${jobApplication.applicationStatus == 'Rejected'}">Rejected</option>
+                            </select>
+                            <button type="submit">Update Status</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

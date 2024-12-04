@@ -1,0 +1,223 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Main Container Styling */
+.maincontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    padding: 12px;
+    margin-top: 10%;
+}
+
+.headtitle {
+    flex-direction: column;
+}
+
+h2, h4 {
+    padding: 12px;
+    text-align: center;
+    color: #333;
+}
+
+
+/* Navigation Bar */
+nav {
+    background-color: #007BFF;
+    padding: 12px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between; /* Spread the items across */
+    align-items: center;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Move Login/Logout buttons to the right side */
+nav ul li:last-child {
+    margin-left: auto;
+}
+
+/* Form Styling */
+.formtable {
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.form-register {
+    background-color: transparent;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Limit width for larger screens */
+    margin: 0 auto;  /* Center the form */
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Password Field Group */
+.pass-group input[type="password"],
+.pass-group input[type="text"] {
+    width: 75%;
+}
+
+.passButton {
+    display: inline;
+    width: 20%;
+    padding: 2%;
+    outline: none;
+    color: #4cae4c;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+}
+
+.passButton:hover {
+    border: 1px solid #625050;
+}
+
+/* Form Focus */
+.form-group input:focus,
+.pass-group input:focus {
+    outline: none;
+    border-color: #5cb85c;
+}
+
+/* Error Message Styling */
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+/* General Button Styling */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+#logoutButton {
+    display: none;
+    background-color: #dc3545;
+}
+
+#logoutButton:hover {
+    background-color: #c82333;
+}
+
+/* Flex Utilities */
+.spacebetn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .maincontainer {
+        margin-top: 20%;
+    }
+
+    .form-register {
+		/* Make form take most of the screen on small devices */
+        width: 90%;  
+        padding: 15px;
+    }
+
+    h2, h4 {
+        font-size: 18px;
+    }
+
+    .form-group input {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-register {
+		/* Form takes nearly full width on very small devices */
+        width: 95%;  
+    }
+
+    button {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    h2, h4 {
+        font-size: 16px;
+    }
+}

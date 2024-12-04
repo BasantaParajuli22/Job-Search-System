@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="mainContainer">
+		<header th:replace="~{fragments/nav :: nav}"></header>
+
+		<h1>Welcome, Admin!</h1>
+
+		    <p>Admin Name: <span th:text="${admin.name}"></span></p>
+		    <p>Email: <span th:text="${admin.email}"></span></p>
+		    
+		    <!-- Show some admin dashboard links -->
+		    <h3>Admin Controls</h3>
+		    <ul>
+		        <li><a href="/admin/users">Manage Users</a></li>
+		        <li><a href="/admin/jobs">Manage Jobs</a></li>
+		    </ul>
+</body>
+</html>
+

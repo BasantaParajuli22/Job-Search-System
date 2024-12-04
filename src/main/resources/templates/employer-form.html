@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validator</title>
+	<link rel="stylesheet" th:href="@{/css/form.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+	<div class="maincontainer">
+        <div class="headtitle" >
+            <h2>Get started with Us</h2>
+            <h4>Employer Registration</h4>
+        </div>
+        <div class="formtable">
+			<form th:action="@{/employer/register}" method="post" id="registrationForm"  th:object="${employerDTO}" class="form-register">
+
+                <div class="form-group">
+                    <label for="companyName">Company/Organization Name:</label>
+                    <input type="text" name="companyName" id="name" placeholder="Enter your Company/Organization" th:field="*{companyName}">
+                    <span id="nameError" class="error"></span>
+                    <p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="text" name="email" id="email" placeholder="example@example.com" th:field="*{email}">
+                    <span id="emailError" class="error"></span>
+                    <span class="error" th:text="${emailExists}"></span>
+                    <p th:if="${error?.email != null}"><span th:text="${error.email}" class="error"></span></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Number:</label>
+                    <input type="number" name="contactNumber" id="number" placeholder="987653210" th:field="*{contactNumber}">
+                    <span id="numberError" class="error"></span>
+                </div>
+				
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" id="address" placeholder="Enter your address" th:field="*{address}">
+                    <span id="addressError" class="error"></span>
+                </div>
+				
+                <div class="form-group">
+                    <label for="website">Website:</label>
+                    <input type="text" name="website" id="website" placeholder="Enter your website" th:field="*{website}">
+                    <span id="websiteError" class="error"></span>
+                </div>
+				
+                <div class="form-group">
+                    <label for="companyDescription">Company Description:</label>
+                    <input type="text" name="companyDescription" id="companyDescription" placeholder="Company Description: Best company" th:field="*{companyDescription}">
+                    <span id="companyDescriptionError" class="error"></span>
+                </div>
+				
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" th:field="*{password}">
+                    <span id="passwordError" class="error"></span>
+                </div>
+				
+                <div class="form-group">
+                   	 <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm your password" th:field="*{confirmPassword}">
+                    <span id="confirmPasswordError" class="error"></span>
+                </div>
+               
+                <div class="form-group"><input type="hidden" name="usertype" id="usertype" value="EMPLOYER"></div>
+               
+				<div class="form-group">
+                	<label for="terms">Terms and Conditions:</label>
+               		<input type="checkbox" id="terms" name="terms" checked> I accept all the terms and conditions 
+                	<a th:href="@{/}">terms and conditions</a>
+                	<div id="termsError" class="error"></div>
+				</div>
+
+
+                <div class="form-group"><button type="submit">Register</button></div>
+                
+                <div class="form-group"> Already have an account? <a th:href="@{/login}">Log in</a></div>
+            </form>
+        </div>
+    </div>
+	
+    <script th:src="@{/js/employervalidate.js}"></script>
+</body>
+</html>

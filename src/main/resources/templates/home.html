@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Search System</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!--<div class="backImage"><img src="photo/freeimageai.jpg" ></div>-->
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+
+	<!-- Main Content -->
+	<div class="container">
+		
+	    <h1>Welcome to the Job Search System</h1>
+	    <p>Your one-stop solution to finding the perfect job or the ideal candidate.</p>
+
+	    <!-- Search Form -->
+		<!-- -->
+	    <form th:action="@{/search}" method="get">
+	        <label for="keyword">Search for jobs:</label>
+	        <input type="text" id="keyword" name="keyword" placeholder="Enter job title, skills, or company name">
+	        <button type="submit">Search</button>
+	    </form>
+		
+	    <!-- Search Results (if any) -->
+	    <div th:if="${keyword}">
+	        <h2 th:text="${keyword}"></h2>
+	    </div>
+	</div>
+
+
+	<div>
+		<div th:if="${jobSeekerCount}" th:text=" 'total jobSeeker ' + ${jobSeekerCount}"></div>
+		<div th:if="${employerCount}" th:text="  'total employer ' +  ${employerCount}"></div>
+		<div th:if="${jobPostingCount}" th:text="'total jobPosts ' + ${jobPostingCount}"></div>
+
+	</div>
+	<!-- Job Categories Section -->
+	<div>
+	    <h1>Job Categories</h1>
+	    <ul>
+	        <li th:each="jobCategory, iterStat : ${jobCategories}">
+	            <a th:href="@{/search/byjobcategory/{jobCategory}(jobCategory=${jobCategory})}" 
+	               th:text="${jobCategory}">Category</a>
+	            <span th:text="${categoryCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Job Types Section -->
+	<div>
+	    <h1>Job Types</h1>
+	    <ul th:if="${jobTypes}">
+	        <li th:each="jobType, iterStat : ${jobTypes}">
+	            <a th:href="@{/search/byjobtype/{jobType}(jobType=${jobType})}" 
+	               th:text="${jobType}">Type</a>
+	            <span th:text="${typeCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Experience Levels Section -->
+	<div>
+	    <h1>Experience Levels</h1>
+	    <ul th:if="${experienceLevel}">
+	        <li th:each="expLevel, iterStat : ${experienceLevel}">
+	            <a th:href="@{/search/byexperiencelevel/{expLevel}(expLevel=${expLevel})}" 
+	               th:text="${expLevel}">Experience Level</a>
+	            <span th:text="${xpCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- City Locations Section -->
+	<div>
+	    <h1>Locations</h1>
+	    <ul th:if="${cityLocation}">
+	        <li th:each="location, iterStat : ${cityLocation}">
+	            <a th:href="@{/search/bylocation/{location}(location=${location})}" 
+	               th:text="${location}">Location</a>
+	            <span th:text="${cityCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Footer -->
+	<footer th:replace="~{fragments/footer :: footer}"></footer>
+	   
+    <script th:src="@{/js/search.js}"></script>
+</body>
+</html>

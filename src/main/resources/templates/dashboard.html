@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+		
+    <h1>Dashboard</h1>
+
+    <!-- Job Postings Section -->
+    <h2>All Job Posts</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Job ID</th>
+                <th>Job Title</th>
+                <th>Employer</th>
+                <th>Location</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobPost : ${jobPosts}">
+                <td th:text="${jobPost.jobId}"></td>
+                <td th:text="${jobPost.title}"></td>
+                <td th:text="${jobPost.employer.companyName}"></td>
+                <td th:text="${jobPost.cityLocation}"></td>
+                <td th:text="${jobPost.salaryRange}"></td>
+				<td>
+					<form th:action="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" method="get" style="display:inline;">
+						<button type="submit" class="btn btn-danger">View</button>
+					</form>
+				</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Employers Section -->
+    <h2>Employers and their jobPosts</h2>
+	<a th:href="@{/view/employers}" style="display:inline;">
+				<button type="submit" class="btn btn-danger">View all employers</button>
+			</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Employer ID</th>
+                <th>Company</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="employer : ${employers}">
+                <td th:text="${employer.employerId}"></td>
+				<a th:href="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" 
+											th:text="${employer.companyName}">Company Name</a><br>
+                <td th:text="${employer.companyName}"></td>
+                <td th:text="${employer.email}"></td>
+				
+			<td>
+				<form th:action="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" method="get" style="display:inline;">
+					<button type="submit" class="btn btn-danger">View all  jobs</button>
+				</form>
+			</td>
+			
+		</tr>
+        </tbody>
+    </table>
+
+    <!-- Job Seekers Section -->
+    <h2>Job Seekers</h2>
+		<a th:href="@{/view/jobseekers}" style="display:inline;">
+			<button type="submit" class="btn btn-danger">View all jobSeekers</button>
+		</a>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Job Seeker ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            <!-- <th>Resume Link</th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="jobseeker : ${jobseekers}">
+                <td th:text="${jobseeker.jobSeekerId}"></td>
+                <td th:text="${jobseeker.users.username}"></td>
+                <td th:text="${jobseeker.email}"></td>
+            <!-- 	
+			<td><a th:href="${jobseeker.resumeLink}" th:text="${jobseeker.resumeLink}"></a></td>
+			-->   
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

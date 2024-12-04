@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: jobsearch-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: jobsearch
+      POSTGRES_PASSWORD: jobsearch
+      POSTGRES_DB: jobsearch
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    image: jobsearch:latest
+    container_name: jobsearch-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jobsearch
+      SPRING_DATASOURCE_USERNAME: jobsearch
+      SPRING_DATASOURCE_PASSWORD: jobsearch
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+    depends_on:
+      - db
+
+volumes:
+  db_data:

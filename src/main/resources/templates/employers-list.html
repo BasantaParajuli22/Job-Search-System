@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employers List</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+
+	<div th:if="${employers != null}">
+	    <h1>All Employers</h1>
+	    <div th:if="${employers.isEmpty()}">
+	        <p>No employers found.</p>
+	    </div>
+		<div>
+	    	<ul th:each="employer : ${employers}">
+	        	<p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
+				<p><strong>Company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
+				<p><strong>Contact Number Description:</strong> <span th:text="${employer.contactNumber}">contactNumber</span></p>
+				<p><strong>Company email:</strong> <span th:text="${employer.email}">Company email</span></p>
+				<p><a th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}">Visit profile</a></p>
+				<hr>
+	    	</ul>
+		</div>
+	</div>
+
+	<div th:if="${employer != null}">
+	    <h1>Employer Profile</h1>
+	    <p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
+		<p><strong>company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
+		<p><strong>Contact Number Description:</strong> <span th:text="${employer.contactNumber}">contactNumber</span></p>
+		<p><strong>Company email:</strong> <span th:text="${employer.email}">Company email</span></p>
+		<p><a th:href="@{/view/employers}">Back to EmployersList</a></p>
+
+	</div>
+
+
+</body>
+</html>
