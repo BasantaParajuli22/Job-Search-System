@@ -38,5 +38,9 @@ public class EmployerService {
     public List<Employer> findAllEmployers() {
         return employerRepository.findAll();
     }
+
+	public long countAllEmployers() {
+		return employerRepository.count();
+	}
 	
 }

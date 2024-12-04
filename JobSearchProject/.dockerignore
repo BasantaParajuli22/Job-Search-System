@@ -1,0 +1,23 @@
+# Ignore build files
+build/
+target/
+.gradle/
+.mvn/
+
+# Ignore IDE files
+.idea/
+.vscode/
+*.iml
+
+# Ignore log files
+*.log
+
+# Ignore test files
+src/test/
+
+# Ignore temporary files
+*.tmp
+*.swp
+
+# Ignore local environment files
+.env

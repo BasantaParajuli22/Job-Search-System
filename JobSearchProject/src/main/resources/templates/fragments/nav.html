@@ -3,50 +3,55 @@
      <ul>
          <li><a th:href="@{/}">Home</a></li>
 
-         <!-- Profile Link (for logged-in Job Seekers and Employers) -->
+         <!-- Profile Links  -->
          <li sec:authorize="hasRole('ROLE_JOBSEEKER')">
              <a th:href="@{/jobseekers/profile}">My Profile</a>
          </li>
          <li sec:authorize="hasRole('ROLE_EMPLOYER')">
              <a th:href="@{/employers/profile}">My Profile</a>
          </li>
-         
-         <!-- Admin Profile -->
-         <li sec:authorize="hasRole('ROLE_ADMIN')">
-             <a th:href="@{/admin/profile}">Admin Profile</a>
-         </li>
+  
+		 <!-- All Jobs (visible to all users) -->
+		 <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
 
          <!-- Job Seeker Specific Links -->
 		 <li th:if="${jobSeeker != null}">
-			<ul>
-         		<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+			<ul sec:authorize="hasRole('ROLE_JOBSEEKER')">
+				<li>
+					<a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
+				</li>
+         		<li>
          			<a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
          		</li>
-         		<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+         		<li>
          			<a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
          		</li>
-				<li sec:authorize="hasRole('ROLE_JOBSEEKER')">
-					<a th:href="@{/jobseekers/profile/edit/{jobSeekerUsername}(jobSeekerUsername=${jobSeeker.jobSeekerUsername})}">Edit Profile</a>
-				</li>
 			</ul>
 		 </li>
 		 <!-- Employer Specific Links -->
 		 <li th:if="${employer != null}">
 			<ul>
-		  		<li sec:authorize="hasRole('ROLE_EMPLOYER')">
-					<a th:href="@{/view/jobposts/self/{employerId}(employerId=${employer.employerId})}">My jobs</a>
-		  		</li>
-		  		<li sec:authorize="hasRole('ROLE_EMPLOYER')">
-					<a th:href="@{/view/applications/submittedto/employer/{employerId}(employerId=${employer.employerId})}">View Applicants</a>
-		  		</li>
 				<li sec:authorize="hasRole('ROLE_EMPLOYER')">
-					<a th:href="@{/employers/profile/edit/{CompanyName}(CompanyName=${employer.CompanyName})}">Edit Profile</a>
+					<a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
 				</li>
 		  	</ul>
 		 </li>
-         <!-- All Jobs (visible to all users) -->
-         <li><a th:href="@{/view/jobposts}">Jobs</a></li>
 
+		 <!-- Employer Specific Links -->
+		 <li>
+		 <ul sec:authorize="hasRole('ROLE_ADMIN')">
+		 	<li >
+		 		<a th:href="@{/view/dashboard}">Dashboard</a>
+		 	</li>
+			<li>
+				<a th:href="@{/view/employers}">All Employers</a>
+		 	</li>
+			<li >
+				<a th:href="@{/view/jobseekers}">All Jobseekers</a>
+			</li>						
+		  	</ul>
+		 </li>
+		 
          <!-- Register Links (only for non-authenticated users) for them to register -->
          <li sec:authorize="!isAuthenticated()">
              <a th:href="@{/jobseeker/register}">Register as Job Seeker</a>

@@ -2,6 +2,7 @@ package com.example.springTrain.service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.enums.CityLocation;
 import com.example.springTrain.enums.ExperienceLevel;
@@ -35,7 +37,7 @@ public class JobPostingService {
     public List<JobPosting> findAllByOrderByCreatedAtDesc() {
         return jobPostingRepository.findAllByOrderByCreatedAtDesc();
     }
-    
+
     //get values from JobType, ExperienceLevel, CityLocation enum values
     public JobType[] getAllJobTypes() {
         return JobType.values(); 
@@ -55,15 +57,16 @@ public class JobPostingService {
     public JobPosting getJobPostingById(Integer jobId) {
         return jobPostingRepository.findByJobId(jobId);
     }
-        
-    public JobPosting getJobPostingByEmployerId(Integer  employerId) {
+	public JobPosting getJobPostingByIdAndJobSekerId(Integer jobId, Integer jobSeekerId) {
+		return jobPostingRepository.findByJobIdAndJobApplication_JobSeeker_JobSeekerId(jobId,jobSeekerId);
+	}    
+	public List<JobPosting> findByEmployerCompanyName(String companyName) {
+		return jobPostingRepository.findByEmployer_CompanyName(companyName);
+
+	}
+    public List<JobPosting> getJobPostingByEmployerId(Integer  employerId) {
     	return jobPostingRepository.findByEmployer_EmployerId(employerId);
     }
-    
-//    public List<JobPosting> findRelatedJobPostings(String category, int employerId) {
-//        // Implement logic to find jobs related to the category or employer
-//        return jobPostingRepository.findByCategoryOrEmployer(category, employerId);
-//    }
     
     public JobPosting getJobPostingByEmployerIdAndJobId(Integer employerId, Integer jobId) {
     	return jobPostingRepository.findByEmployer_EmployerIdAndJobId(employerId,jobId);
@@ -72,6 +75,7 @@ public class JobPostingService {
     public JobPosting createJobPosting(JobPosting jobPosting, Employer employer) {
     	// Set the employer for the job posting
 	    jobPosting.setEmployer(employer);
+	    jobPosting.setAvailable(true);
         return jobPostingRepository.save(jobPosting);
     }
 
@@ -88,36 +92,38 @@ public class JobPostingService {
     public void deleteJobPosting(JobPosting jobPosting) {
         jobPostingRepository.delete(jobPosting);
     }
-    
+
+    // to calculate remaining time to apply for job
+	public String getRemainingTime(LocalDate applicationDeadline) {
+		 
+		//if deadline is before current time 
+		//applying time has passed already
+		if (applicationDeadline.isBefore(LocalDate.now())) {
+	        return "Application deadline has passed";
+	    }
+		//return days between applicationDeadline and current Date
+		long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), applicationDeadline);
+	    return daysLeft + " days ";		
+	}
+	
     //finding specific list of JobPosting of companyName
-	public List<JobPosting> findByEmployerCompanyName(String companyName) {
-        return jobPostingRepository.findByEmployer_CompanyName(companyName);
+	public List<JobPosting> findByEmployerId(Integer companyName) {
+        return jobPostingRepository.findByEmployer_EmployerId(companyName);
+	}
+	
+	//finding JobPosting in list
+	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
+    	return jobPostingRepository.findAllJobPostingByTitle(title);
+	}
+	
+	public List<JobPosting> findAllJobPostingBySkills(String skills) {
+    	return jobPostingRepository.findAllJobPostingBySkills(skills);
+	}
+	
+	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
+    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
 	}
 
-	
-//	//methods 
-//	//to find all jobPostings according to search category
-//	public List<JobPosting> findAllJobPostingByCategoryId(Integer categoryId) {
-//    	return jobPostingRepository.findAllJobPostingByJobCategory_CategoryId(categoryId);
-//	}
-//	
-//	public List<JobPosting> findAllJobPostingByCategoryName(String categoryName) {
-//		return jobPostingRepository.findAllJobPostingByJobCategory_CategoryName(categoryName);
-//	}
-//
-//	public List<JobPosting> findAllJobPostingByJobTitle(String title) {
-//    	return jobPostingRepository.findAllJobPostingByTitle(title);
-//	}
-//	
-//	public List<JobPosting> findAllJobPostingBySkills(String skills) {
-//    	return jobPostingRepository.findAllJobPostingBySkills(skills);
-//	}
-//	
-//	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
-//    	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
-//	}
-
-	
 	//finding JobPosting By enum values 
 	public List<JobPosting> findAllJobPostingByCityLocation(CityLocation location) {
 		return jobPostingRepository.findAllJobPostingByCityLocation(location);
@@ -135,63 +141,96 @@ public class JobPostingService {
 		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory);
 	}
 	
-
-    //method to calculate remaining time to apply for job
-	public String getRemainingTime(LocalDate applicationDeadline) {
-		 
-		//if deadline is before current time 
-		//applying time has passed already
-		if (applicationDeadline.isBefore(LocalDate.now())) {
-	        return "Application deadline has passed";
-	    }
-		
-		//return days between applicationDeadline and current Date
-		long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), applicationDeadline);
-	    return daysLeft + " days ";		
-	}
-
 	
-	//to get page and size
+	//to get jobPosting in pages in Descending order
 	public Page<JobPosting> getPaginatedJobPostingInDesc(int page, int size) {
-		
 		Pageable pageable = PageRequest.of(page, size);
-		System.out.println("Page Requested: " + page);
-		System.out.println("Page Size: " + size);
-
 		return jobPostingRepository.findAllByOrderByCreatedAtDesc(pageable);
 	}
 	
-//	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
-//		Pageable pageable = PageRequest.of(page, size);		
-//		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
-//	}
-//	
-//	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
-//		Pageable pageable = PageRequest.of(page, size);		
-//		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
-//	}
-//	
-//	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
-//		Pageable pageable = PageRequest.of(page, size);		
-//		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
-//	}
-//	
-//	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
-//		Pageable pageable = PageRequest.of(page, size);		
-//		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
-//	}
+	//to find jobPosting in pages 
+	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
+	}
+	
+	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);		
+		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
+	}
 	
 
-//	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
-//		Pageable pageable = PageRequest.of(page, size);
-//    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
-//	}
-//	
+	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size);
+    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
+	}
 	
-//	public Integer countJobPostingByJobCategory(JobCategory jobCategory) {
-//		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
-//
-//	}
+	public Integer countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {
+		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
+	}
+	
+	//to count jobPostings
+	public List<Integer> countJobPostingByJobCategory() {
+		JobCategory[] types = JobCategory.values(); 
+		ArrayList<Integer> countList = new ArrayList<>();
+
+		for (JobCategory ty : types) {
+			int count =  jobPostingRepository.countJobPostingByJobCategory(ty);
+			countList.add(count);
+		}
+		return countList;
+	}
+
+
+
+	public List<Integer> countJobPostingOfJobType() {
+		JobType[] types = JobType.values(); 
+		ArrayList<Integer> countList = new ArrayList<>();
+		
+		for (JobType ty : types) {
+			int count =  jobPostingRepository.countJobPostingByJobType(ty);
+			countList.add(count);
+		}
+		return countList;
+
+	}
+
+	public List<Integer> countJobPostingOfExpType() {
+		ExperienceLevel[] types = ExperienceLevel.values(); 
+		ArrayList<Integer> countList = new ArrayList<>();
+		
+		for (ExperienceLevel ty : types) {
+			int count =  jobPostingRepository.countJobPostingByExperienceLevel(ty);
+			countList.add(count);
+		}
+		return countList;
+	}
+
+	public List<Integer> countJobPostingOfCityLocation() {
+		CityLocation[] types = CityLocation.values(); 
+		ArrayList<Integer> countList = new ArrayList<>();
+		
+		for (CityLocation ty : types) {
+			int count =  jobPostingRepository.countJobPostingByCityLocation(ty);
+			countList.add(count);
+		}
+		return countList;
+	}
+
+	public long countAllJobPosting() {
+		return jobPostingRepository.count();
+	}
+
 
 
 	

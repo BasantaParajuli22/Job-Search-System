@@ -12,8 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.entity.Employer;
@@ -21,6 +19,10 @@ import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.SavedJobs;
+import com.example.springTrain.enums.CityLocation;
+import com.example.springTrain.enums.ExperienceLevel;
+import com.example.springTrain.enums.JobCategory;
+import com.example.springTrain.enums.JobType;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
@@ -29,7 +31,6 @@ import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.SavedJobsService;
 
 
-@RequestMapping("/view")
 @Controller
 public class ViewController {
 
@@ -63,15 +64,21 @@ public class ViewController {
     
     @ModelAttribute
     public void addEmployerToModel(Model model) {
-    	//getting loggedinEmployerUsername in string
         String username = UserAuthorization.getLoggedInEmployerUsername();
-        if (username != null) {//if found finding in employer entity
+        
+        // Debugging: Check the employer's username
+        System.out.println("Logged-in employer username: " + username);
+        
+        if (username != null) {
             Employer employer = employerService.findByCompanyName(username);
-            if (employer != null) {//if found adding to model
+            
+            if (employer != null) {
                 model.addAttribute("employer", employer);
-            } 
+            }
         }
     }
+
+    
 //    @ModelAttribute
 //    public void addAdminToModel(Model model) {
 //        String username = UserAuthorization.getLoggedInUsername();
@@ -83,8 +90,54 @@ public class ViewController {
 //        }
 //    }
     
+    
+	//HomePage
+	@GetMapping("/")
+	public String getHomepage(Model model) {
+		
+		JobCategory[] jobCategories = jobPostingService.getAllCategories();
+		List<Integer> categoryCount = jobPostingService.countJobPostingByJobCategory();
+		
+		model.addAttribute("jobCategories", jobCategories);
+		model.addAttribute("categoryCount",categoryCount);
+
+		
+		JobType[] jobTypes = jobPostingService.getAllJobTypes();
+		List<Integer> typeCount = jobPostingService.countJobPostingOfJobType(); 
+		
+		model.addAttribute("jobTypes", jobTypes);
+		model.addAttribute("typeCount",typeCount);
+
+	
+		ExperienceLevel[] experienceLevel = jobPostingService.getAllExperienceLevel();
+		List<Integer> xpCount = jobPostingService.countJobPostingOfExpType(); 
+
+		model.addAttribute("experienceLevel", experienceLevel);
+		model.addAttribute("xpCount",xpCount);
+
+		CityLocation[] cityLocation = jobPostingService.getAllCityLocation();
+		List<Integer> cityCount = jobPostingService.countJobPostingOfCityLocation(); 
+		
+		model.addAttribute("cityLocation", cityLocation);
+		model.addAttribute("cityCount",cityCount);
+
+		
+		long jobSeekerCount = jobSeekerService.countAlljobSeekers();
+		long employerCount = employerService.countAllEmployers();
+		long jobPostingCount = jobPostingService.countAllJobPosting();
+
+		
+		model.addAttribute("jobSeekerCount", jobSeekerCount);
+		model.addAttribute("employerCount",employerCount);
+		model.addAttribute("jobPostingCount",jobPostingCount);
+
+		
+		return "home";
+	}
+	
+	
 	//Dashboard which displays all data
-	@GetMapping("/dashboard")
+	@GetMapping("/view/dashboard")
 	public String dashBoard(Model model) {
 		
 		 List<JobPosting> jobPosts = jobPostingService.findAllJobPostings();		 	
@@ -98,14 +151,15 @@ public class ViewController {
 		 return "dashboard";
 	}
 	//display all lists of employers
-	@GetMapping("employers")
+	@GetMapping("/view/employers")
 	public String listAllEmployers(Model model) {
 		List<Employer> employers = employerService.findAllEmployers();
 		model.addAttribute("employers",employers); 
 		return "employers-list";
 	}
+	
 	//display specific employers profile
-	@GetMapping("/employers/profile/{employerId}")
+	@GetMapping("/view/employers/profile/{employerId}")
 	public String listSpecificEmployer(Model model,
 			@PathVariable ("employerId") Integer employerId) {
 		
@@ -116,68 +170,77 @@ public class ViewController {
 	
 	
 	//display all lists of jobseekers
-	@GetMapping("/jobseekers")
+	@GetMapping("/view/jobseekers")
 	public String listAllJobseekers(Model model) {
 		 List<JobSeeker> jobSeekers = jobSeekerService.findAllJobSeekers();
 		 model.addAttribute("jobSeekers",jobSeekers);	        
 		return "jobseekers-list";
 	}
+	
 	//display specific jobseekers profile
-	@GetMapping("/jobseekers/profile/{jobSeekerId}")
+	@GetMapping("/view/jobseekers/profile/{jobSeekerId}")
 	public String listSpecificJobseeker(Model model,
 			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
 		
 		JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		model.addAttribute("jobSeeker",jobSeeker);	        
-		return "jobseekers-list";
+		return "jobseeker-profile";
 	}
 	
-	
-//	//view all jobposts without restrictions in desc order
-//	//no login required
-//	@GetMapping("/jobposts")
-//	public String listAllJobPostings(Model model) {
-//		
-//		 List<JobPosting> jobPosts = jobPostingService.findAllByOrderByCreatedAtDesc();		 	
-//		 model.addAttribute("jobPosts",jobPosts); 
-//		 
-//		return "jobpost";
-//	}
-	
-	
 	//displaying jobPosts in Pages
-	@GetMapping("/jobposts")
+	@GetMapping("/view/jobposts")
     public String getPaginatedJobPostings(
             @RequestParam(name ="page", defaultValue = "0") int page, 
             @RequestParam(name ="size", defaultValue = "9") int size, 
-            Model model) {
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingInDesc(page, size);
-        model.addAttribute("jobPosts", jobPostingPage);
-        System.out.println("Total Pages: " + jobPostingPage.getTotalPages());
-        System.out.println("Current Page: " + jobPostingPage.getNumber());
-        System.out.println("Job Posts Content: " + jobPostingPage.getContent().size());
-        System.out.println("Is Empty: " + jobPostingPage.isEmpty());
+            Model model,
+            @ModelAttribute ("employer") Employer employer) {
+		
+        	Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingInDesc(page, size);
+        	model.addAttribute("jobPosts", jobPostingPage);
+//        System.out.println("Total Pages: " + jobPostingPage.getTotalPages());
+//        System.out.println("Current Page: " + jobPostingPage.getNumber());
+//        System.out.println("Job Posts Content: " + jobPostingPage.getContent().size());
+//        System.out.println("Is Empty: " + jobPostingPage.isEmpty());
+
+        	
+        //if same employer jobPosting and same loggedin employer jobPosting
+        //edit and delete option available
+        Integer employerId = employer.getEmployerId();
+        if(employerId != null) {
+        	Employer loggedInEmployer  = employerService.findByEmployerId(employerId); 
+        	if(loggedInEmployer != null) {
+        		model.addAttribute("loggedInEmployer",loggedInEmployer);
+        	}else {
+        		model.addAttribute("loggedInEmployer",null);
+        	}
+        }
 
         return "jobpost";
     }
 	
 	//view Specific jobpost
-	//no login required
+	//login required
 	//finds the object of the id which is only one
 	//or sends jobposting not found
-	@GetMapping("/jobposts/details/{jobId}")
+	@GetMapping("/view/jobposts/details/{jobId}")
 	public String viewSpecificJobPost(Model model,
-			@PathVariable("jobId") Integer jobId) {
+			@PathVariable("jobId") Integer jobId,
+			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 		
 		// Fetch the job post by ID
-	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
-	    model.addAttribute("jobPost", jobPost);
+	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);	    
+	    Integer jobSeekerId = jobSeeker.getJobSeekerId();
 	    
-	    // Fetch related jobs, for example by category or employer
-		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
-		// Add the job details to the model
-		
-		//model.addAttribute("relatedJobs", relatedJobs); 
+	    //checking if already applied by jobseeker or not
+	    //if  jobid jobseekerid are found then already applied 
+	    JobApplication appliedjobPost = jobApplicationService.getJobPostingByJobIdAndJobSekerId(jobId,jobSeekerId);
+	    if(appliedjobPost != null) {
+		    model.addAttribute("appliedjobPost", appliedjobPost);
+	    }
+	    SavedJobs savedjobPost = savedJobsService.getJobPostingByJobIdAndJobSekerId(jobId,jobSeekerId);
+	    if(savedjobPost != null) {
+		    model.addAttribute("savedjobPost", savedjobPost);
+	    }
 	    
 	    //getting applicationDeadline and checking remaining time
 	    LocalDate applicationDeadline = jobPost.getApplicationDeadline();
@@ -185,150 +248,52 @@ public class ViewController {
 		    String deadlineDays = jobPostingService.getRemainingTime(applicationDeadline);
 			model.addAttribute("deadlineDays", deadlineDays);
 	    }
+	    // Fetch related jobs, for example by category or employer
+		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
+		//model.addAttribute("relatedJobs", relatedJobs); 
+	    
+	    model.addAttribute("jobPost", jobPost);
+	    
+	    
 	    return "jobListing";  
 	}
 	
 	//view all jobposts of specific employer
 	//by using employerId
 	//no login required
-	@GetMapping("/jobposts/of/employer/{employerId}")
+	@GetMapping("/view/jobposts/of/employer/{employerId}")
 		public String listAllJobPostsOfEmployer(Model model,
-			@PathVariable ("employerId") Integer employerId) {
+			@PathVariable ("employerId") Integer employerId,
+			@ModelAttribute("employer")Employer employer) {
 			
-		//find companyName by employerId
-		Employer employer = employerService.findByEmployerId(employerId);
 		
-		if (employer != null) {
-			String companyName = employer.getCompanyName();
-	        List<JobPosting> myJobPosts = jobPostingService.findByEmployerCompanyName(companyName);
+		Employer submittedEmployer = employerService.findByEmployerId(employerId);
+			
+		if (submittedEmployer != null) {
+	        List<JobPosting> myJobPosts = jobPostingService.findByEmployerId(employerId);
+	        model.addAttribute("employer",submittedEmployer);
 	        model.addAttribute("myJobPosts", myJobPosts);
-	    } else {
-        	logger.warn("No companyName found for username: ");
-	        return "login";
 	    }
-		return "employers-jobposts";
+//		Employer loggedInEmployer = employerService.findByEmployerId(employer.getEmployerId());
+//		
+//		if(submittedEmployer.getEmployerId().equals(loggedInEmployer.getEmployerId())) {
+//			
+//			return"redirect:/employers/profile";
+//			
+//		}
+
+		//checking if loginEmployer is present or not
+		if(employerId != null) {
+        	Employer loggedInEmployer  = employerService.findByEmployerId(employerId); 
+        	if(loggedInEmployer != null) {
+        		model.addAttribute("loggedInEmployer",loggedInEmployer);
+        	}else {
+        		model.addAttribute("loggedInEmployer",null);
+        	}
+        }
+
+        
+		return "employer-profile";
 	}	
 	
-	//view all jobposts of mySelf only 
-	//using own employerId 
-	//login required
-	@GetMapping("/jobposts/self/{employerId}")
-	public String listAllMyJobPosts(Model model,
-			@PathVariable ("employerId") Integer employerId) {
-			
-		String username = UserAuthorization.getLoggedInUsername();
-
-		Employer loggedinEmployer = employerService.findByCompanyName(username);
-		Employer submittedEmployer = employerService.findByEmployerId(employerId);
-		if(!loggedinEmployer.equals(submittedEmployer)) {	
-        	logger.warn("Not a same employerId so cannot view jobposts ");
-			return "redirect:/view/jobposts";
-		}
-		
-		String companyName = submittedEmployer.getCompanyName();
-		//to findAllJobPostingsByEmployer
-		List<JobPosting> myJobPosts =jobPostingService.findByEmployerCompanyName(companyName);
-		
-		model.addAttribute("myJobPosts",myJobPosts);	        
-		return "employers-jobposts";
-	}		
-		
-	
-	
-	//view all lists of my JobPosts Applicants of an employer
-	//login required
-	//same employer can only see JobPosts Applicants
-	@GetMapping("/applications/submittedto/employer/{employerId}")
-	public String listAllJobApplicants(Model model,
-			@PathVariable ("employerId") Integer employerId) {
-			
-		String username = UserAuthorization.getLoggedInUsername();
-		
-		Employer companyName = employerService.findByCompanyName(username);
-		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
-		if(!companyName.equals(submittedCompanyName)) {	
-        	logger.warn("Not a same employerId so cannot view jobApplicants ");
-			return "redirect:/view/jobposts";
-		}
-		
-		 List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployer(companyName);
-		if(allJobApplications == null) {
-        	logger.warn("Couldnot find the jobApplications");
-			return "redirect:/view/jobposts";
-		}
-		 model.addAttribute("allJobApplications",allJobApplications);	        
-		return "application-all";
-	}
-	
-	//view all lists of myJobPosts Applicants submitted  by the jobseeker
-	//viewing all aplications i applied to 
-	//login required
-	@GetMapping("application/submittedby/jobseeker/{jobSeekerId}")
-	public String listAllOfMyAppliedJobPosts(Model model,
-			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
-			
-		String username = UserAuthorization.getLoggedInUsername();
-		
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
-		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
-        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
-			return "redirect:/view/jobposts";
-		}
-		
-		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeeker(loggedinJobSeeker);
-		if(allJobApplicants == null) {
-        	logger.warn("Couldnot find the jobApplications ");
-			return "redirect:/view/jobposts";
-		}
-
-		model.addAttribute("allJobApplicants",allJobApplicants);	        
-		return "jobseeker-applications";
-	}
-	
-	// Update application status for a specific job application
-	@PostMapping("/applications/submittedto/employer/statusUpdate")
-	public String updateApplicationStatus(
-	    @RequestParam("applicationId") Integer applicationId,
-	    @RequestParam("applicationStatus") String applicationStatus,
-	    @RequestParam("employerId") Integer employerId) {
-		
-		//calling to save changed status 
-		jobApplicationService.updateStatus(applicationId,applicationStatus);
-	    
-	    // Redirect back to the list of job applications for the specific employer
-	    return "redirect:/view/applications/submittedto/employer/" + employerId;
-	}
-
-
-	
-	//view all lists of myJobPosts Saved submitted  by the jobseeker
-	//viewing all aplications i Saved to 
-	//login required
-	@GetMapping("/savedjobs/submittedby/jobseeker/{jobSeekerId}")
-	public String listAllOfMySavedJobPosts(Model model,
-			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
-			
-		String username = UserAuthorization.getLoggedInUsername();
-		
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
-		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
-        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
-			return "redirect:/view/jobposts";
-		}
-		
-		List<SavedJobs> savedPosts = savedJobsService.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
-		if(savedPosts == null) {
-        	logger.warn("Couldnot find the savedJobs ");
-			return "redirect:/view/jobposts";
-		}
-
-		model.addAttribute("savedPosts",savedPosts);	        
-		return "savedJobs";
-	}
-	//view a certain jobseeker details for searching purposes
-
-	//view a certain employer details for searching purposes
-		
 }

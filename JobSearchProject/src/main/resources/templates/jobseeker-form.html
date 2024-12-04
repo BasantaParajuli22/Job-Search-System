@@ -12,19 +12,19 @@
 
 	<div class="maincontainer">
 		<!-- if not edit mode display -->
-    	<div class="headtitle" th:if="${isEditMode != null and !isEditMode}">
+    	<div class="headtitle">
         	<h2>Get started with Us</h2>
         	<h4>JobSeeker Registration</h4>
     	</div>
     <div class="formtable">
 		<!-- url by string concatation-->
 			
-			<form th:action="@{${!isEditMode} ? '/jobseeker/register' : '/jobseekers/profile/edit/' +${jobSeekerDTO.jobSeekerUsername}}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
+			<form th:action="@{/jobseeker/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
             
-			<div class="form-group" th:if="${!isEditMode}"> 
+			<div class="form-group"> 
 				<!-- cannot change username once created  -->
 				<label for="username">Name:</label>
-				<input type="text" id="username" th:field="*{jobSeekerUsername}" th:placeholder="${isEditMode}? 'Need to relogin if username is changed' : 'Enter your name'">
+				<input type="text" id="username" th:field="*{jobSeekerUsername}" placeholder="Enter your username">
 				
 				<span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
@@ -59,17 +59,8 @@
 				    <label for="skills">Skills:</label>
 				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}">
 				    <span id="skillsError" class="error"></span>
-				</div>
-				<!-- 
-				<div class="form-group">
-				    <label for="gender">Gender:</label>
-					<input type="radio" id="genderMale" name="genderGroup" value="male"> Male
-					<input type="radio" id="genderFemale" name="genderGroup" value="female"> Female
-					<input type="radio" id="genderOthers" name="genderGroup" value="others"> Others
-					<div id="genderError" class="error"></div>
-				</div>
-				-->		
-			<div  th:if="${!isEditMode}">
+			</div>	
+				
 			<div  class="form-group">
 			    <label for="password">Password:</label>
 			    <input type="password" name="password" id="password" placeholder="Enter your password"  th:field="*{password}">
@@ -81,7 +72,7 @@
 					<input type="password" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" placeholder="Confirm your password">
 					<span id="confirmpasswordError" class="error"></span>
 			</div>
-			</div>
+
 			
 			<div><input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" ></div>
 			

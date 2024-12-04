@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
-import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobPostingService;
@@ -112,7 +111,7 @@ public class JobPostingController {
         
         // Otherwise, proceed with deletion
         jobPostingService.deleteJobPosting(jobPosting);
-        return "redirect:/view/jobposts";
+        return "redirect:/employers/profile";
     	
     }
     
@@ -143,7 +142,7 @@ public class JobPostingController {
        //This is crucial for security, as employers should only be able to edit their own job posts.
        // Check if the job being edited matches any of the logged-in employer's job posts
        boolean canEdit = loggedInEmployer.stream()
-                           .anyMatch(post -> post.getJobId() == jobId);
+                           .anyMatch(post -> post.getJobId().equals(jobId));
 
        if (!canEdit) {
     	   logger.warn("The logged-in user does not have permission to edit job post with ID:" , jobId);

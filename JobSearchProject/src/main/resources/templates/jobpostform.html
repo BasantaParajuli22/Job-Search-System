@@ -118,9 +118,12 @@
 		<!-- Remote Job cannot set this nullable -->
 		<div>
 		    <label for="isRemote">Is this job remote?if Yes</label>
-		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}"> <!-- Use 'remote' here -->
+		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}" > 
 		</div>
-		
+		<!-- set availability-->
+		<div>
+		    <input type="hidden" id="isRemote" name="available" th:field="*{available}" > 
+		</div>
         <!-- Submit and Cancel Buttons -->
         <div>
             <button type="submit">Save</button>

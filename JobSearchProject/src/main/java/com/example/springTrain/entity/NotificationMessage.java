@@ -4,6 +4,8 @@ import java.time.Instant;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class NotificationMessage{
 	private Integer notificationId;
 	
 	@ManyToOne
+	@JsonIgnore 
 	@JoinColumn(name ="userId",referencedColumnName ="userId", nullable = false)
 	private Users users;
 	

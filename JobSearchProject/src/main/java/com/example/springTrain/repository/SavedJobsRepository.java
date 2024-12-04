@@ -11,8 +11,8 @@ import com.example.springTrain.entity.SavedJobs;
 @Repository
 public interface SavedJobsRepository extends JpaRepository<SavedJobs,Integer> {
 
-	SavedJobs findBySavedIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
-
 	List<SavedJobs> findAllSavedJobsByJobSeeker(JobSeeker loggedinJobSeeker);
+
+	SavedJobs findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
 
 }

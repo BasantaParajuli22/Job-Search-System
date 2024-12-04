@@ -64,15 +64,33 @@
 		    <span th:text="'Updated on: ' + ${jobPost.updatedAt}"></span>
 		</div>
 		
-		<!-- only display if jobSeeker object is not null-->
-		<td>
-			<form th:if="${jobSeeker != null}"
-			th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{companyName}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},companyName=${jobPost.employer.companyName})}" method="post">
-			    <!-- Uncomment if CSRF protection is needed -->
-			    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		<div sec:authorize="hasRole('ROLE_JOBSEEKER')">
+		<!-- if appliedjobPost is found that means its already applied then cannot apply-->
+			<div th:if="${appliedjobPost != null}">
+				<button>Applied</button>
+			</div>
+   		 	<div th:if="${appliedjobPost == null}">
+				<form th:if="${jobSeeker != null}"
+					th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{companyName}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},companyName=${jobPost.employer.companyName})}" method="post">
+			    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 			    <button type="submit">Apply</button>
-			</form>
-		</td>
+				</form>
+			</div>
+			
+			<!-- if savedjobPost is found that means its already saved -->
+			<div th:if="${savedjobPost != null}">
+				<button>Saved</button>
+			</div>
+			<!-- Save Job Button -->
+			<div th:if="${savedjobPost == null}">		
+				<div th:if="${jobSeeker != null}" >
+		    		<form th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post">
+		        		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		        		<button type="submit" class="buttonSmall">Save job</button>
+		    		</form>
+				</div>
+			</div>
+		</div>
 <!-- 
         <div class="related-jobs">
             <h3>Related Jobs</h3>

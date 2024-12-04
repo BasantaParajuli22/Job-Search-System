@@ -28,6 +28,7 @@
     	</div>
 	</div>
 	<!-- Display specific job seeker's profile if jobSeeker is available -->
+	<!---->
 	<div th:if="${jobSeeker != null}">
 	    <h2>Profile of <span th:text="${jobSeeker.jobSeekerUsername}">Username</span></h2>
 	    <p><strong>Email:</strong> <span th:text="${jobSeeker.email}">Email</span></p>

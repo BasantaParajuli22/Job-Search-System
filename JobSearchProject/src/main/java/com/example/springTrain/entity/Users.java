@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.example.springTrain.enums.Usertype;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -34,6 +35,7 @@ public class Users {
 	
 	//one user can have many  notification
 	@OneToMany(mappedBy ="users", cascade = CascadeType.ALL)
+	@JsonIgnore 
 	private List<NotificationMessage> notification;
 	
 	//this means that Employer and JobSeeker entity class needs to have users 
@@ -101,6 +103,9 @@ public class Users {
 	}
 	public void setNotification(List<NotificationMessage> notification) {
 		this.notification = notification;
+	}	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	    
 	

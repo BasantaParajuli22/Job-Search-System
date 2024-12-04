@@ -1,5 +1,7 @@
 package com.example.springTrain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,8 +12,6 @@ import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.EmployerRepository;
 import com.example.springTrain.repository.JobSeekerRepository;
 import com.example.springTrain.repository.UsersRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class UsersService {
@@ -76,6 +76,14 @@ public class UsersService {
 
 	public Users findByUser(Employer employer) {
 		return usersRepository.findByEmployer(employer);
+	}
+
+	public Users findByJobSeeker_jobSeekerId(Integer jobSeekerId) {
+		return usersRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
+	}
+
+	public Users findByEmployer_employerId(Integer employerId) {
+		return usersRepository.findByEmployer_EmployerId(employerId);
 	}
 
 }

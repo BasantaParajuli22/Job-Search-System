@@ -40,7 +40,7 @@ public class JobPosting {
 	
 	//JobApplication should have foreign key of jobPosting 
 	@OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL)
-    private List<JobApplication> JobApplication = new ArrayList<>();
+    private List<JobApplication> jobApplication = new ArrayList<>();
 
 	@OneToMany(mappedBy ="jobPosting", cascade = CascadeType.ALL)
 	private List<SavedJobs> savedJobs;
@@ -72,6 +72,7 @@ public class JobPosting {
 	@UpdateTimestamp
 	private LocalDate updatedAt;
 
+	private boolean available;
 	
 	//auto generating hasCode and equals method
 	//to check if there is unique jobPosting or not
@@ -112,11 +113,11 @@ public class JobPosting {
 	}
 
 	public List<JobApplication> getJobApplication() {
-		return JobApplication;
+		return jobApplication;
 	}
 
 	public void setJobApplication(List<JobApplication> jobApplication) {
-		JobApplication = jobApplication;
+		this.jobApplication = jobApplication;
 	}
 
 	public List<SavedJobs> getSavedJobs() {
@@ -238,6 +239,14 @@ public class JobPosting {
 
 	public void setJobCategory(JobCategory jobCategory) {
 		this.jobCategory = jobCategory;
+	}
+
+	public boolean isAvailable() {
+		return available;
+	}
+
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 
 }

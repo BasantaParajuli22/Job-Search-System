@@ -39,14 +39,9 @@ public class NotificationService {
 	public NotificationMessage getNotificationById(Integer notificationId) {
 		return notificationRepository.findByNotificationId(notificationId);
 	}
-	public List<NotificationMessage> getAllnotificationById(Integer userId) {
-		return notificationRepository.findAllByUsers_UserId(userId);
-
-		
-	}
 	//getting all notifications by Users 
-	public List<NotificationMessage> getAllNotifications(String username){	
-		return notificationRepository.findAllByUsers_Username(username);
+	public List<NotificationMessage> getAllNotificationsByUserId(Integer userId){	
+		return notificationRepository.findAllByUsers_UserId(userId);
 	}
 
 	//getting all notifications which is unreaded by user

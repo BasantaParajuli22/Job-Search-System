@@ -42,6 +42,9 @@
 
     <!-- Employers Section -->
     <h2>Employers and their jobPosts</h2>
+	<a th:href="@{/view/employers}" style="display:inline;">
+				<button type="submit" class="btn btn-danger">View all employers</button>
+			</a>
     <table border="1">
         <thead>
             <tr>
@@ -53,10 +56,11 @@
         <tbody>
             <tr th:each="employer : ${employers}">
                 <td th:text="${employer.employerId}"></td>
+				<a th:href="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" 
+											th:text="${employer.companyName}">Company Name</a><br>
                 <td th:text="${employer.companyName}"></td>
                 <td th:text="${employer.email}"></td>
 				
-			<!-- 	-->
 			<td>
 				<form th:action="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" method="get" style="display:inline;">
 					<button type="submit" class="btn btn-danger">View all  jobs</button>
@@ -69,6 +73,9 @@
 
     <!-- Job Seekers Section -->
     <h2>Job Seekers</h2>
+		<a th:href="@{/view/jobseekers}" style="display:inline;">
+			<button type="submit" class="btn btn-danger">View all jobSeekers</button>
+		</a>
     <table border="1">
         <thead>
             <tr>

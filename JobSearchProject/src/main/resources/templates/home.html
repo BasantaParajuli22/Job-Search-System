@@ -28,62 +28,67 @@
 	    <!-- Search Results (if any) -->
 	    <div th:if="${keyword}">
 	        <h2 th:text="${keyword}"></h2>
-	        <!-- You can add code here to loop through and display search results -->
 	    </div>
 	</div>
-	
-	<!-- Options to find jobPosts-->
-	<div> 
-		<h1>Job Categories</h1>
-	    	<ul>
-	        	<li th:each="jobCategory : ${jobCategories}">
-	            	<a th:href="@{/search/byjobcategory/{jobCategory}
-					(jobCategory=${jobCategory})}" th:text="${jobCategory}">jobCategory</a>
-	        	</li>
-	    	</ul>
-	</div>
-	<div> 
-		<h1>Job Types</h1>
-	    	<ul th:if="${jobTypes}">			
-	        	<li th:each="jobTypes : ${jobTypes}">
-	            	<a th:href="@{/search/byjobType/{jobTypes}
-					(jobTypes=${jobTypes})}" th:text="${jobTypes}">jobType</a>
-	        	</li>
-	    	</ul>
-	</div>
-	<div> 
-		<h1>experienceLevel</h1>
-		
-	    	<ul th:if="${experienceLevel}">			
-	        	<li th:each="expLevel : ${experienceLevel}">
-	            	<a th:href="@{/search/byexperiencelevel/{expLevel}
-					(expLevel=${expLevel})}" th:text="${expLevel}">jobType</a>
-	        	</li>
-	    	</ul>
-	</div>
-	<div> 
-		<h1>Location</h1>
-		
-		<ul th:if="${cityLocation}">			
-			<li th:each="location : ${cityLocation}">
-		    	<a th:href="@{/search/bylocation/{location}
-				(location=${location})}" th:text="${location}">bylocation</a>
-			</li>
-		</ul>
-	</div>
-	<!-- Footer -->
-	   <footer>
-	       <div class="footer-content">
-	           <p>&copy; 2024 Job Search System. All rights reserved.</p>
-	           <p>
-	               <a th:href="@{/}">Contact Us</a> | 
-	               <a th:href="@{/}">About Us</a> | 
-	               <a th:href="@{/}">Privacy Policy</a>
-	           </p>
-	       </div>
-	   </footer>
 
-    <!-- JavaScript -->
+
+	<div>
+		<div th:if="${jobSeekerCount}" th:text=" 'total jobSeeker ' + ${jobSeekerCount}"></div>
+		<div th:if="${employerCount}" th:text="  'total employer ' +  ${employerCount}"></div>
+		<div th:if="${jobPostingCount}" th:text="'total jobPosts ' + ${jobPostingCount}"></div>
+
+	</div>
+	<!-- Job Categories Section -->
+	<div>
+	    <h1>Job Categories</h1>
+	    <ul>
+	        <li th:each="jobCategory, iterStat : ${jobCategories}">
+	            <a th:href="@{/search/byjobcategory/{jobCategory}(jobCategory=${jobCategory})}" 
+	               th:text="${jobCategory}">Category</a>
+	            <span th:text="${categoryCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Job Types Section -->
+	<div>
+	    <h1>Job Types</h1>
+	    <ul th:if="${jobTypes}">
+	        <li th:each="jobType, iterStat : ${jobTypes}">
+	            <a th:href="@{/search/byjobtype/{jobType}(jobType=${jobType})}" 
+	               th:text="${jobType}">Type</a>
+	            <span th:text="${typeCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Experience Levels Section -->
+	<div>
+	    <h1>Experience Levels</h1>
+	    <ul th:if="${experienceLevel}">
+	        <li th:each="expLevel, iterStat : ${experienceLevel}">
+	            <a th:href="@{/search/byexperiencelevel/{expLevel}(expLevel=${expLevel})}" 
+	               th:text="${expLevel}">Experience Level</a>
+	            <span th:text="${xpCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- City Locations Section -->
+	<div>
+	    <h1>Locations</h1>
+	    <ul th:if="${cityLocation}">
+	        <li th:each="location, iterStat : ${cityLocation}">
+	            <a th:href="@{/search/bylocation/{location}(location=${location})}" 
+	               th:text="${location}">Location</a>
+	            <span th:text="${cityCount[iterStat.index]}"></span> 
+	        </li>
+	    </ul>
+	</div>
+
+	<!-- Footer -->
+	<footer th:replace="~{fragments/footer :: footer}"></footer>
+	   
     <script th:src="@{/js/search.js}"></script>
 </body>
 </html>

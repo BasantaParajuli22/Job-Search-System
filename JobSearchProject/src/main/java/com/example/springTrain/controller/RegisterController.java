@@ -49,21 +49,18 @@ public class RegisterController {
 	  @GetMapping("/employer/register")
 	  public String getemployform(Model model) {
 		    model.addAttribute("employerDTO", new EmployerDTO()); // Ensure this matches the th:object in your form
-		    model.addAttribute("isEditMode",false);
 		    return "employer-form";
 	  }
 	// to register as jobseekers
 	  @GetMapping("/jobseeker/register")
 	  public String getemployeeform(Model model) {
 		    model.addAttribute("jobSeekerDTO", new JobSeekerDTO()); // Ensure this matches the th:object in your form
-		    model.addAttribute("isEditMode",false);
 		    return "jobseeker-form";
 	  }
 
 	  @PostMapping("/jobseeker/register")
 	  public String registerJobSeeker(@ModelAttribute JobSeekerDTO jobSeekerDTO, Model model) {
 	  		
-		  logger.warn("jobseeker mapping  post ");
 	  	ValidationError validationError = new ValidationError();
 	  	validationError.clear();
 	  		

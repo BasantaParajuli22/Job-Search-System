@@ -37,5 +37,13 @@ public class JobSeekerService {
 		return jobSeekerRepository.findByJobSeekerId(jobseekerId);
 
 	}
+	public JobSeeker findIdByJobSeekerId(Integer jobseekerId) {
+		return jobSeekerRepository.findByJobSeekerId(jobseekerId);
+
+	}
+
+	public long countAlljobSeekers() {
+		return jobSeekerRepository.count();
+	}
 
 }

@@ -10,7 +10,7 @@ import com.example.springTrain.entity.NotificationMessage;
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationMessage,Integer> {
 
-	List<NotificationMessage> findAllByUsers_Username(String username);
+	//List<NotificationMessage> findAllByUsers_Username(String username);
 
 	List<NotificationMessage> findAllByUsers_UsernameAndStatus(String loggedInUsername, String string);
 	NotificationMessage findByNotificationId(Integer notificationId);

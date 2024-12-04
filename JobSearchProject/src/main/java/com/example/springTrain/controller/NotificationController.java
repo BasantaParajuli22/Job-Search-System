@@ -70,8 +70,7 @@ public class NotificationController {
         	return"login";
 		}
 		Integer userId = loggedInUser.getUserId();
-		String loggedInUsername = loggedInUser.getUsername();
-		List<NotificationMessage> allNotification = notificationService.getAllNotifications(loggedInUsername); 
+		List<NotificationMessage> allNotification = notificationService.getAllNotificationsByUserId(userId); 
 		model.addAttribute("allNotification",allNotification);
 		model.addAttribute("userId",userId);
 		return "notification";
@@ -128,7 +127,7 @@ public class NotificationController {
 	        	logger.warn("User not found to change status");
 	        	return"login";
 			}
-			List<NotificationMessage> notification = notificationService.getAllnotificationById(userId);
+			List<NotificationMessage> notification = notificationService.getAllNotificationsByUserId(userId);
 			if(notification == null) {
 				logger.warn("notification id not found to read");
 				return "redirect:/";

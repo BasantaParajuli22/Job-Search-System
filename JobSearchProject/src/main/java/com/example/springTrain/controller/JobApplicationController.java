@@ -1,10 +1,14 @@
 package com.example.springTrain.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,6 +49,31 @@ public class JobApplicationController {
 	private UsersService userService;
 
 	
+	// adding jobSeeker to the model if a user is logged in.
+    @ModelAttribute
+    public void addJobSeekerToModel(Model model) {
+    	//getting LoggedInJobSeekerUsername in string
+        String username = UserAuthorization.getLoggedInJobSeekerUsername();
+        if (username != null) {//if found finding in jobSeeker entity
+            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
+            if (jobSeeker != null) {//if found adding to model
+                model.addAttribute("jobSeeker", jobSeeker);
+            } 
+        }
+    }
+    
+    @ModelAttribute
+    public void addEmployerToModel(Model model) {
+    	//getting loggedinEmployerUsername in string
+        String username = UserAuthorization.getLoggedInEmployerUsername();
+        if (username != null) {//if found finding in employer entity
+            Employer employer = employerService.findByCompanyName(username);
+            if (employer != null) {//if found adding to model
+                model.addAttribute("employer", employer);
+            } 
+        }
+    }
+    
 	//to apply for jobposts of employer
 	//jobposts id required
 	//jobseekerId required
@@ -121,7 +150,7 @@ public class JobApplicationController {
             return "redirect:/view/jobposts";
          }   
          
-         SavedJobs alreadySaved= savedJobsService.findBySavedIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
+         SavedJobs alreadySaved= savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
          if(alreadySaved != null) {
     		logger.info(" JobPost already saved by JobSeeker");
              return "redirect:/view/jobposts";
@@ -134,7 +163,7 @@ public class JobApplicationController {
 	// Update application status for a specific job application of jobSeeker by employer
 	//send application reviewed notification by employer to jobSeeker
 	@PostMapping("/applications/submittedto/employer/statusUpdate")
-	public String updateApplicationStatus(
+	public String updateApplicationStatusByEmployer(
 	    @RequestParam("applicationId") Integer applicationId,
 	    @RequestParam("applicationStatus") String applicationStatus,
 	    @RequestParam("employerId") Integer employerId) {
@@ -167,6 +196,114 @@ public class JobApplicationController {
 	    // Redirect back to the list of job applications of the specific employerId
 	    return "redirect:/view/applications/submittedto/employer/" + employerId;
 	}
+	
+	
+	
+	
+	
+	//viewing job applications and saved posts
+	//view all lists of my JobPosts Applicants of an employer
+	//login required
+	//same employer can only see JobPosts Applicants
+	@GetMapping("/view/applications/submittedto/employer/{employerId}/of/{jobId}")
+	public String listAllJobApplicants(Model model,
+			@PathVariable ("employerId") Integer employerId,
+			@PathVariable("jobId")Integer jobId) {
+			
+		String username = UserAuthorization.getLoggedInUsername();
+		
+		Employer companyName = employerService.findByCompanyName(username);
+		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
+		if(!companyName.equals(submittedCompanyName)) {	
+        	logger.warn("Not a same employerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		 List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerAndJobId(companyName,jobId);
+		if(allJobApplications == null) {
+        	logger.warn("Couldnot find the jobApplications");
+			return "redirect:/view/jobposts";
+		}
+		 model.addAttribute("allJobApplications",allJobApplications);	        
+		return "application-all";
+	}
+	
+	//view all lists of myJobPosts Applicants submitted  by the jobseeker
+	//viewing all aplications i applied to 
+	//login required
+	@GetMapping("/view/application/submittedby/jobseeker/{jobSeekerId}")
+	public String listAllOfMyAppliedJobPosts(Model model,
+			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
+			
+		String username = UserAuthorization.getLoggedInUsername();
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
+		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
+        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeeker(loggedinJobSeeker);
+		if(allJobApplicants == null) {
+        	logger.warn("Couldnot find the jobApplications ");
+			return "redirect:/view/jobposts";
+		}
+		if(allJobApplicants != null) {
+			model.addAttribute("allJobApplicants",allJobApplicants);	
+			//my applications deadline
+		    List<String> applicationDeadline = jobApplicationService.getApplicationDeadlines(allJobApplicants);
+		    model.addAttribute("applicationDeadline", applicationDeadline);
+		}		
+
+		return "jobseeker-applications";
+	}
+	
+	// Update application status for a specific job application
+	@PostMapping("/view/applications/submittedto/employer/statusUpdate")
+	public String postUpdateApplicationStatus(
+	    @RequestParam("applicationId") Integer applicationId,
+	    @RequestParam("applicationStatus") String applicationStatus,
+	    @RequestParam("employerId") Integer employerId) {
+		
+		//calling to save changed status 
+		jobApplicationService.updateStatus(applicationId,applicationStatus);
+	    
+	    // Redirect back to the list of job applications for the specific employer
+	    return "redirect:/view/applications/submittedto/employer/" + employerId;
+	}
+
+
+	
+	//view all lists of myJobPosts Saved submitted  by the jobseeker
+	//viewing all aplications i Saved to 
+	//login required
+	@GetMapping("/view/savedjobs/submittedby/jobseeker/{jobSeekerId}")
+	public String listAllOfMySavedJobPosts(Model model,
+			@PathVariable ("jobSeekerId") Integer jobSeekerId) {
+			
+		String username = UserAuthorization.getLoggedInUsername();
+		
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(username);
+		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
+        	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		List<SavedJobs> savedPosts = savedJobsService.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
+		if(savedPosts == null) {
+        	logger.warn("Couldnot find the savedJobs ");
+			return "redirect:/view/jobposts";
+		}
+		if(savedPosts != null) {
+			model.addAttribute("savedPosts",savedPosts);	        
+			//my savedJobs deadline
+		    List<String> savedDeadline = savedJobsService.getSavedJobsDeadlines(savedPosts);
+		    model.addAttribute("savedDeadline", savedDeadline);
+		}
+		return "jobseeker-applications";
+	}
+
 	
 	
 	//cv upload

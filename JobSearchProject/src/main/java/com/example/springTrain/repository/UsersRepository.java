@@ -13,4 +13,7 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 	Users findByEmail(String email);
 	Users findByEmailAndPassword(String email,String password);
 	Users findByEmployer(Employer employer);
+	
+	Users findByJobSeeker_JobSeekerId(Integer jobSeekerId);
+	Users findByEmployer_EmployerId(Integer employerId);
 }

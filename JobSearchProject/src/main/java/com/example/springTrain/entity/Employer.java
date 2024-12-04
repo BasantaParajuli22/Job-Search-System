@@ -1,6 +1,6 @@
 package com.example.springTrain.entity;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,7 +40,7 @@ public class Employer {
 	private String website;
 	
 	@CreationTimestamp
-	private Instant createdAt;
+	private LocalDate createdAt;
 
 	public Integer getEmployerId() {
 		return employerId;
@@ -114,11 +114,11 @@ public class Employer {
 		this.website = website;
 	}
 
-	public Instant getCreatedAt() {
+	public LocalDate getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Instant createdAt) {
+	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
 	}
 	
