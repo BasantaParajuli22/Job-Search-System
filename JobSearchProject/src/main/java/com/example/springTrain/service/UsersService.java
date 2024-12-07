@@ -86,4 +86,9 @@ public class UsersService {
 		return usersRepository.findByEmployer_EmployerId(employerId);
 	}
 
+	public Users findByEmail(String userEmail) {
+		return usersRepository.findByEmail(userEmail);
+
+	}
+
 }

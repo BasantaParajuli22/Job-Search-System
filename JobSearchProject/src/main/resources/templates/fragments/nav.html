@@ -62,6 +62,7 @@
 		 <!--Notification Message Link only if authenticated-->
 		 <li sec:authorize="isAuthenticated()">
 			<a th:href="@{/notification/all}">Notification</a>
+			<span th:if="${notificationCount > 0}" th:text="${notificationCount}"></span>
 		 </li>
 
          <!-- Login/Logout -->

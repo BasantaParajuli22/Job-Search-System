@@ -30,6 +30,14 @@ public class JobPostingService {
 		this.jobPostingRepository = jobPostingRepository;
 	}
 	
+	public long countAllJobPosting() {
+		return jobPostingRepository.count();
+	}
+
+	public JobPosting getByJobId(Integer jobId) {
+		return jobPostingRepository.findByJobId(jobId);
+	}
+	
 	//find all jobpostings
     public List<JobPosting> findAllJobPostings() {
         return jobPostingRepository.findAll();
@@ -227,9 +235,25 @@ public class JobPostingService {
 		return countList;
 	}
 
-	public long countAllJobPosting() {
-		return jobPostingRepository.count();
-	}
+
+
+//	public JobPosting findByEmployerIdAndJobId(Integer employerId, Integer jobId) {
+//		return jobPostingRepository.findByEmployerIdAndJobId(employerId,jobId);
+//	}
+
+//	public JobPosting findByJobIdAndEmployer_EmployerId(Integer jobId, Integer employerId) {
+//		return jobPostingRepository.findByJobIdAndEmployer_EmployerId(jobId,employerId);
+//
+//	}
+
+//	public JobPosting getByEmployerId(Integer employerId) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+
+
+
 
 
 

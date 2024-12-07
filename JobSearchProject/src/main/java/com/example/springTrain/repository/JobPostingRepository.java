@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.enums.CityLocation;
 import com.example.springTrain.enums.ExperienceLevel;
@@ -19,7 +18,9 @@ import com.example.springTrain.enums.JobType;
 public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>{
 
 	JobPosting findByJobId(Integer jobId);
+   // JobPosting findByJobIdAndEmployer_EmployerId(Integer jobId, Integer employerId);
 	JobPosting findByEmployer_EmployerIdAndJobId(Integer employerId,Integer jobId);
+
 	JobPosting findByJobIdAndJobApplication_JobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
 
 	//to find jobPosting by Order according to  CreatedAt field
@@ -61,7 +62,6 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	Integer countJobPostingByJobType(JobType type);
 	Integer countJobPostingByExperienceLevel(ExperienceLevel exp);
 	Integer countJobPostingByCityLocation(CityLocation city);
-	
 	
 	
 

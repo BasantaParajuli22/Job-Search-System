@@ -18,7 +18,6 @@ import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
-import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
@@ -42,32 +41,6 @@ public class ProfileController{
 	@Autowired
 	private JobApplicationService jobApplicationService;
 	
-
-    @ModelAttribute
-    public void addJobSeekerToModel(Model model) {
-    	//getting LoggedInJobSeekerUsername in string
-        String username = UserAuthorization.getLoggedInJobSeekerUsername();
-        if (username != null) {//if found finding in jobSeeker entity
-        	logger.warn(username);
-            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-            if (jobSeeker != null) {//if found adding to model
-                model.addAttribute("jobSeeker", jobSeeker);
-            } 
-        }
-    }
-    
-    @ModelAttribute
-    public void addEmployerToModel(Model model) {
-    	//getting loggedinEmployerUsername in string
-        String username = UserAuthorization.getLoggedInEmployerUsername();
-        if (username != null) {//if found finding in employer entity
-        	logger.warn(username);
-            Employer employer = employerService.findByCompanyName(username);
-            if (employer != null) {//if found adding to model
-                model.addAttribute("employer", employer);
-            } 
-        }
-    }
     
 	//to visit jobseekers profile
     @GetMapping("/jobseekers/profile")
@@ -76,26 +49,21 @@ public class ProfileController{
     }
     
 	//to visit employers profile and see their jobPosts
-    //login as employer required
+    //login required
     @GetMapping("/employers/profile")
     public String getEmployersProfile(Model model,
     		@ModelAttribute("employer")Employer employer) {
     	
-    	Employer loginemployer = employerService.findByEmployerId(employer.getEmployerId());
 		
-		if (loginemployer != null) {
-	        List<JobPosting> myJobPosts = jobPostingService.getJobPostingByEmployerId(employer.getEmployerId());
-	        model.addAttribute("myJobPosts", myJobPosts);
-	    } else {
-        	logger.warn("No companyName found for username: ");
-	        return "login";
-	    }
+    	List<JobPosting> myJobPosts = jobPostingService.getJobPostingByEmployerId(employer.getEmployerId());
+    	model.addAttribute("myJobPosts", myJobPosts);
 		
 		//for loggin employer only
 		//show how many applicants in all of employer jobPosts
 		List<Integer> jobAppCount = jobApplicationService.countTotalApplicantsOfEmployer(employer.getEmployerId());
 		model.addAttribute("jobAppCount",jobAppCount);
-		model.addAttribute("loginemployer",loginemployer);
+		
+		model.addAttribute("loggedInEmployer",employer);
 		
         return "employer-profile";
     }
@@ -215,10 +183,9 @@ public class ProfileController{
     @PostMapping("/employers/profile/edit/{CompanyName}")
     public String getEmployerProfileEdit(Model model,
     		@ModelAttribute EmployerDTO employerDTO,
-    		@PathVariable("CompanyName") String CompanyName) {
+    		@PathVariable("CompanyName") String CompanyName,
+    		@ModelAttribute ("employer")Employer employer ) {
         
-		String loggedinUsername = UserAuthorization.getLoggedInEmployerUsername();
-
 		//there is two same username in user and jobseeker entity
        Employer submittedEmployer = employerService.findByCompanyName(CompanyName);
        Users submittedUser = usersService.findByUsername(CompanyName);
@@ -228,8 +195,7 @@ public class ProfileController{
     	   return"login";
        }
        
-       String submittedUsername = submittedEmployer.getCompanyName();
-       if(!loggedinUsername.equals(submittedUsername)) {
+       if(!employer.getCompanyName().equals(submittedEmployer.getCompanyName())) {
     	   logger.warn("not same submittedEmployer and loggedinEmployer"); 
     	   return"login";
        }

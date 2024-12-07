@@ -15,4 +15,5 @@ public interface SavedJobsRepository extends JpaRepository<SavedJobs,Integer> {
 
 	SavedJobs findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
 
+
 }

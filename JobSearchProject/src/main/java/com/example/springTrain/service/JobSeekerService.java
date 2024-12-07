@@ -46,4 +46,8 @@ public class JobSeekerService {
 		return jobSeekerRepository.count();
 	}
 
+	public JobSeeker findByEmail(String email) {
+		return jobSeekerRepository.findByEmail(email);
+	}
+
 }

@@ -31,29 +31,26 @@ public class NotificationRestController {
 	@Autowired
 	private JobSeekerService jobSeekerService;
 	
-    @ModelAttribute
-    public void addJobSeekerToModel(Model model) {
-    	//getting LoggedInJobSeekerUsername in string
-        String username = UserAuthorization.getLoggedInJobSeekerUsername();
-        if (username != null) {//if found finding in jobSeeker entity
-            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-            if (jobSeeker != null) {//if found adding to model
-                model.addAttribute("jobSeeker", jobSeeker);
-            } 
-        }
-    }
-    
-    @ModelAttribute
-    public void addEmployerToModel(Model model) {
-    	//getting loggedinEmployerUsername in string
-        String username = UserAuthorization.getLoggedInEmployerUsername();
-        if (username != null) {//if found finding in employer entity
-            Employer employer = employerService.findByCompanyName(username);
-            if (employer != null) {//if found adding to model
-                model.addAttribute("employer", employer);
-            } 
-        }
-    }
+	@ModelAttribute
+	public void addUserToModel(Model model) {
+	    String jobSeekerEmail = UserAuthorization.getLoggedInJobSeekerEmail();
+	    if (jobSeekerEmail != null) {
+	        JobSeeker jobSeeker = jobSeekerService.findByEmail(jobSeekerEmail);
+	        if (jobSeeker != null) {	
+	        	System.out.println("in the model" + jobSeeker);
+	        	model.addAttribute("jobSeeker", jobSeeker);
+	        }
+	    }
+
+	    String employerEmail = UserAuthorization.getLoggedInEmployerEmail();
+	    if (employerEmail != null) {
+	        Employer employer = employerService.findByEmail(employerEmail);
+	        if (employer != null) {
+	        	System.out.println(employer);
+	        	model.addAttribute("employer", employer);
+	        }
+	    }
+	}
     
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	

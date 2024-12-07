@@ -19,14 +19,12 @@
     <div class="formtable">
         <form th:action="@{/login}" method="post" class="form-register">
             <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Your Username" required th:value="${username}">
-				
+                <input type="text" id="username" name="username" placeholder="Your Email" required th:value="${username}">	
 				<p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
 			</div>
 
             <div class="pass-group">
                 <input type="password" id="password" name="password" placeholder="Enter your Password" required th:value="${password}">
-				
 				<p th:if="${error?.password != null}"><span th:text="${error.password}" class="error"></span></p>
                 <button type="button" id="togglePassword" class="passButton" style="color: blue;">Show</button>
             </div>
