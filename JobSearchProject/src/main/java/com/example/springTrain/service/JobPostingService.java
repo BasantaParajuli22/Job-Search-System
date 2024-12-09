@@ -124,10 +124,6 @@ public class JobPostingService {
     	return jobPostingRepository.findAllJobPostingByTitle(title);
 	}
 	
-	public List<JobPosting> findAllJobPostingBySkills(String skills) {
-    	return jobPostingRepository.findAllJobPostingBySkills(skills);
-	}
-	
 	public List<JobPosting> findAllJobPostingBySalary(String salaryRange) {
     	return jobPostingRepository.findAllJobPostingBySalaryRange(salaryRange);
 	}
@@ -180,7 +176,7 @@ public class JobPostingService {
 
 	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);
-    	return jobPostingRepository.findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
+    	return jobPostingRepository.findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
 	}
 	
 	public Integer countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {

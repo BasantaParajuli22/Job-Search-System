@@ -31,13 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
             isValid = false;
         }
 
-        // Validate Address
-        const address = document.getElementById('address').value.trim();
-        if (address === '') {
-            showError('addressError', 'Address is required.');
-            isValid = false;
-        }
-
         // Validate Skills
         const skills = document.getElementById('skills').value.trim();
         if (skills === '') {
@@ -95,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function clearErrors() {
         const errors = document.querySelectorAll('.error');
         errors.forEach(error => {
-            error.textContent = '';
+            error.textContent = '';  // Clear error messages
         });
     }
 });

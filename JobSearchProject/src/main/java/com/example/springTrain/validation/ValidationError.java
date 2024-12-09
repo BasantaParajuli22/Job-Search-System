@@ -3,7 +3,6 @@ package com.example.springTrain.validation;
 public class ValidationError {
 
 		private String username;
-		private int Id;
 		private String email;
 		private String password;		
 
@@ -12,12 +11,6 @@ public class ValidationError {
 		}
 		public void setUsername(String username) {
 			this.username = username;
-		}
-		public int getId() {
-			return Id;
-		}
-		public void setId(int id) {
-			Id = id;
 		}
 		public String getPassword() {
 			return password;

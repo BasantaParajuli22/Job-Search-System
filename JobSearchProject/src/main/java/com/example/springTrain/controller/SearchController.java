@@ -36,7 +36,7 @@ public class SearchController {
 		Page<JobPosting> uniquejobPosts = jobPostingService.findAllJobPostingByKeyword(keyword,page,size);
 		
 	    model.addAttribute("jobPosts",uniquejobPosts);
-		return "jobPost";
+		return "jobpost";
 	}
 	
 	

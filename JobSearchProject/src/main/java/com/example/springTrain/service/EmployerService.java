@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.EmployerRepository;
 
@@ -66,6 +68,13 @@ public class EmployerService {
 
 	public Employer getByEmployerIdAndJobId(Integer loggedInEmployerId, Integer jobId) {
 		return employerRepository.findByEmployerIdAndJobPosting_JobId(loggedInEmployerId,jobId);
+	}
+
+	public void updateEmployer(ProfileDTO profileDTO, Employer employer) {
+		employer.setCompanyName(profileDTO.getCompanyName());
+  		employer.setCompanyDescription(profileDTO.getCompanyDescription());
+  		employer.setAddress(profileDTO.getAddress());
+    	employerRepository.save(employer); 
 	}
 	
 }

@@ -51,7 +51,6 @@ public class JobPosting {
 	private String salaryRange;
 	private LocalDate applicationDeadline;
 	private String contactEmail;
-	private String skills;
 	private boolean remote;
 	
 	@Enumerated(EnumType.STRING)
@@ -175,14 +174,6 @@ public class JobPosting {
 
 	public void setContactEmail(String contactEmail) {
 		this.contactEmail = contactEmail;
-	}
-
-	public String getSkills() {
-		return skills;
-	}
-
-	public void setSkills(String skills) {
-		this.skills = skills;
 	}
 
 	public boolean isRemote() {

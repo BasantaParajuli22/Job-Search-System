@@ -33,7 +33,6 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	List<JobPosting> findByEmployer_CompanyName(String companyName);
 	
 	List<JobPosting> findAllJobPostingByTitle(String title);
-	List<JobPosting> findAllJobPostingBySkills(String skills);
 	List<JobPosting> findAllJobPostingBySalaryRange(String salaryRange);
 	
 	//to display jobPostings in List
@@ -51,10 +50,9 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	Page<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel, Pageable pageable);
 	Page<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByTitle(String title, Pageable pageable);
-	Page<JobPosting> findAllJobPostingBySkills(String skills, Pageable pageable);
 	
 	//finding keyword if it is title skills or companyName
-	Page<JobPosting> findByTitleContainingOrSkillsContainingOrEmployer_CompanyNameContaining(String k1, String k2,String k3, Pageable pageable);
+	Page<JobPosting> findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContaining(String k1, String k2,String k3, Pageable pageable);
     
 	//for counting 
 	List<Integer> countByJobCategory(JobCategory jobCategory);

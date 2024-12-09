@@ -26,7 +26,6 @@ public class Users {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 		
-	private String username;
 	private String password;
 	private String email;
 		
@@ -41,6 +40,7 @@ public class Users {
 	//this means that Employer and JobSeeker entity class needs to have users 
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private Employer employer;
+	
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private JobSeeker jobSeeker;
 	
@@ -55,12 +55,6 @@ public class Users {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -107,9 +101,6 @@ public class Users {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	    
-	
-		
-		
+
 
 }	

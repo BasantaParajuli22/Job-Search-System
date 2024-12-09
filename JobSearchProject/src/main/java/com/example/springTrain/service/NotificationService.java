@@ -46,11 +46,6 @@ public class NotificationService {
 	public List<NotificationMessage> getAllNotificationsByUserId(Integer userId){	
 		return notificationRepository.findAllByUsers_UserId(userId);
 	}
-	//getting all notifications which is unreaded by user
-	public List<NotificationMessage> getAllUnReadedNotifications(String username) {
-		return notificationRepository.findAllByUsers_UsernameAndStatus(username,"not-viewed");
-	}
-
 	
 	//delete notification individual 
 	public void deleteNotification(NotificationMessage notification) {

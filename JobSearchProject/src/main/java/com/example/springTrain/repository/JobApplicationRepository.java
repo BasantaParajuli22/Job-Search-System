@@ -15,13 +15,14 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication,I
 	JobApplication findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
 
 	//find all jobApplication by JobSeekerUsername and CompanyName
-	List<JobApplication> findByJobSeeker_JobSeekerUsername(String jobSeekerUsername);
+//	List<JobApplication> findByJobSeeker_JobSeekerUsername(String jobSeekerUsername);
 	List<JobApplication> findByEmployer_CompanyName(String companyName);
 	List<JobApplication> findByEmployer_employerId(Integer employerId);
 	List<JobApplication> findByEmployer_CompanyNameAndJobPosting_JobId(String companyName, Integer jobId);
 	
 	
 	Integer countJobApplicationByJobPosting_JobId(Integer jobId);
+	List<JobApplication> findByJobSeeker_JobSeekerId(Integer jobSeekerId);
 
 }
 

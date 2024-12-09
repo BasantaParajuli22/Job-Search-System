@@ -34,6 +34,7 @@ public class JobApplication{
     private Employer employer;
 
 	private String applicationStatus;//changeable by employer
+	private String fileName;
 	
 	@CreationTimestamp
 	private LocalDate appliedAt;
@@ -86,6 +87,14 @@ public class JobApplication{
 
 	public void setAppliedAt(LocalDate appliedAt) {
 		this.appliedAt = appliedAt;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }

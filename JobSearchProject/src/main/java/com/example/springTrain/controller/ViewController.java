@@ -139,7 +139,7 @@ public class ViewController {
 		
 		JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		model.addAttribute("jobSeeker",jobSeeker);	        
-		return "jobseeker-profile";
+		return "jobseeker/jobseeker-profile";
 	}
 	
 	//displaying jobPosts in Pages
@@ -240,7 +240,7 @@ public class ViewController {
 				model.addAttribute("loggedInEmployer",samejobEmployer);
 			}
 		}		
-		return "employer-profile";
+		return "employer/employer-profile";
 	}	
 	
 	

@@ -23,6 +23,15 @@ public class Employer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer employerId;
 	
+	private String email;
+	private String number;
+	private String companyName;
+	private String companyDescription;
+	private String address;
+	
+	@CreationTimestamp
+	private LocalDate createdAt;
+
 	@OneToOne
     @JoinColumn(name = "userId", referencedColumnName="userId", nullable = false)
 	private Users users;
@@ -31,17 +40,6 @@ public class Employer {
 	@OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
 	private List<JobPosting> jobPosting;
 	
-
-	private String companyName;
-	private String companyDescription;
-	private String contactNumber;
-	private String address;
-	private String email;
-	private String website;
-	
-	@CreationTimestamp
-	private LocalDate createdAt;
-
 	public Integer getEmployerId() {
 		return employerId;
 	}
@@ -82,20 +80,20 @@ public class Employer {
 		this.companyDescription = companyDescription;
 	}
 
-	public String getContactNumber() {
-		return contactNumber;
-	}
-
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
-
 	public String getAddress() {
 		return address;
 	}
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public LocalDate getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDate createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public String getEmail() {
@@ -106,20 +104,12 @@ public class Employer {
 		this.email = email;
 	}
 
-	public String getWebsite() {
-		return website;
+	public String getNumber() {
+		return number;
 	}
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	public LocalDate getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDate createdAt) {
-		this.createdAt = createdAt;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 	
 	

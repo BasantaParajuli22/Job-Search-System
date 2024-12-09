@@ -1,5 +1,9 @@
 package com.example.springTrain.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
@@ -82,9 +87,9 @@ public class JobApplicationController {
 			@PathVariable ("jobSeekerId") Integer jobSeekerId,
 			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 			
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(jobSeeker.getJobSeekerUsername());
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeeker(loggedinJobSeeker);
+		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeekerId(loggedinJobSeeker.getJobSeekerId());
 		
 		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
         	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
@@ -94,11 +99,11 @@ public class JobApplicationController {
 		if(allJobApplicants != null) {
 			//my applications deadline
 		    List<String> applicationDeadline = jobApplicationService.getApplicationDeadlines(allJobApplicants);
-		    model.addAttribute("applicationDeadline", applicationDeadline);
 		    
+		    model.addAttribute("applicationDeadline", applicationDeadline);
 		    model.addAttribute("allJobApplicants",allJobApplicants);	
 		}		
-		return "jobseeker-applications";
+		return "jobseeker/jobseeker-applications";
 	}
 	
 	//view all lists of myJobPosts Saved submitted  by the jobseeker
@@ -109,7 +114,7 @@ public class JobApplicationController {
 			@PathVariable ("jobSeekerId") Integer jobSeekerId,
 			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 					
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByUsername(jobSeeker.getJobSeekerUsername());
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		List<SavedJobs> savedPosts = savedJobsService.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
 		
@@ -124,7 +129,7 @@ public class JobApplicationController {
 		    model.addAttribute("savedDeadline", savedDeadline);
 		    model.addAttribute("savedPosts",savedPosts);	        
 		}
-		return "jobseeker-applications";
+		return "jobseeker/jobseeker-applications";
 	}
 
 	
@@ -132,35 +137,32 @@ public class JobApplicationController {
 	//jobposts id required
 	//jobseekerId required
 	//make changes to jobApplication
-	@PostMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{companyName}")
+	@PostMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}")
 	public String applyForJobPosts(Model model,
 					@PathVariable("jobSeekerId") Integer jobSeekerId,
 					@PathVariable("jobId") Integer jobId,
-					@PathVariable("companyName") String companyName,
+					@PathVariable("employerId") Integer employerId,
+					@RequestParam("cv")MultipartFile file,
 					@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 	        
-		JobSeeker loggedJobSeeker = jobSeekerService.findByUsername(jobSeeker.getJobSeekerUsername());
-		JobSeeker submittedUsername = jobSeekerService.findByJobSeekerId(jobSeekerId);
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 		JobApplication jobApplication = jobApplicationService.getJobSeekerByIdAndJobId(jobSeekerId,jobId); 
-		Employer employer = employerService.findByCompanyName(companyName); 
-		Users user = userService.findByUsername(companyName); 
+		Employer employer = employerService.findByEmployerId(employerId); 
+		Users user = userService.findByEmployer_employerId(employerId); 
 		
-		if(!loggedJobSeeker.equals(submittedUsername)) {
+		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
 			logger.warn("Not same jobSeeker so cannot apply");
 			return "redirect:/view/jobposts";
 		}
-         if(employer == null ||jobPosting == null || user == null) {
+         if(employer == null ||jobPosting == null || user == null || jobApplication != null) {
  			logger.warn("Unable  to apply to jobPosts ");
             return "redirect:/view/jobposts";
          }      
-         //if jobApplication already exists cannot apply again
-         if(jobApplication != null) {
-  			logger.warn(" Same JobSeeker cannot apply again to jobpost ");
-             return "redirect:/view/jobposts";
-          }
-         
-        jobApplicationService.applyForJobPost(jobId,companyName,jobSeekerId);
+        	 
+        String filename = jobApplicationService.saveFile(file);
+        jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,filename);
         // Send a notification to the employer
         String message = "You have a new application for the job: " + jobPosting.getTitle();
         notificationService.createNotification(user, message);
@@ -209,12 +211,12 @@ public class JobApplicationController {
 				@PathVariable("jobId") Integer jobId,
 				@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 				       
-			JobSeeker loggedJobSeeker = jobSeekerService.findByUsername(jobSeeker.getJobSeekerUsername());
+			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 			JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 			JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 			SavedJobs alreadySaved= savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
 			
-			if(!loggedJobSeeker.equals(submittedJobSeeker)) {
+			if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
 				return "redirect:/view/jobposts";
 			}
 	         if(submittedJobSeeker == null|| jobPosting == null || alreadySaved != null) {
@@ -222,7 +224,7 @@ public class JobApplicationController {
 	            return "redirect:/view/jobposts";
 	         }   
 	         
-			 savedJobsService.saveJobForJobSeeker(jobPosting,loggedJobSeeker);
+			 savedJobsService.saveJobForJobSeeker(jobPosting,loggedinJobSeeker);
 			return "redirect:/view/jobposts/details/" +jobId;
 		}
 		
@@ -232,12 +234,12 @@ public class JobApplicationController {
 				@PathVariable("jobId") Integer jobId,
 				@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 				       
-			JobSeeker loggedJobSeeker = jobSeekerService.findByUsername(jobSeeker.getJobSeekerUsername());
+			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 			JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 			JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 			SavedJobs alreadySaved= savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
 			
-			if(!loggedJobSeeker.equals(submittedJobSeeker)) {
+			if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
 				return "redirect:/view/jobposts";
 			}
 	         if(submittedJobSeeker == null|| jobPosting == null || alreadySaved == null) {
@@ -245,7 +247,7 @@ public class JobApplicationController {
 	            return "redirect:/view/jobposts";
 	         }   
 	         
-			 savedJobsService.unSaveJobForJobSeeker(jobPosting,loggedJobSeeker);
+			 savedJobsService.unSaveJobForJobSeeker(jobPosting,loggedinJobSeeker);
 			return "redirect:/view/jobposts/details/" +jobId;
 		}
 		

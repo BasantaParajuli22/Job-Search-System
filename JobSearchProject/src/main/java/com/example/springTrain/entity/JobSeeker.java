@@ -23,33 +23,33 @@ public class JobSeeker {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer jobSeekerId;
-	
-	@OneToOne
-	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-	private Users users;
-	
-	//The owning side manages the relationship, defined with @JoinColumn.
-	//The inverse side is the side that simply mirrors the relationship using mappedBy.
-	//mappedBy is  used on the inverse side to specify the field name
-	// in the owning entity that "owns" the relationship.
-	
-	//one jobSeeker can apply to many jobApplication
-	@OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-	private List<JobApplication> jobApplication;
-	
-	@OneToMany(mappedBy ="jobSeeker", cascade = CascadeType.ALL)
-	private List<SavedJobs> savedJobs;
-	
-	private String jobSeekerUsername;
+
+	private String fullName;
 	private String email;
 	private String number;	
-	private String address;
 	private String skills;//skills will be in list//
 //	private String resume;
 
 	@CreationTimestamp
 	private LocalDate createdAt;
 
+	
+	//The owning side manages the relationship, defined with @JoinColumn.
+	//The inverse side is the side that simply mirrors the relationship using mappedBy.
+	//mappedBy is  used on the inverse side to specify the field name
+	// in the owning entity that "owns" the relationship.	
+	//one jobSeeker can apply to many jobApplication
+	@OneToOne
+	@JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
+	private Users users;
+	
+	@OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
+	private List<JobApplication> jobApplication;
+		
+	@OneToMany(mappedBy ="jobSeeker", cascade = CascadeType.ALL)
+	private List<SavedJobs> savedJobs;
+		
+	
 	public Integer getJobSeekerId() {
 		return jobSeekerId;
 	}
@@ -82,14 +82,6 @@ public class JobSeeker {
 		this.number = number;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public String getSkills() {
 		return skills;
 	}
@@ -104,12 +96,6 @@ public class JobSeeker {
 
 	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
-	}
-	public String getJobSeekerUsername() {
-		return jobSeekerUsername;
-	}
-	public void setJobSeekerUsername(String jobSeekerUsername) {
-		this.jobSeekerUsername = jobSeekerUsername;
 	}
 
 	public List<JobApplication> getJobApplication() {
@@ -126,5 +112,13 @@ public class JobSeeker {
 
 	public void setSavedJobs(List<SavedJobs> savedJobs) {
 		this.savedJobs = savedJobs;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }	
