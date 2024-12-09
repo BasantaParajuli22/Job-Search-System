@@ -33,6 +33,10 @@
                         <td th:text="${jobApplication.jobPosting.title}">Job Title</td>
                         <td th:text="${jobApplication.applicationStatus}">Status</td>
                         <td th:text="${jobApplication.appliedAt}">JobPost CreatedAt</td>
+						<td th:if="${jobApplication.fileName != null}">
+							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">
+							View File </a>
+						</td>
 						<td th:text="${jobApplication.jobPosting.applicationDeadline}">Deadline</td>
                         <td th:text="${applicationDeadline[iterStat.index]}">Days Left</td>
                     </tr>

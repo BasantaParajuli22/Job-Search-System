@@ -29,7 +29,7 @@
                 <tr th:each="jobApplication : ${allJobApplications}">
 					<td>
 						<a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}" 
-							th:text="${jobApplication.jobSeeker.jobSeekerUsername}"></a>					
+							th:text="${jobApplication.jobSeeker.fullName}"></a>					
 					</td>
                     <td>
 						<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobApplication.jobPosting.jobId})}" 
@@ -38,6 +38,10 @@
 					<td>
 					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.email}}"
 					       th:text="${jobApplication.jobSeeker.email}">Send email</a>
+					</td>
+					<td th:if="${jobApplication.fileName != null}">
+					    <a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">
+					    View File </a>
 					</td>
                     <td th:text="${jobApplication.applicationStatus}">Application Status</td>
                     <!-- Change or updating statuts of jobApplication -->
