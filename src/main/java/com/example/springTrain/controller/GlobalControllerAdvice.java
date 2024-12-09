@@ -1,7 +1,5 @@
 package com.example.springTrain.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
-import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;

@@ -1,5 +1,6 @@
 # Ignore build files
 build/
+!build/libs/
 target/
 .gradle/
 .mvn/

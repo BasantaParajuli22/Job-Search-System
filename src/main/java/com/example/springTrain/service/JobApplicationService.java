@@ -1,6 +1,8 @@
 package com.example.springTrain.service;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,11 +48,12 @@ public class JobApplicationService {
 		this.employerRepository =employerRepository;
 	}
 
+	String uploadPath = System.getProperty("user.dir")+"/src/uploads/";
 	
+	//for saving file in local storage
 	public String saveFile(MultipartFile file) {
         try {
         if(!file.isEmpty()) {
-        	String uploadPath = System.getProperty("user.dir")+"/src/uploads/";
        	
         	Path uploadDir = Paths.get(uploadPath);
 			if(!Files.exists(uploadDir)) {//creating new folder if it doesnot exists
@@ -70,15 +75,27 @@ public class JobApplicationService {
 		}
 		return null;
 	}
-	//takes jobId companyName and jobSeekerId 
-	//stores in jobApplication 
+	
+	//for downloading the file
+	public Resource getFileAsResource(String fileName) {
+        try {
+            Path filePath = Paths.get(uploadPath).resolve(fileName).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return resource;
+            } else {
+                throw new FileNotFoundException("File not found: " + fileName);
+            }
+        } catch (MalformedURLException | FileNotFoundException e) {
+            throw new RuntimeException("Error while accessing file: " + fileName, e);
+        }
+    }
+	
+	
 	public void applyForJobPost(Integer jobId, Integer employerId, Integer jobSeekerId,String filename) {
 		
 		JobApplication jobApplication = new JobApplication();		
-		//Fetching Entities: You first fetch the JobSeeker and JobPosting and Employer entities 
-		//from their respective repositories 
-		//This ensures you are working with valid references to those objects,
-		//as they already exist in the database
+		
 		JobSeeker jobSeeker = jobSeekerRepository.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingRepository.findByJobId(jobId);
 		Employer employer = employerRepository.findByEmployerId(employerId);
@@ -92,10 +109,8 @@ public class JobApplicationService {
 		jobApplicationRepository.save(jobApplication);
 
 	}
-//	private Path resolve(String originalPath) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	
+
 	
 	//after changing status saving jobApplication	
 	public void save(JobApplication jobApplication) {
