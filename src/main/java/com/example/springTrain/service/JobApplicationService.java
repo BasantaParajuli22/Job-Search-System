@@ -1,5 +1,9 @@
 package com.example.springTrain.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -7,6 +11,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
@@ -39,30 +44,59 @@ public class JobApplicationService {
 		this.employerRepository =employerRepository;
 	}
 
+	
+	public String saveFile(MultipartFile file) {
+        try {
+        if(!file.isEmpty()) {
+        	String uploadPath = System.getProperty("user.dir")+"/src/uploads/";
+       	
+        	Path uploadDir = Paths.get(uploadPath);
+			if(!Files.exists(uploadDir)) {//creating new folder if it doesnot exists
+				Files.createDirectories(uploadDir);
+			}
+			
+        	byte[] fileBytes = file.getBytes();
+        	String filename = file.getOriginalFilename();
+        	
+			String uniquePath = System.currentTimeMillis()+"_"+filename;
+			
+			Path filePath = uploadDir.resolve(uniquePath);
+
+			Files.write(filePath,fileBytes);
+			return uniquePath;
+			}
+        } catch (IOException e) {
+				e.printStackTrace();
+		}
+		return null;
+	}
 	//takes jobId companyName and jobSeekerId 
 	//stores in jobApplication 
-	public void applyForJobPost(Integer jobId, String companyName, Integer jobSeekerId) {
+	public void applyForJobPost(Integer jobId, Integer employerId, Integer jobSeekerId,String filename) {
 		
-		//new jobApplication object 
-		JobApplication jobApplication = new JobApplication();
-		
+		JobApplication jobApplication = new JobApplication();		
 		//Fetching Entities: You first fetch the JobSeeker and JobPosting and Employer entities 
 		//from their respective repositories 
 		//This ensures you are working with valid references to those objects,
 		//as they already exist in the database
 		JobSeeker jobSeeker = jobSeekerRepository.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingRepository.findByJobId(jobId);
-		Employer employer = employerRepository.findByCompanyName(companyName);
-
-		//to link the job application to the respective job seeker and
-		//jobPost  and employer in the database.
+		Employer employer = employerRepository.findByEmployerId(employerId);
+		
 		jobApplication.setJobSeeker(jobSeeker);
 		jobApplication.setJobPosting(jobPosting);
 		jobApplication.setEmployer(employer);
+		jobApplication.setApplicationStatus("not-viewed");
+		jobApplication.setFileName(filename);
 		//saving jobApplication to repository
 		jobApplicationRepository.save(jobApplication);
 
 	}
+//	private Path resolve(String originalPath) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 	//after changing status saving jobApplication	
 	public void save(JobApplication jobApplication) {
 	    jobApplicationRepository.save(jobApplication);
@@ -113,11 +147,6 @@ public class JobApplicationService {
 		
 	}
 	
-	//find all jobPosts applications submitted by jobseeker
-	public List<JobApplication> findAllJobApplicationByJobSeeker(JobSeeker jobSeeker) {
-		String jobSeekerUsername = jobSeeker.getJobSeekerUsername();
-		return jobApplicationRepository.findByJobSeeker_JobSeekerUsername(jobSeekerUsername);
-	}
 
 	public JobApplication findById(Integer applicationId) {
 		return jobApplicationRepository.findByApplicationId(applicationId);
@@ -143,11 +172,11 @@ public class JobApplicationService {
 	public List<JobApplication> findAllJobApplicationByEmployerAndJobId(Employer employer, Integer jobId) {
 		String companyName = employer.getCompanyName();
 		return jobApplicationRepository.findByEmployer_CompanyNameAndJobPosting_JobId(companyName,jobId);
+	}
+
+	public List<JobApplication> findAllJobApplicationByJobSeekerId(Integer jobSeekerId) {
+		return jobApplicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
 	}  
-	
-	
-
-
 
 
 }

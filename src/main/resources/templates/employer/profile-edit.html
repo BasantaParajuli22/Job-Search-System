@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Employer Profile</title>
+</head>
+<body>
+    <h1>Edit Company Profile</h1>
+    <form th:action="@{/employers/profile/edit/{employerId}(employerId=${profileDTO.userId})}" method="post">
+        <label for="companyName">Company Name:</label>
+        <input type="text" id="companyName" name="companyName" th:value="${profileDTO.companyName}" placeholder="Company Name" required><br>
+
+        <label for="companyDescription">Company Description:</label>
+        <textarea id="companyDescription" name="companyDescription" placeholder="Description" required th:text="${profileDTO.companyDescription}"></textarea><br>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" th:value="${profileDTO.address}" placeholder="Address" required><br>
+
+        <label for="number">Contact Number:</label>
+        <input type="text" id="number" name="number" th:value="${profileDTO.number}" placeholder="Contact Number" required><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

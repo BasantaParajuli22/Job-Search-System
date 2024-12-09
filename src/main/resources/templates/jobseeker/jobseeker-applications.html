@@ -8,6 +8,11 @@
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
+	<div th:if="${#lists.isEmpty(allJobApplicants) and #lists.isEmpty(savedPosts)}">
+		<h2>No applications found</h2>
+	</div>
+
+	  
     <main>
         <!-- Display applied job applications -->
         <div th:unless="${#lists.isEmpty(allJobApplicants)}">

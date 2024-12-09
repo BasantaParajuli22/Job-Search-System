@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
+import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
-import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
@@ -42,231 +42,136 @@ public class ProfileController{
 	@Autowired
 	private JobApplicationService jobApplicationService;
 	
-
-    @ModelAttribute
-    public void addJobSeekerToModel(Model model) {
-    	//getting LoggedInJobSeekerUsername in string
-        String username = UserAuthorization.getLoggedInJobSeekerUsername();
-        if (username != null) {//if found finding in jobSeeker entity
-        	logger.warn(username);
-            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-            if (jobSeeker != null) {//if found adding to model
-                model.addAttribute("jobSeeker", jobSeeker);
-            } 
-        }
-    }
-    
-    @ModelAttribute
-    public void addEmployerToModel(Model model) {
-    	//getting loggedinEmployerUsername in string
-        String username = UserAuthorization.getLoggedInEmployerUsername();
-        if (username != null) {//if found finding in employer entity
-        	logger.warn(username);
-            Employer employer = employerService.findByCompanyName(username);
-            if (employer != null) {//if found adding to model
-                model.addAttribute("employer", employer);
-            } 
-        }
-    }
     
 	//to visit jobseekers profile
     @GetMapping("/jobseekers/profile")
-    public String getJobseekersProfile(Model model) {
-        return "jobseeker-profile";
+    public String getJobseekersProfile(Model model,
+    		@ModelAttribute ("jobSeeker") JobSeeker jobSeeker) {
+        return "jobseeker/jobseeker-profile";
     }
     
-	//to visit employers profile and see their jobPosts
-    //login as employer required
+	//to visit employers profile
+    //same employers login required
     @GetMapping("/employers/profile")
     public String getEmployersProfile(Model model,
     		@ModelAttribute("employer")Employer employer) {
     	
-    	Employer loginemployer = employerService.findByEmployerId(employer.getEmployerId());
-		
-		if (loginemployer != null) {
-	        List<JobPosting> myJobPosts = jobPostingService.getJobPostingByEmployerId(employer.getEmployerId());
-	        model.addAttribute("myJobPosts", myJobPosts);
-	    } else {
-        	logger.warn("No companyName found for username: ");
-	        return "login";
-	    }
-		
-		//for loggin employer only
-		//show how many applicants in all of employer jobPosts
+    	List<JobPosting> myJobPosts = jobPostingService.getJobPostingByEmployerId(employer.getEmployerId());		
 		List<Integer> jobAppCount = jobApplicationService.countTotalApplicantsOfEmployer(employer.getEmployerId());
-		model.addAttribute("jobAppCount",jobAppCount);
-		model.addAttribute("loginemployer",loginemployer);
 		
-        return "employer-profile";
+		model.addAttribute("myJobPosts", myJobPosts);
+		model.addAttribute("jobAppCount",jobAppCount);	
+		model.addAttribute("loggedInEmployer",employer);
+		
+        return "employer/employer-profile";
     }
     
-    //verifying submitted and loggedin jobSeeker are same
-    //to edit profile
-    //needs to be loggedin
     @GetMapping("/jobseekers/profile/edit/{jobSeekerId}")
     public String getJobseekerProfileEdit(Model model,
     		@PathVariable("jobSeekerId") Integer jobSeekerId,
     		@ModelAttribute("jobSeeker")JobSeeker jobSeeker) {
         
-       JobSeeker submittedjobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);      
-       if( submittedjobSeeker == null) {
+       JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);      
+       if( submittedJobSeeker == null || jobSeeker == null) {
     	   logger.warn("Submitted jobSeeker not found"); 
     	   return"login";
        }
-       
-       //loggedin and submiited jobSeeker should match
-       if(!submittedjobSeeker.equals(jobSeeker)) {
+       if(!submittedJobSeeker.getJobSeekerId().equals(jobSeeker.getJobSeekerId())) {
     	   logger.warn("not same submittedjobSeeker and loggedinJobSeeker"); 
     	   return"login";
        }
+       ProfileDTO profileDTO = new ProfileDTO();
+       profileDTO.setUserId(submittedJobSeeker.getJobSeekerId());
+       profileDTO.setFullName(submittedJobSeeker.getFullName());
+       profileDTO.setSkills(submittedJobSeeker.getSkills());
+       profileDTO.setNumber(submittedJobSeeker.getNumber());
 
-      // model.addAttribute("jobSeeker", submittedjobSeeker);//adding object  
-       //here setting values in jobSeekerDTO
-       JobSeekerDTO jobSeekerDTO = new JobSeekerDTO();
-       jobSeekerDTO.setJobSeekerId(submittedjobSeeker.getJobSeekerId());
-       jobSeekerDTO.setJobSeekerUsername(submittedjobSeeker.getJobSeekerUsername());//
-       jobSeekerDTO.setEmail(submittedjobSeeker.getEmail());
-       jobSeekerDTO.setNumber(submittedjobSeeker.getNumber());
-       jobSeekerDTO.setAddress(submittedjobSeeker.getAddress());
-       jobSeekerDTO.setSkills(submittedjobSeeker.getSkills());
+       model.addAttribute("profileDTO", profileDTO);
+       model.addAttribute("userType", "jobseeker");
        
-       model.addAttribute("jobSeekerDTO",jobSeekerDTO);
-       //this will be false during registration but true in edit
-       //model.addAttribute("isEditMode",true);
+       return "jobseeker/profile-edit";
 
-       //here submitted jobSeeker will not be same as new one
-        return "jobseeker-form";
     }
     
-    //jobSeekerID in user and jobSeeker table should be same always
-    @PostMapping("/jobseekers/profile/edit/{jobSeekerId}")
+    //logIn required
+	@GetMapping("/employers/profile/edit/{employerId}")
+	public String getEmployerProfile(Model model,
+			@PathVariable("employerId") Integer employerId,
+			@ModelAttribute ("employer")Employer employer) {
+		
+		//there is two same username in user and jobseeker entity
+       Employer submittedEmployer = employerService.findByEmployerId(employer.getEmployerId());
+       Users submittedUser = usersService.findByEmployer_employerId(employer.getEmployerId());
+       if(employer == null || submittedUser == null || submittedEmployer == null) {
+    	   logger.warn("Submitted company not found to edit profile"); 
+    	   return"login";
+       }
+       if(!employer.getEmployerId().equals(submittedUser.getEmployer().getEmployerId())) {
+    	   logger.warn("LoggedIn user doesnot match submitted user"); 
+    	   return"login";
+       }
+       //here setting values in jobSeekerDTO
+       ProfileDTO profileDTO = new ProfileDTO();
+       profileDTO.setUserId(submittedEmployer.getEmployerId());
+       profileDTO.setCompanyName(submittedEmployer.getCompanyName());
+       profileDTO.setCompanyDescription(submittedEmployer.getCompanyDescription());
+       profileDTO.setAddress(submittedEmployer.getAddress());
+       profileDTO.setNumber(submittedEmployer.getNumber());
+
+       model.addAttribute("profileDTO", profileDTO);
+
+       return "employer/profile-edit";
+	}
+	
+	
+	@PostMapping("/jobseekers/profile/edit/{jobSeekerId}")
     public String postJobseekerProfileEdit(Model model,
-    		@ModelAttribute JobSeekerDTO jobSeekerDTO,
-    		@PathVariable("jobSeekerId") Integer jobSeekerId) {
+    		@ModelAttribute ProfileDTO jobSeekerDTO,
+    		@PathVariable("jobSeekerId") Integer jobSeekerId,
+    		@ModelAttribute("jobSeeker")JobSeeker jobSeeker) {
 
 	   JobSeeker submittedjobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);      
 	   Users submittedUser = usersService.findByJobSeeker_jobSeekerId(jobSeekerId);
 	   if( submittedjobSeeker == null || submittedUser == null) {
 	    	logger.warn("Submitted jobSeeker not found"); 
 	    	return"login";
-	   }
-	      
-       if( submittedjobSeeker.getJobSeekerId().equals(submittedUser.getJobSeeker().getJobSeekerId())) {
+	   } 
+       if(!jobSeeker.getJobSeekerId().equals(submittedUser.getJobSeeker().getJobSeekerId())) {
     	   logger.warn("Submitted jobSeekerId not found in JobSeeker and Users table"); 
     	   return"login";
-       }
+       }       
 
-      //setting values directly to Users entity
-       submittedUser.setEmail(jobSeekerDTO.getEmail());
-
-      // submittedjobSeeker.setJobSeekerUsername(jobSeekerDTO.getJobSeekerUsername());//here user name not changing
-       submittedjobSeeker.setEmail(jobSeekerDTO.getEmail());
-       submittedjobSeeker.setNumber(jobSeekerDTO.getNumber());
-       submittedjobSeeker.setAddress(jobSeekerDTO.getAddress());
-       submittedjobSeeker.setSkills(jobSeekerDTO.getSkills());
-       
-       
-       //update according to it
- 		usersService.updateJobSeeker(submittedjobSeeker);      
- 		usersService.updateUsers(submittedUser);         
+       jobSeekerService.updateJobSeeker(jobSeekerDTO,submittedjobSeeker);      
 
         return "redirect:/jobseekers/profile";
     }
-	
     
-	//to visit employers profile
-    //loggedin required
-	@GetMapping("/employers/profile/edit/{employerId}")
-	public String getEmployerProfile(Model model,
-			@PathVariable("employerId") Integer employerId,
-			@ModelAttribute ("employer")Employer employer) {
-		
-		
-		//there is two same username in user and jobseeker entity
-       Employer submittedEmployer = employerService.findByEmployerId(employer.getEmployerId());
-       Users submittedUser = usersService.findByEmployer_employerId(employer.getEmployerId());
-       if( submittedEmployer == null || submittedUser == null) {
-    	   logger.warn("Submitted company not found in get"); 
-    	   return"login";
-       }
-
-       if(!submittedEmployer.getEmployerId().equals(submittedUser.getEmployer().getEmployerId())) {
-    	   logger.warn("not same submittedjobSeeker and loggedinJobSeeker"); 
-    	   return"login";
-       }
-       
-       //here setting values in jobSeekerDTO
-       EmployerDTO employerDTO = new EmployerDTO();
-       employerDTO.setCompanyName(submittedEmployer.getCompanyName());//setting companyName 
-       employerDTO.setEmail(submittedEmployer.getEmail());
-       employerDTO.setContactNumber(submittedEmployer.getContactNumber());
-       employerDTO.setAddress(submittedEmployer.getAddress());
-       employerDTO.setCompanyDescription(submittedEmployer.getCompanyDescription());
-       employerDTO.setWebsite(submittedEmployer.getWebsite());
-       
-       model.addAttribute("employerDTO",employerDTO);
-     //  model.addAttribute("isEditMode",true);
-		return "employer-form";
-	}
-	
     //verifying submitted and loggedin jobSeeker are same
     //to edit profile
 	//need employer login
-    @PostMapping("/employers/profile/edit/{CompanyName}")
+    @PostMapping("/employers/profile/edit/{employerId}")
     public String getEmployerProfileEdit(Model model,
-    		@ModelAttribute EmployerDTO employerDTO,
-    		@PathVariable("CompanyName") String CompanyName) {
+    		@ModelAttribute ProfileDTO employerDTO,
+    		@PathVariable("employerId") Integer employerId,
+    		@ModelAttribute ("employer")Employer employer ) {
         
-		String loggedinUsername = UserAuthorization.getLoggedInEmployerUsername();
-
 		//there is two same username in user and jobseeker entity
-       Employer submittedEmployer = employerService.findByCompanyName(CompanyName);
-       Users submittedUser = usersService.findByUsername(CompanyName);
+       Employer submittedEmployer = employerService.findByEmployerId(employerId);
+       Users submittedUser = usersService.findByEmployer_EmployerId(employerId);
        
        if( submittedEmployer == null || submittedUser == null) {
     	   logger.warn("Submitted company not found in post"); 
     	   return"login";
        }
        
-       String submittedUsername = submittedEmployer.getCompanyName();
-       if(!loggedinUsername.equals(submittedUsername)) {
+       if(!employer.getCompanyName().equals(submittedEmployer.getCompanyName())) {
     	   logger.warn("not same submittedEmployer and loggedinEmployer"); 
     	   return"login";
        }
        
-      //setting values directly to object
-       submittedUser.setEmail(employerDTO.getEmail());
-
-      
-       submittedEmployer.setEmail(employerDTO.getEmail());
-       submittedEmployer.setContactNumber(employerDTO.getContactNumber());
-       submittedEmployer.setAddress(employerDTO.getAddress());
-       submittedEmployer.setCompanyDescription(employerDTO.getCompanyDescription());
-       submittedEmployer.setWebsite(employerDTO.getWebsite());
-
-       
-       //update according to it
- 		usersService.updateEmployer(submittedEmployer);      
- 		usersService.updateUsers(submittedUser);      
-
+ 		employerService.updateEmployer(employerDTO,submittedEmployer);      
         return "redirect:/employers/profile";
     }
 	
-//	//to visit admin profile
-//	@GetMapping("/admin/profile")
-//	public String getAdminProfile(Model model) {
-//		
-//		// Get the currently logged-in user's username
-//		String loggedinusername = UserAuthorization.getLoggedInUsername();
-//		Admin admin = adminService.findByUsername(loggedinusername);
-//		if (loggedinusername == null || admin == null) {
-//			return "login";
-//		}
-//		
-//		model.addAttribute("admin", admin);  // Add the admin to the model
-//		return "admin-profile";
-//		
-//	}
-//	
-//	
+  
 }

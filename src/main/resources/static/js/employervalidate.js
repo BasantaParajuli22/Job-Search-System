@@ -1,8 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('registrationForm');
 
-    form.addEventListener('submit', function(event) {
+    form.addEventListener('submit', function (event) {
         let isValid = true;
+        console.log("Form submission started");
 
         // Clear previous error messages
         clearErrors();
@@ -38,16 +39,6 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
-        // Validate Website
-        const website = document.getElementById('website').value.trim();
-        if (website === '') {
-            showError('websiteError', 'Website is required.');
-            isValid = false;
-        } else if (!validateWebsite(website)) {
-            showError('websiteError', 'Invalid website format.');
-            isValid = false;
-        }
-
         // Validate Company Description
         const companyDescription = document.getElementById('companyDescription').value.trim();
         if (companyDescription === '') {
@@ -79,9 +70,13 @@ document.addEventListener('DOMContentLoaded', function() {
             isValid = false;
         }
 
+        // Debugging log
+        console.log("isValid after all checks: ", isValid);
+
         // Prevent form submission if invalid
         if (!isValid) {
             event.preventDefault();
+            console.log("Form submission prevented");
         }
     });
 
@@ -95,11 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return numberRegex.test(number);
     }
 
-    function validateWebsite(website) {
-        const websiteRegex = /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?$/; // Basic website validation
-        return websiteRegex.test(website);
-    }
-
     function showError(id, message) {
         const errorElement = document.getElementById(id);
         if (errorElement) {
@@ -110,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function clearErrors() {
         const errors = document.querySelectorAll('.error');
         errors.forEach(error => {
-            error.textContent = '';
+            error.textContent = ''; // Clear previous error messages
         });
     }
 });

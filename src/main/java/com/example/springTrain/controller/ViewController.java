@@ -23,7 +23,6 @@ import com.example.springTrain.enums.CityLocation;
 import com.example.springTrain.enums.ExperienceLevel;
 import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.enums.JobType;
-import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
@@ -46,50 +45,6 @@ public class ViewController {
 	private JobApplicationService jobApplicationService;
 	@Autowired
 	private SavedJobsService savedJobsService;
-	
-	//@ModelAttribute Method: The addJobSeekerToModel() method 
-	//will be executed before any request handler in this controller,
-	// adding jobSeeker to the model if a user is logged in.
-    @ModelAttribute
-    public void addJobSeekerToModel(Model model) {
-    	//getting LoggedInJobSeekerUsername in string
-        String username = UserAuthorization.getLoggedInJobSeekerUsername();
-        if (username != null) {//if found finding in jobSeeker entity
-            JobSeeker jobSeeker = jobSeekerService.findByUsername(username);
-            if (jobSeeker != null) {//if found adding to model
-                model.addAttribute("jobSeeker", jobSeeker);
-            } 
-        }
-    }
-    
-    @ModelAttribute
-    public void addEmployerToModel(Model model) {
-        String username = UserAuthorization.getLoggedInEmployerUsername();
-        
-        // Debugging: Check the employer's username
-        System.out.println("Logged-in employer username: " + username);
-        
-        if (username != null) {
-            Employer employer = employerService.findByCompanyName(username);
-            
-            if (employer != null) {
-                model.addAttribute("employer", employer);
-            }
-        }
-    }
-
-    
-//    @ModelAttribute
-//    public void addAdminToModel(Model model) {
-//        String username = UserAuthorization.getLoggedInUsername();
-//        if (username != null) {
-//            Admin admin = adminService.findByCompanyName(username);
-//            if (admin != null) {
-//                model.addAttribute("admin", admin);
-//            } 
-//        }
-//    }
-    
     
 	//HomePage
 	@GetMapping("/")
@@ -184,7 +139,7 @@ public class ViewController {
 		
 		JobSeeker jobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		model.addAttribute("jobSeeker",jobSeeker);	        
-		return "jobseeker-profile";
+		return "jobseeker/jobseeker-profile";
 	}
 	
 	//displaying jobPosts in Pages
@@ -261,39 +216,33 @@ public class ViewController {
 	//view all jobposts of specific employer
 	//by using employerId
 	//no login required
-	@GetMapping("/view/jobposts/of/employer/{employerId}")
+	@GetMapping("/view/jobposts/{jobId}/of/employer/{employerId}")
 		public String listAllJobPostsOfEmployer(Model model,
+			@PathVariable ("jobId") Integer jobId,
 			@PathVariable ("employerId") Integer employerId,
 			@ModelAttribute("employer")Employer employer) {
+					
+		List<Integer> jobAppCount = jobApplicationService.countTotalApplicantsOfEmployer(employerId);
+		model.addAttribute("jobAppCount",jobAppCount);
 			
-		
 		Employer submittedEmployer = employerService.findByEmployerId(employerId);
-			
 		if (submittedEmployer != null) {
 	        List<JobPosting> myJobPosts = jobPostingService.findByEmployerId(employerId);
 	        model.addAttribute("employer",submittedEmployer);
 	        model.addAttribute("myJobPosts", myJobPosts);
 	    }
-//		Employer loggedInEmployer = employerService.findByEmployerId(employer.getEmployerId());
-//		
-//		if(submittedEmployer.getEmployerId().equals(loggedInEmployer.getEmployerId())) {
-//			
-//			return"redirect:/employers/profile";
-//			
-//		}
-
-		//checking if loginEmployer is present or not
-		if(employerId != null) {
-        	Employer loggedInEmployer  = employerService.findByEmployerId(employerId); 
-        	if(loggedInEmployer != null) {
-        		model.addAttribute("loggedInEmployer",loggedInEmployer);
-        	}else {
-        		model.addAttribute("loggedInEmployer",null);
-        	}
-        }
-
-        
-		return "employer-profile";
+		
+		if(employer!= null) {
+			JobPosting jobpost = jobPostingService.getByJobId(jobId);			
+			Employer samejobEmployer = employerService.getByEmployerIdAndJobId(jobpost.getEmployer().getEmployerId(),jobId);
+			
+			if(samejobEmployer.equals(employer)) {
+				model.addAttribute("loggedInEmployer",samejobEmployer);
+			}
+		}		
+		return "employer/employer-profile";
 	}	
+	
+	
 	
 }

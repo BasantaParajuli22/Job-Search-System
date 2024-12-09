@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.JobSeekerRepository;
@@ -29,10 +30,6 @@ public class JobSeekerService {
 		return jobSeekerRepository.findAll();
 	}
 
-	public JobSeeker findByUsername(String jobSeekerUsername) {
-		return jobSeekerRepository.findByJobSeekerUsername(jobSeekerUsername);
-	}
-
 	public JobSeeker findByJobSeekerId(Integer jobseekerId) {
 		return jobSeekerRepository.findByJobSeekerId(jobseekerId);
 
@@ -44,6 +41,17 @@ public class JobSeekerService {
 
 	public long countAlljobSeekers() {
 		return jobSeekerRepository.count();
+	}
+
+	public JobSeeker findByEmail(String email) {
+		return jobSeekerRepository.findByEmail(email);
+	}
+
+	public void updateJobSeeker(ProfileDTO profileDTO, JobSeeker jobSeeker) {
+		jobSeeker.setFullName(profileDTO.getFullName());
+    	jobSeeker.setNumber(profileDTO.getNumber());
+ 		jobSeeker.setSkills(profileDTO.getSkills());
+        jobSeekerRepository.save(jobSeeker); 
 	}
 
 }

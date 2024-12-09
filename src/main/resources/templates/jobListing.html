@@ -10,7 +10,6 @@
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
-
 		
     <div class="job-container">
         <div class="job-header">
@@ -37,10 +36,7 @@
 		</div>
 		<!-- Background, Skills & Experience -->
 		<div class="job-info-section">
-		    <h3>Background, Skills & Experience</h3>
-		    <p th:each="skill : ${jobPost.skills}">
-		        <span th:text="${skill}">Skill details</span><br>
-		    </p>
+		    <h3>Experience</h3>	    
 		    <p th:text="'Experience Level: ' + ${jobPost.experienceLevel}"></p>
 		</div>
 
@@ -71,23 +67,33 @@
 			</div>
    		 	<div th:if="${appliedjobPost == null}">
 				<form th:if="${jobSeeker != null}"
-					th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{companyName}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},companyName=${jobPost.employer.companyName})}" method="post">
+					th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
+					method="post"  enctype="multipart/form-data">
 			    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<!-- File input for CV -->
+					   <label for="cv">Upload CV:</label>
+					   <input type="file" id="cv" name="cv" required />
 			    <button type="submit">Apply</button>
 				</form>
 			</div>
 			
-			<!-- if savedjobPost is found that means its already saved -->
-			<div th:if="${savedjobPost != null}">
-				<button>Saved</button>
-			</div>
+			
 			<!-- Save Job Button -->
-			<div th:if="${savedjobPost == null}">		
-				<div th:if="${jobSeeker != null}" >
+			<div th:if="${savedjobPost == null and jobSeeker != null}">		
+				<div>
 		    		<form th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post">
 		        		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		        		<button type="submit" class="buttonSmall">Save job</button>
 		    		</form>
+				</div>
+			</div>
+			<!-- UnSave job Button -->
+			<div th:if="${savedjobPost != null and jobSeeker != null}">
+				<div>
+					<form th:action="@{/unsaveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<button type="submit" class="buttonSmall">UnSave job</button>
+					</form>
 				</div>
 			</div>
 		</div>

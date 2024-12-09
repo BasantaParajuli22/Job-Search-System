@@ -42,11 +42,8 @@
                     <td th:text="${jobApplication.applicationStatus}">Application Status</td>
                     <!-- Change or updating statuts of jobApplication -->
 					<td>
-                        <form th:action="@{/applications/submittedto/employer/statusUpdate(applicationId=${jobApplication.applicationId})}" method="post">
-							<!-- sending applicationId and employerId to update-->
-							<input type="hidden" name="applicationId" th:value="${jobApplication.applicationId}" />
-							<input type="hidden" name="employerId" th:value="${jobApplication.employer.employerId}" />
-
+						<form th:action="@{/application/submittedto/employer/{employerId}/statusUpdate/{applicationId}(employerId=${jobApplication.employer.employerId},applicationId=${jobApplication.applicationId})}" method="post">
+							
 							<select name="applicationStatus">
                                 <option value="Pending" th:selected="${jobApplication.applicationStatus == 'Pending'}">Pending</option>
                                 <option value="Reviewed" th:selected="${jobApplication.applicationStatus == 'Reviewed'}">Reviewed</option>

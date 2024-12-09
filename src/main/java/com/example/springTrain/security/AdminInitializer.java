@@ -19,11 +19,11 @@ public class AdminInitializer {
             String adminUsername = "admin";
             String adminPassword = "admin123";
             // Check if the admin username exists in the repository
-            Users existingAdmin = userRepository.findByUsername(adminUsername);
+            Users existingAdmin = userRepository.findByEmail(adminUsername);
             
             if (existingAdmin == null) {  // If no admin is found, create one
                 Users admin = new Users();
-                admin.setUsername(adminUsername);
+                admin.setEmail(adminUsername);
                 admin.setPassword(passwordEncoder.encode(adminPassword)); // Password encoding
                 admin.setUsertype(Usertype.ADMIN);  // Assign role as Admin
                 userRepository.save(admin);  // Save to the database

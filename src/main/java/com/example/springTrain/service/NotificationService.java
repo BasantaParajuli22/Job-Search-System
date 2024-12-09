@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.Employer;
+import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.NotificationRepository;
@@ -23,6 +25,7 @@ public class NotificationService {
 	//setting message and unread status and saving
 	public NotificationMessage createNotification(Users user, String message) {
 		NotificationMessage notification = new NotificationMessage();
+		
 		notification.setUsers(user);
 		notification.setMessage(message);
 		notification.setStatus("not-viewed");
@@ -43,13 +46,7 @@ public class NotificationService {
 	public List<NotificationMessage> getAllNotificationsByUserId(Integer userId){	
 		return notificationRepository.findAllByUsers_UserId(userId);
 	}
-
-	//getting all notifications which is unreaded by user
-	public List<NotificationMessage> getAllUnReadedNotifications(String username) {
-		return notificationRepository.findAllByUsers_UsernameAndStatus(username,"unread");
-
-	}
-
+	
 	//delete notification individual 
 	public void deleteNotification(NotificationMessage notification) {
 		 notificationRepository.delete(notification);
@@ -57,11 +54,22 @@ public class NotificationService {
 	//delete notification all of user
 	public void deleteAllNotification(List<NotificationMessage> notification) {
 		notificationRepository.deleteAll(notification);
-		
 	}
 
-
-
-
+	//count notifications by unread 
+	public long countUnreadNotificationsOfjobSeeker(JobSeeker jobSeeker) {
+		return notificationRepository.countByUsers_JobSeekerAndStatus(jobSeeker, "not-viewed");
+	}	
+	public long countUnreadNotificationsOfEmployer(Employer employer) {
+		return notificationRepository.countByUsers_EmployerAndStatus(employer, "not-viewed");
+	}
+	
+	//count notifications all 
+	public long countNotificationsOfjobSeeker(JobSeeker jobSeeker) {
+		return notificationRepository.countByUsers_JobSeeker(jobSeeker);
+	}	
+	public long countNotificationsOfEmployer(Employer employer) {
+		return notificationRepository.countByUsers_Employer(employer);
+	}
 	
 }

@@ -9,9 +9,8 @@ import com.example.springTrain.entity.Users;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 	
-	Users findByUsername(String username);
+	Users findByUserId(Integer userId);
 	Users findByEmail(String email);
-	Users findByEmailAndPassword(String email,String password);
 	Users findByEmployer(Employer employer);
 	
 	Users findByJobSeeker_JobSeekerId(Integer jobSeekerId);

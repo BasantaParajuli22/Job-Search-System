@@ -1,11 +1,12 @@
 package com.example.springTrain.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.dto.EmployerDTO;
+import com.example.springTrain.dto.JobSeekerDTO;
+import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
@@ -21,7 +22,6 @@ public class UsersService {
     private JobSeekerRepository jobSeekerRepository;
     private EmployerRepository employerRepository;
    
-    @Autowired
     public UsersService(UsersRepository usersRepository,
     		JobSeekerRepository jobSeekerRepository,
     		EmployerRepository employerRepository) {
@@ -29,47 +29,50 @@ public class UsersService {
         this.jobSeekerRepository = jobSeekerRepository;
         this.employerRepository = employerRepository;
     }
-
-    // Method to find a user by username
-    public Users findByUsername(String username) {
-        return usersRepository.findByUsername(username);        
-    }
     
     @Autowired
     private PasswordEncoder passwordEncoder; // Add PasswordEncoder for password hashing
 
+    
     //for storing data in User table first to generate id
     //and storing user_id in jobseeker and employer table for foreign key purposes
     //and storing data on jobseeker and employer table respectively
-    
-    public void createJobSeeker(Users user, JobSeeker jobSeeker) {
-        // Encode the user's password before saving 
-    	//we save password only on user table
-       user.setPassword(passwordEncoder.encode(user.getPassword())); 
+    public void createJobSeeker( JobSeekerDTO jobSeekerDTO) {
+    	
+    	Users user = new Users();
+    	JobSeeker jobSeeker = new JobSeeker();
+  		user.setPassword(passwordEncoder.encode(jobSeekerDTO.getPassword())); //encoding password before saving
+    	user.setEmail(jobSeekerDTO.getEmail());
+  		user.setUsertype(jobSeekerDTO.getUsertype());
 
-       // Save the user and associate it with the JobSeeker
-       usersRepository.save(user);
-       jobSeeker.setUsers(user);
-       jobSeekerRepository.save(jobSeeker);
+  		// Save the user and associate it with the JobSeeker
+  		jobSeeker.setUsers(user);
+  		jobSeeker.setEmail(jobSeekerDTO.getEmail());
+  		jobSeeker.setNumber(jobSeekerDTO.getNumber());
+ 		jobSeeker.setFullName(jobSeekerDTO.getFullName());
+ 		jobSeeker.setSkills(jobSeekerDTO.getSkills());
+ 		
+ 		usersRepository.save(user);
+ 		jobSeekerRepository.save(jobSeeker);
     }
 
-    
-    public void createEmployer(Users user, Employer employer) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); 
+	public void createEmployer(EmployerDTO employerDTO) {
+		Users user = new Users();
+		Employer employer = new Employer();
+		user.setEmail(employerDTO.getEmail());
+  		user.setPassword(passwordEncoder.encode(employerDTO.getPassword())); 
+  		user.setUsertype(employerDTO.getUsertype());
 
-        // Save the user first to generate the user_id and associate it with employer
-        usersRepository.save(user);
         employer.setUsers(user);
+        employer.setEmail(employerDTO.getEmail());
+  		employer.setCompanyName(employerDTO.getCompanyName());
+  		employer.setCompanyDescription(employerDTO.getCompanyDescription());
+  		employer.setAddress(employerDTO.getAddress());
+		
+   		usersRepository.save(user);
         employerRepository.save(employer);
-    }
+	}
     
-    //for updating 
-    public void updateJobSeeker(JobSeeker jobSeeker) {
-        jobSeekerRepository.save(jobSeeker); 
-    }
-    public void updateEmployer(Employer submittedEmployer) {
-    	employerRepository.save(submittedEmployer); 
-    }
     public void updateUsers(Users user) {
     	usersRepository.save(user); 
     }
@@ -85,5 +88,17 @@ public class UsersService {
 	public Users findByEmployer_employerId(Integer employerId) {
 		return usersRepository.findByEmployer_EmployerId(employerId);
 	}
+
+	public Users findByEmail(String userEmail) {
+		return usersRepository.findByEmail(userEmail);
+
+	}
+
+	public Users findByEmployer_EmployerId(Integer employerId) {
+		return usersRepository.findByEmployer_EmployerId(employerId);
+
+	}
+
+
 
 }

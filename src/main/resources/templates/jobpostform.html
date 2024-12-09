@@ -8,7 +8,7 @@
 </head>
 <body>
 	<!-- Navigation Bar -->
-	<header th:replace="fragments/nav :: nav"></header>
+	<header th:replace="~{fragments/nav :: nav}"></header>
 
     <!-- Header to determine if it's an edit or create form -->
     <h1 th:text="${jobPosting.jobId != null} ? 'Edit Job Posting' : 'Create Job Posting'"></h1>
@@ -17,7 +17,7 @@
 	<!-- Dynamic URL Construction (String Concatenation)-->
 	<!-- Works well for more complex URL logic and multiple conditions like in a ternary operator (? :)-->
 	<form th:action="@{${jobPosting.jobId != null} ? 
-	    '/jobposts/' + ${jobPosting.jobId} + '/edit/by/' + ${jobPosting.employer.companyName} : 
+	    '/jobposts/' + ${jobPosting.jobId} + '/edit/by/' + ${jobPosting.employer.employerId} : 
 	    '/jobposts/new/create'}" 
 	    method="post" th:object="${jobPosting}" class="form-register">
     
@@ -54,12 +54,6 @@
             <input type="date" id="applicationDeadline" name="applicationDeadline" th:field="*{applicationDeadline}">
         </div>
 
-        <!-- Skills (comma-separated) -->
-        <div>
-            <label for="skills">Skills (comma-separated):</label>
-            <input type="text" id="skills" name="skills" th:field="*{skills}" placeholder="e.g., Java, SQL, Communication">
-        </div>
-		
 		<!-- Job Location -->
 		<div>
 		    <label for="cityLocation">Location:</label>

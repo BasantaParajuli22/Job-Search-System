@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.SavedJobs;
@@ -25,19 +24,20 @@ public class SavedJobsService  {
 	}
 
 	//save job by jobSeeker
-	public void saveJobForJobSeeker(JobPosting jobPosting, JobSeeker jobSeeker) {
-	   	
-		System.out.println(jobPosting);
-		System.out.println(jobSeeker);
-
+	public void saveJobForJobSeeker(JobPosting jobPosting, JobSeeker jobSeeker) {	   	
 	   SavedJobs saveJob = new SavedJobs();
 	   saveJob.setJobSeeker(jobSeeker);
-	    saveJob.setJobPosting(jobPosting);
-	
-	    savedJobsRepository.save(saveJob);
+	   saveJob.setJobPosting(jobPosting);
+	   
+	   savedJobsRepository.save(saveJob);
 
 	   }
 
+	public void unSaveJobForJobSeeker(JobPosting jobPosting, JobSeeker loggedJobSeeker) {		 
+		SavedJobs savedJob = savedJobsRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobPosting.getJobId(),loggedJobSeeker.getJobSeekerId());			
+		savedJobsRepository.delete(savedJob);
+	}
+	
 	public SavedJobs findByJobPosting_JobIdAndJobSeekerId(Integer jobId, Integer jobSeekerId) {
 		return savedJobsRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
 	}
@@ -75,5 +75,7 @@ public class SavedJobsService  {
 			return savedJobsRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
 
 		}
+
+
 
 }

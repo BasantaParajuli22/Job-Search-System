@@ -13,8 +13,8 @@ import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
-import com.example.springTrain.entity.Users;
-import com.example.springTrain.repository.UsersRepository;
+import com.example.springTrain.service.EmployerService;
+import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
 import com.example.springTrain.validation.ValidationError;
 
@@ -23,10 +23,15 @@ public class RegisterController {
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired
-	private UsersRepository usersRepository;
+
 	@Autowired
 	private UsersService usersService;
+
+	@Autowired
+	private EmployerService employerService;
+
+	@Autowired
+	private JobSeekerService jobSeekerService;
 
 	@GetMapping("/home")
 	public String getHomepage() {
@@ -49,62 +54,44 @@ public class RegisterController {
 	  @GetMapping("/employer/register")
 	  public String getemployform(Model model) {
 		    model.addAttribute("employerDTO", new EmployerDTO()); // Ensure this matches the th:object in your form
-		    return "employer-form";
+		    return "employer/employer-form";
 	  }
 	// to register as jobseekers
 	  @GetMapping("/jobseeker/register")
 	  public String getemployeeform(Model model) {
 		    model.addAttribute("jobSeekerDTO", new JobSeekerDTO()); // Ensure this matches the th:object in your form
-		    return "jobseeker-form";
+		    return "jobseeker/jobseeker-form";
 	  }
 
 	  @PostMapping("/jobseeker/register")
-	  public String registerJobSeeker(@ModelAttribute JobSeekerDTO jobSeekerDTO, Model model) {
-	  		
-	  	ValidationError validationError = new ValidationError();
-	  	validationError.clear();
-	  		
-	  	//username should be unique in user table
-	  	Users existinguser = usersRepository.findByUsername(jobSeekerDTO.getJobSeekerUsername());
-	  	if(existinguser != null) {
-	  		validationError.setUsername("Sorry username is already taken ");
-	  	}
-	  	//email should be unique in job_seeker table
-	  	Users existingjobemail = usersRepository.findByEmail(jobSeekerDTO.getEmail());
-	  	if(existingjobemail != null) {
-	  		validationError.setEmail("Sorry email is already taken ");
-	  	}	
-	  		
-	  	if(validationError.hasErrors()) {
-	  	// Re-add the input data to the model to repopulate the form
-	  		model.addAttribute("jobSeekerDTO", jobSeekerDTO);
-	  		model.addAttribute("error", validationError);//sending both errors in 1 error variable
-	  		return "jobseeker-form";
-	  	}else {
-	  		
-	  		// Create User entity
-	  		//getting data from DTO and setting entities and saving
-	  		Users user = new Users();
-	  		user.setUsername(jobSeekerDTO.getJobSeekerUsername());
-	  		user.setPassword(jobSeekerDTO.getPassword());
-	  		user.setEmail(jobSeekerDTO.getEmail());
-	  		user.setUsertype(jobSeekerDTO.getUsertype());
+	  public String registerJobSeeker(@ModelAttribute("jobSeekerDTO") JobSeekerDTO jobSeekerDTO, Model model) {
+	      ValidationError validationError = new ValidationError();
+	      validationError.clear();
 
-	  		// Create JobSeeker entity
-	  		JobSeeker jobSeeker = new JobSeeker();
-	  		jobSeeker.setJobSeekerUsername(jobSeekerDTO.getJobSeekerUsername());
-	  		jobSeeker.setEmail(jobSeekerDTO.getEmail());
-	  		jobSeeker.setNumber(jobSeekerDTO.getNumber());
-	  		jobSeeker.setAddress(jobSeekerDTO.getAddress());
-	  		jobSeeker.setSkills(jobSeekerDTO.getSkills());
-	  		//jobSeeker.setResume(jobSeekerDTO.getResume());
+	      // Check if email is unique in both JobSeeker and Employer tables
+	      JobSeeker existingJobEmail = jobSeekerService.findByEmail(jobSeekerDTO.getEmail());
+	      Employer existingEmployerEmail = employerService.findByEmail(jobSeekerDTO.getEmail());
+	      if (existingEmployerEmail != null || existingJobEmail != null) {
+	          validationError.setEmail("Sorry, this email is already taken.");
+	      }
 
-	  		// Call the service method to save the user and job seeker
-	  		usersService.createJobSeeker(user, jobSeeker);      
-	  		return "login";
-	  	}	
+	      // Validate password confirmation
+	      if (!jobSeekerDTO.getPassword().equals(jobSeekerDTO.getConfirmPassword())) {
+	          validationError.setPassword("Passwords do not match.");
+	      }
 
+	      if (validationError.hasErrors()) {
+	          // Re-add input data and errors to the model
+	          model.addAttribute("jobSeekerDTO", jobSeekerDTO);
+	          model.addAttribute("error", validationError);
+	          return "jobseeker/jobseeker-form";
+	      }
+
+	      // Save the JobSeeker
+	      usersService.createJobSeeker(jobSeekerDTO);
+	      return "redirect:/login";
 	  }
+
 
 	  	@PostMapping("/employer/register")
 	  	public String registerEmployer(@ModelAttribute EmployerDTO employerDTO, Model model) {
@@ -112,44 +99,27 @@ public class RegisterController {
 	  	ValidationError validationError = new ValidationError();
 	  	validationError.clear();
 	  	
-	  	//username should be unique in user table
-	  	Users existinguser = usersRepository.findByUsername(employerDTO.getCompanyName());
+	  	//companyName should be unique in employer table
+	  	Employer existinguser = employerService.findByCompanyName(employerDTO.getCompanyName());
 	  	if(existinguser != null) {
 	  		validationError.setUsername("Sorry username is already taken ");
 	  		System.out.println("Sorry username is already taken " + employerDTO.getCompanyName()); // Debugging	
 	  	}
 	  	//email should be unique in employer table
-	  	Users existingjobemail = usersRepository.findByEmail(employerDTO.getEmail());
-	  	if(existingjobemail != null) {
+	  	JobSeeker existingJobEmail = jobSeekerService.findByEmail(employerDTO.getEmail());
+	  	Employer existingEmployerEmail = employerService.findByEmail(employerDTO.getEmail());
+	  	if(existingEmployerEmail != null || existingJobEmail != null) {
 	  		validationError.setEmail("Sorry email is already taken ");
-	  		System.out.println("Sorry email is already taken: " + employerDTO.getEmail()); // Debugging
-	  	}	
+	  	}		
 	  	
 	  	if(validationError.hasErrors()) {
 	  		// Re-add the input data to the model to repopulate the form
 	  		model.addAttribute("employerDTO", employerDTO);
-	  		//sending both errors in 1 error variable
 	  		model.addAttribute("error", validationError);
-	  		return "employer-form";
+	  		return "employer/employer-form";
 	  	}else {
-	  		Users user = new Users();
-	  		user.setUsername(employerDTO.getCompanyName());
-	  		user.setPassword(employerDTO.getPassword());
-	  		user.setEmail(employerDTO.getEmail());
-	  		user.setUsertype(employerDTO.getUsertype());
-
-	  		Employer employer = new Employer();
-	  		employer.setCompanyName(employerDTO.getCompanyName());
-	  		employer.setCompanyDescription(employerDTO.getCompanyDescription());
-	  		employer.setContactNumber(employerDTO.getContactNumber());
-	  		employer.setAddress(employerDTO.getAddress());
-	  		employer.setWebsite(employerDTO.getWebsite());
-	  		employer.setEmail(employerDTO.getEmail());
-
-	  		
-	  		usersService.createEmployer(user, employer);
-
-	  		return "login";
-	  		}
+	  		usersService.createEmployer(employerDTO);
 	  	}
+	  	return "redirect:/login";
 	  }
+}

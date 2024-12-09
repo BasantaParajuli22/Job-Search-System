@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
-import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobPostingService;
 
@@ -32,21 +31,17 @@ public class JobPostingController {
 	@Autowired
 	private EmployerService employerService;
 
+	
 	//to create a jobposting 
 	//user must be authenticated and should be employer
 	@GetMapping("/new/create")
-	public String getJobPostForm(Model model) {
-	    
-   	 	// Get the currently logged-in user's username
-		String username = UserAuthorization.getLoggedInUsername();
-        // Find your custom User entity using the username           
-        Employer employer = employerService.findByCompanyName(username); // Your custom method to find the User entity
-        // If no employer is found or user is not authorized, redirect to login   
+	public String getJobPostForm(Model model,
+			@ModelAttribute("employer") Employer employer) {
+	     	 
          if(employer == null) {
         	 logger.warn("User not suitable for creating jobposting");
             return "login";
          }
-
         model.addAttribute("employer", employer);
         model.addAttribute("jobPosting", new JobPosting());  // Pass a new JobPosting object
         return "jobpostform";
@@ -57,11 +52,9 @@ public class JobPostingController {
 	//and jobposting is created
 	@PostMapping("/new/create")
 	public String createJobPostForm(@ModelAttribute JobPosting jobPosting,
-									@RequestParam("employerId") Integer employerId) {
+									@RequestParam("employerId") Integer employerId,
+									@ModelAttribute("employer") Employer employer) {
 		
-		String username = UserAuthorization.getLoggedInUsername();
-	    // Retrieve employer by username
-	    Employer employer = employerService.findByCompanyName(username);
 	    if (employer == null) {
        	 logger.warn("User not suitable for posting jobposting");
         	return "login";
@@ -92,18 +85,16 @@ public class JobPostingController {
     //employerid and jobId
     //by an employer only
     @PostMapping("/{jobId}/delete/byemployer")
-    public String deleteJobPostingByEmployerId(@PathVariable("jobId") Integer jobId) {
+    public String deleteJobPostingByEmployerId(@PathVariable("jobId") Integer jobId,
+    		@ModelAttribute("employer") Employer employer) {
     	    	
-    	String username = UserAuthorization.getLoggedInUsername();
-        Employer loggedInEmployer = employerService.findByCompanyName(username);  // Assuming employerService is injected
-        if(loggedInEmployer == null) {
+       if(employer == null) {
           	 logger.warn("User not suitable for deleting jobposting");
         	return "login";
         }
         
-        Integer employerId = loggedInEmployer.getEmployerId();
-        // Fetch the logged-in employerId andjob posting by jobId 
-        JobPosting jobPosting = jobPostingService.getJobPostingByEmployerIdAndJobId(employerId, jobId);
+        // Fetch the logged-in employerId and job posting by jobId 
+        JobPosting jobPosting = jobPostingService.getJobPostingByEmployerIdAndJobId(employer.getEmployerId(), jobId);
         if (jobPosting == null) {
          	 logger.warn("Id didnot match whether the employer or jobpost");
         	return "login";
@@ -117,55 +108,37 @@ public class JobPostingController {
     
    
     //edit job posts 
-	@GetMapping("/{jobId}/edit/by/{companyName}")
+	@GetMapping("/{jobId}/edit/by/{employerId}")
 	public String getEditForm(
 			@PathVariable("jobId") Integer jobId,
-			@PathVariable("companyName") String companyName,
+			@PathVariable("employerId") Integer employerId,
+			@ModelAttribute("employer") Employer employer,
 			Model model) {
-
-    	String loggedinusername = UserAuthorization.getLoggedInUsername();
-    	   		
+ 		
     	//checking if Form username and jobid can edit the post
-    	JobPosting jobPostId = jobPostingService.getJobPostingById(jobId);
-    	List<JobPosting> submittedemployer = jobPostingService.findByEmployerCompanyName(companyName); 
-    	List<JobPosting> loggedInEmployer = jobPostingService.findByEmployerCompanyName(loggedinusername); 
+    	JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
+    	Employer submittedemployer = employerService.findByEmployerId(employer.getEmployerId()); 
      
-       if( jobPostId == null || submittedemployer == null || loggedInEmployer == null) {
+       if( jobPost == null || submittedemployer == null || employer == null) {
        	 logger.warn("Employer or jobid cannot access to edit jobPost");
     	   return"login";
        }
-       if (!submittedemployer.equals(loggedInEmployer)) {
+       if (!submittedemployer.equals(employer)) {
     	   logger.warn("Submitted and loggedin employer doesnot match");
     	   return"login";
        }
-       //It prevents users from editing job posts that do not belong to them. 
-       //This is crucial for security, as employers should only be able to edit their own job posts.
-       // Check if the job being edited matches any of the logged-in employer's job posts
-       boolean canEdit = loggedInEmployer.stream()
-                           .anyMatch(post -> post.getJobId().equals(jobId));
-
-       if (!canEdit) {
-    	   logger.warn("The logged-in user does not have permission to edit job post with ID:" , jobId);
-           return "login";
-       }
-       
-       Employer employer = employerService.findByCompanyName(companyName);
-       if (employer == null) {
-    	   logger.warn("employer cannot edit or not the one");
-    	   return "login";
-       }
-       
-		model.addAttribute("employer", employer);  
-		model.addAttribute("jobPosting", jobPostId);
+		model.addAttribute("employer", submittedemployer);  
+		model.addAttribute("jobPosting", jobPost);
 		
 	    return "jobpostform";  
 	}
 	
 	
-	@PostMapping("/{jobId}/edit/by/{companyName}")
-	public String postEditForm(@PathVariable("jobId") Integer jobId, @ModelAttribute("jobPosting") JobPosting updatedJobPosting, Model model) {
-
-	    String loggedinusername = UserAuthorization.getLoggedInUsername();
+	@PostMapping("/{jobId}/edit/by/{employerId}")
+	public String postEditForm(@PathVariable("jobId") Integer jobId,
+			@ModelAttribute("jobPosting") JobPosting updatedJobPosting,
+			@ModelAttribute("employer") Employer employer,
+			Model model) {
 	    
 	    JobPosting existingJobPosting = jobPostingService.getJobPostingById(jobId);
 	    if (existingJobPosting == null) {
@@ -173,7 +146,7 @@ public class JobPostingController {
 	        return "redirect:/view/jobposts";  
 	    }
 
-	    List<JobPosting> loggedInEmployerPosts = jobPostingService.findByEmployerCompanyName(loggedinusername);
+	    List<JobPosting> loggedInEmployerPosts = jobPostingService.findByEmployerCompanyName(employer.getCompanyName());
 	    boolean canEdit = loggedInEmployerPosts.stream().anyMatch(post -> post.getJobId() == jobId);
 
 	    if (!canEdit) {
@@ -193,7 +166,6 @@ public class JobPostingController {
 	    existingJobPosting.setExperienceLevel(updatedJobPosting.getExperienceLevel());
 	    existingJobPosting.setRemote(updatedJobPosting.isRemote());
 	    existingJobPosting.setContactEmail(updatedJobPosting.getContactEmail());
-
 
 	    // Save the updated job post
 	    jobPostingService.updateJobPosting(jobId, existingJobPosting);

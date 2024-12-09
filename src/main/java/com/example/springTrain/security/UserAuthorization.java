@@ -14,11 +14,11 @@ public class UserAuthorization {
 	
 	//getting loggedin Username if it is loggedIn & authenticated
 	//based on the role
-	public static String getLoggedInJobSeekerUsername() {
+	public static String getLoggedInJobSeekerEmail() {
 	       return getUsernameIfRoleMatches("ROLE_JOBSEEKER");
    }
 	
-	public static String getLoggedInEmployerUsername() {
+	public static String getLoggedInEmployerEmail() {
        return getUsernameIfRoleMatches("ROLE_EMPLOYER");
     }
 
@@ -32,7 +32,7 @@ public class UserAuthorization {
 			for(GrantedAuthority authority : authentication.getAuthorities()) {
 				//if authority.getAuthority equals JOBSEEKER or EMPLOYER
 				if(authority.getAuthority().equals(role)) {
-					//return username 
+					//return email 
 					return authentication.getName();
 				}
 			}
@@ -40,5 +40,5 @@ public class UserAuthorization {
 		// return null if the role does not match
 		return null;
 	}
-	
+
 }

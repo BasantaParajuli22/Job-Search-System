@@ -3,24 +3,17 @@ package com.example.springTrain.dto;
 import com.example.springTrain.enums.Usertype;
 
 public class EmployerDTO {
-//	private String username;
+	
+	private Integer userId;
 	private String companyName;
+	private String companyDescription;
     private String password;//for getting data from form not to SAVE//
     private String confirmPassword;
-	private String companyDescription;
-	private String contactNumber;
 	private String address;
-	private String website;  
+	private String number;
 	private String email;
     private Usertype usertype;
 
-    
-//	public String getUsername() {
-//		return username;
-//	}
-//	public void setUsername(String username) {
-//		this.username = username;
-//	}
 	public String getCompanyName() {
 		return companyName;
 	}
@@ -33,23 +26,11 @@ public class EmployerDTO {
 	public void setCompanyDescription(String companyDescription) {
 		this.companyDescription = companyDescription;
 	}
-	public String getContactNumber() {
-		return contactNumber;
-	}
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
-	}
-	public String getWebsite() {
-		return website;
-	}
-	public void setWebsite(String website) {
-		this.website = website;
 	}
 	public String getPassword() {
 		return password;
@@ -74,6 +55,18 @@ public class EmployerDTO {
 	}
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
+	}
+	public String getNumber() {
+		return number;
+	}
+	public void setNumber(String number) {
+		this.number = number;
+	}
+	public Integer getUserId() {
+		return userId;
+	}
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 

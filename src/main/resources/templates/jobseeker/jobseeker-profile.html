@@ -13,14 +13,11 @@
     <div class="mainContainer">
 		    <h1>Welcome, Job Seeker!</h1>
 			<p>jobSeekerId: <span th:text="${jobSeeker.jobSeekerId}"></span></p>
-
-			<p>Username: <span th:text="${jobSeeker.users.username}"></span></p>
+			<p>Username: <span th:text="${jobSeeker.fullName}"></span></p>
 		    <p>Email: <span th:text="${jobSeeker.email}"></span></p>
 		    <p>Skills: <span th:text="${jobSeeker.skills}"></span></p>
 		    <p>number: <span th:text="${jobSeeker.number}"></span></p>
-			<p>Address: <span th:text="${jobSeeker.address}"></span></p>
 			<p>CreatedAt: <span th:text="${jobSeeker.createdAt}"></span></p>
-
 
 			
 		   <!--
