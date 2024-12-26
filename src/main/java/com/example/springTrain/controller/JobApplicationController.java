@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
@@ -71,7 +72,7 @@ public class JobApplicationController {
 			return "redirect:/view/jobposts";
 		}
 		
-		List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerAndJobId(companyName,jobId);
+		List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobId(companyName.getEmployerId(),jobId);
 		if(allJobApplications == null) {
         	logger.warn("Couldnot find the jobApplications");
 			return "redirect:/view/jobposts";
@@ -80,20 +81,30 @@ public class JobApplicationController {
 		return "application-all";
 	}
 	
+	//view the pdf file in browser
 	@GetMapping("/view/application/file/{fileName}")
-    @ResponseBody
-    public ResponseEntity<Resource> viewUploadedFile(@PathVariable("fileName") String fileName) {
-        try {
-            Resource resource = jobApplicationService.getFileAsResource(fileName);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
-                    .body(resource);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-	
+	@ResponseBody
+	public ResponseEntity<Resource> viewUploadedFile(@PathVariable("fileName") String fileName) {
+	    try {
+	        Resource resource = jobApplicationService.getFileAsResource(fileName);
+
+	        // Determine file type based on the extension
+	        String contentType = "application/octet-stream";
+	        if (fileName.endsWith(".pdf")) {
+	            contentType = "application/pdf";
+	        }
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.parseMediaType(contentType))
+	                // Use inline to display in browser if supported
+	                ////Content-Disposition: inline; filename="example.txt"
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+	                .body(resource);
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.notFound().build();
+	    }
+	}
+
 	
 	//view all lists of myJobPosts Applicants submitted by the jobseeker
 	//viewing all aplications jobSeeker applied to 
@@ -159,19 +170,30 @@ public class JobApplicationController {
 					@PathVariable("jobId") Integer jobId,
 					@PathVariable("employerId") Integer employerId,
 					@RequestParam("cv")MultipartFile file,
-					@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
-	        
+					@ModelAttribute("jobSeeker") JobSeeker jobSeeker,
+					RedirectAttributes redirectAttributes) {
+	     
+		// Validate file type
+	    // Validate file type
+	    String contentType = file.getContentType();
+	    if (contentType == null || !contentType.equals("application/pdf")) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid file type. Please upload a valid PDF.");
+	    	return "redirect:/view/jobposts/details/" +jobId;
+	    }
+	    
 		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
-		JobApplication jobApplication = jobApplicationService.getJobSeekerByIdAndJobId(jobSeekerId,jobId); 
+		JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndJobSekerId(jobId,jobSeekerId); 
 		Employer employer = employerService.findByEmployerId(employerId); 
 		Users user = userService.findByEmployer_employerId(employerId); 
+		
 		
 		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
 			logger.warn("Not same jobSeeker so cannot apply");
 			return "redirect:/view/jobposts";
 		}
+	
          if(employer == null ||jobPosting == null || user == null || jobApplication != null) {
  			logger.warn("Unable  to apply to jobPosts ");
             return "redirect:/view/jobposts";
@@ -179,9 +201,12 @@ public class JobApplicationController {
         	 
         String filename = jobApplicationService.saveFile(file);
         jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,filename);
+        
         // Send a notification to the employer
         String message = "You have a new application for the job: " + jobPosting.getTitle();
         notificationService.createNotification(user, message);
+        
+        redirectAttributes.addFlashAttribute("successMessage", "Your application has been submitted successfully!");
 
     	return "redirect:/view/jobposts/details/" +jobId;
 	}

@@ -48,7 +48,7 @@ public class JobApplicationService {
 		this.employerRepository =employerRepository;
 	}
 
-	String uploadPath = System.getProperty("user.dir")+"/src/uploads/";
+	String uploadPath = System.getProperty("user.dir")+"/src/main/resources/static/uploads/";
 	
 	//for saving file in local storage
 	public String saveFile(MultipartFile file) {
@@ -76,7 +76,6 @@ public class JobApplicationService {
 		return null;
 	}
 	
-	//for downloading the file
 	public Resource getFileAsResource(String fileName) {
         try {
             Path filePath = Paths.get(uploadPath).resolve(fileName).normalize();
@@ -151,23 +150,6 @@ public class JobApplicationService {
 	}
 
 	
-	//to find whether there is same jobId and jobSeekerId
-	//if found u cannot apply again
-	public JobApplication getJobSeekerByIdAndJobId(Integer jobSeekerId,Integer jobId) {
-		return jobApplicationRepository.findByJobSeeker_JobSeekerIdAndJobPosting_JobId(jobSeekerId,jobId);
-	}
-
-	public JobApplication getJobPostingByJobIdAndJobSekerId(Integer jobId, Integer jobSeekerId) {
-		return jobApplicationRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
-		
-	}
-	
-
-	public JobApplication findById(Integer applicationId) {
-		return jobApplicationRepository.findByApplicationId(applicationId);
-	}
-
-	
 	//find all jobPosts by employerId
 	//find their all jobApplications by jobId 	
 	public List<Integer> countTotalApplicantsOfEmployer(Integer employerId) {
@@ -183,15 +165,27 @@ public class JobApplicationService {
 		
 		return countList;
 	}
-
-	public List<JobApplication> findAllJobApplicationByEmployerAndJobId(Employer employer, Integer jobId) {
-		String companyName = employer.getCompanyName();
-		return jobApplicationRepository.findByEmployer_CompanyNameAndJobPosting_JobId(companyName,jobId);
+	
+	//to find whether there is same jobId and jobSeekerId
+	//if found u cannot apply again
+	public JobApplication getJobApplicationByJobIdAndJobSekerId(Integer jobId, Integer jobSeekerId) {
+		return jobApplicationRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
+	} 
+	
+	public JobApplication findById(Integer applicationId) {
+		return jobApplicationRepository.findByApplicationId(applicationId);
 	}
-
+	
 	public List<JobApplication> findAllJobApplicationByJobSeekerId(Integer jobSeekerId) {
 		return jobApplicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
-	}  
+	}
+	
+	public List<JobApplication> findAllJobApplicationByEmployerIdAndJobId(Integer employerId, Integer jobId) {
+		return jobApplicationRepository.findByEmployer_EmployerIdAndJobPosting_JobId(employerId,jobId);
+	}
+
+
+ 
 
 
 }

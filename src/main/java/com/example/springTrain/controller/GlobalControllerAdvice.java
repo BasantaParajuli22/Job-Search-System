@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.NotificationService;
+import com.example.springTrain.service.UsersService;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
@@ -18,33 +20,51 @@ public class GlobalControllerAdvice {
 	@Autowired
 	private NotificationService notificationService;
 	@Autowired
-	private EmployerService employerService;
+	private UsersService userService;
 	@Autowired
 	private JobSeekerService jobSeekerService;
-
+	@Autowired
+	private EmployerService employerService;
+	
+	
 	
 	@ModelAttribute
 	public void addUserToModel(Model model) {
-	    String jobSeekerEmail = UserAuthorization.getLoggedInJobSeekerEmail();
-	    if (jobSeekerEmail != null) {
-	        JobSeeker jobSeeker = jobSeekerService.findByEmail(jobSeekerEmail);
-	        if (jobSeeker != null) {	
-	            long notificationCount = notificationService.countUnreadNotificationsOfjobSeeker(jobSeeker);
-	    		model.addAttribute("notificationCount",notificationCount);
-	    		model.addAttribute("jobSeeker", jobSeeker);
-
-	        }
-	    }
-
-	    String employerEmail = UserAuthorization.getLoggedInEmployerEmail();
-	    if (employerEmail != null) {
-	        Employer employer = employerService.findByEmail(employerEmail);
-	        if (employer != null) {       	
-	            long notificationCount = notificationService.countUnreadNotificationsOfEmployer(employer);
-	    		model.addAttribute("notificationCount",notificationCount);
-	    		model.addAttribute("employer", employer);
-	    		
-	        }
+	    String email = UserAuthorization.getLoggedInUserEmail();
+	    Users user = userService.findByEmail(email);
+	    
+	    
+	    if (email != null ) {
+	    	String userRole = UserAuthorization.getLoggedInUserRole();
+	    	
+	    	System.out.println(userRole);
+	    	System.out.println(user);
+	    	
+	    	if("ROLE_JOBSEEKER".equals(userRole)) {
+	    		if (user != null) {	
+	    		    JobSeeker jobSeeker = jobSeekerService.findByUsers(user);
+	    		    if( jobSeeker != null) {
+	    		    	
+	    		    	long notificationCount = notificationService.countUnreadNotificationsOfjobSeeker(jobSeeker);
+	    		    	model.addAttribute("notificationCount",notificationCount);
+	    		    	model.addAttribute("jobSeeker", jobSeeker);
+	    		    	
+	    		    }
+	    		}
+	    	}
+	    	if("ROLE_EMPLOYER".equals(userRole)) {
+	    		if (user != null) { 
+	    	    	System.out.println(user);
+	    		    Employer employer = employerService.findByUser(user);
+	    		    
+	    		    if(employer != null) {	    		    	
+	    		    	long notificationCount = notificationService.countUnreadNotificationsOfEmployer(employer);
+	    		    	model.addAttribute("notificationCount",notificationCount);
+	    		    	model.addAttribute("employer", employer);
+	    		    	
+	    		    }
+	    		}
+	    	}
 	    }
 	}
 }

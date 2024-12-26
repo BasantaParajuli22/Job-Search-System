@@ -49,7 +49,6 @@ public class JobPosting {
 	private String requirements;
 	private String jobDescription;
 	private String salaryRange;
-	private LocalDate applicationDeadline;
 	private String contactEmail;
 	private boolean remote;
 	
@@ -71,6 +70,7 @@ public class JobPosting {
 	@UpdateTimestamp
 	private LocalDate updatedAt;
 
+	private LocalDate applicationDeadline;
 	private boolean available;
 	
 	//auto generating hasCode and equals method

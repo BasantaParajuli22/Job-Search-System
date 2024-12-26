@@ -13,8 +13,8 @@
     <h1>Dashboard</h1>
 
     <!-- Job Postings Section -->
+    <table border="1" th:if="${jobPosts != null}">
     <h2>All Job Posts</h2>
-    <table border="1">
         <thead>
             <tr>
                 <th>Job ID</th>
@@ -27,7 +27,8 @@
         <tbody>
             <tr th:each="jobPost : ${jobPosts}">
                 <td th:text="${jobPost.jobId}"></td>
-                <td th:text="${jobPost.title}"></td>
+				<td ><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
+						th:text="${jobPost.title}">Job Title</a></td>
                 <td th:text="${jobPost.employer.companyName}"></td>
                 <td th:text="${jobPost.cityLocation}"></td>
                 <td th:text="${jobPost.salaryRange}"></td>
@@ -43,9 +44,10 @@
     <!-- Employers Section -->
     <h2>Employers and their jobPosts</h2>
 	<a th:href="@{/view/employers}" style="display:inline;">
-				<button type="submit" class="btn btn-danger">View all employers</button>
-			</a>
-    <table border="1">
+			<button type="submit" class="btn btn-danger">View all employers</button>
+	</a>
+	
+    <table border="1" th:if="${employers != null}">
         <thead>
             <tr>
                 <th>Employer ID</th>
@@ -56,17 +58,21 @@
         <tbody>
             <tr th:each="employer : ${employers}">
                 <td th:text="${employer.employerId}"></td>
-				<a th:href="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" 
-											th:text="${employer.companyName}">Company Name</a><br>
-                <td th:text="${employer.companyName}"></td>
+				<td><a th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}" 
+						th:text="${employer.companyName}">Company Name</a>
+				</td>
                 <td th:text="${employer.email}"></td>
-				
 			<td>
-				<form th:action="@{/view/jobposts/of/employer/{employerId}(employerId=${employer.employerId})}" method="get" style="display:inline;">
-					<button type="submit" class="btn btn-danger">View all  jobs</button>
-				</form>
+			<!-- for blocking and unblocking user-->
+			<form th:action="@{/admin/block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;">
+				<button type="submit" class="btn btn-danger">Block</button>
+			</form>
 			</td>
-			
+			<td>
+			<form th:action="@{/admin/un-block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;">
+				<button type="submit" class="btn btn-danger">UnBlock</button>
+			</form>
+			</td>
 		</tr>
         </tbody>
     </table>
@@ -76,7 +82,7 @@
 		<a th:href="@{/view/jobseekers}" style="display:inline;">
 			<button type="submit" class="btn btn-danger">View all jobSeekers</button>
 		</a>
-    <table border="1">
+    <table border="1" th:if="${jobseekers != null}">
         <thead>
             <tr>
                 <th>Job Seeker ID</th>
@@ -86,12 +92,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="jobseeker : ${jobseekers}">
-                <td th:text="${jobseeker.jobSeekerId}"></td>
-                <td th:text="${jobseeker.email}"></td>
-            <!-- 	
-			<td><a th:href="${jobseeker.resumeLink}" th:text="${jobseeker.resumeLink}"></a></td>
-			-->   
+            <tr th:each="jobSeeker : ${jobseekers}">
+                <td th:text="${jobSeeker.jobSeekerId}"></td>
+				<td><a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}" 
+					th:text="${jobSeeker.fullName}">Company Name</a>
+				</td>
+
+                <td th:text="${jobSeeker.email}"></td>
+				
+				<!-- for blocking and unblocking user-->
+				<td>
+				<form th:action="@{/admin/block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;">
+					<button type="submit" class="btn btn-danger">Block</button>
+				</form>
+				</td>
+				<td>
+				<form th:action="@{/admin/un-block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;">
+					<button type="submit" class="btn btn-danger">UnBlock</button>
+				</form>
+				</td> 
             </tr>
         </tbody>
     </table>

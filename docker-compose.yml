@@ -1,6 +1,7 @@
 version: "3.8"
 
 services:
+
   db:
     image: postgres:15
     container_name: jobsearch-db
@@ -9,9 +10,10 @@ services:
     environment:
       POSTGRES_USER: jobsearch
       POSTGRES_PASSWORD: jobsearch
-      POSTGRES_DB: jobsearch
+      POSTGRES_DB: jobsearch  # This automatically creates the database
     volumes:
       - db_data:/var/lib/postgresql/data
+    restart: always  # Optional: ensure the database starts if it stops
 
   app:
     image: jobsearch:latest
@@ -20,7 +22,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8080"
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/jobsearch
       SPRING_DATASOURCE_USERNAME: jobsearch
@@ -28,6 +30,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
     depends_on:
       - db
+    restart: always  # Optional: ensure the app starts after the db
 
 volumes:
   db_data:

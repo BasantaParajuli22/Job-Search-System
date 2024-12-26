@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### uploaded files ###
-/src/uploads/
+/src/main/resources/static/uploads/

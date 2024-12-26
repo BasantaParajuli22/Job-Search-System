@@ -7,12 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
+import com.example.springTrain.entity.Users;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
@@ -122,4 +124,29 @@ public class RegisterController {
 	  	}
 	  	return "redirect:/login";
 	  }
+	  	
+	  	
+	  
+	  @PostMapping("/admin/block-user/{userId}")
+	  public String blockUserByAdmin(@PathVariable("userId") Integer userId) {
+		  Users user = usersService.findByUserId(userId);
+		  if(user !=  null) {
+			  usersService.blockUser(user);
+		  }
+		  return "redirect:/admin/view/dashboard";
+	  }
+	  
+	  @PostMapping("/admin/un-block-user/{userId}")
+	  public String unBlockUserByAdmin(@PathVariable("userId") Integer userId) {
+		  Users user = usersService.findByUserId(userId);
+		  if(user !=  null) {
+			  usersService.unBlockUser(user);
+		  }
+		  return "redirect:/admin/view/dashboard";
+	  }
+	  
+	  @GetMapping("/access-denied")
+	    public String accessDenied() {
+	        return "access-denied"; 
+	    }
 }

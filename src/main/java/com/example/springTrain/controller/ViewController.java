@@ -92,7 +92,7 @@ public class ViewController {
 	
 	
 	//Dashboard which displays all data
-	@GetMapping("/view/dashboard")
+	@GetMapping("/admin/view/dashboard")
 	public String dashBoard(Model model) {
 		
 		 List<JobPosting> jobPosts = jobPostingService.findAllJobPostings();		 	
@@ -114,14 +114,14 @@ public class ViewController {
 	}
 	
 	//display specific employers profile
-	@GetMapping("/view/employers/profile/{employerId}")
-	public String listSpecificEmployer(Model model,
-			@PathVariable ("employerId") Integer employerId) {
-		
-		Employer employer = employerService.findByEmployerId(employerId);
-		model.addAttribute("employer",employer);	        
-		return "employers-list";
-	}
+//	@GetMapping("/view/employers/profile/{employerId}")
+//	public String listSpecificEmployer(Model model,
+//			@PathVariable ("employerId") Integer employerId) {
+//		
+//		Employer employer = employerService.findByEmployerId(employerId);
+//		model.addAttribute("employer",employer);	        
+//		return "employers-list";
+//	}
 	
 	
 	//display all lists of jobseekers
@@ -150,8 +150,10 @@ public class ViewController {
             Model model,
             @ModelAttribute ("employer") Employer employer) {
 		
-        	Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingInDesc(page, size);
-        	model.addAttribute("jobPosts", jobPostingPage);
+		//only shows jobPosts which are available
+		Page<JobPosting> availablePost = jobPostingService.getPaginatedJobPostingInDesc(page, size);
+       	model.addAttribute("jobPosts", availablePost);
+       	
 //        System.out.println("Total Pages: " + jobPostingPage.getTotalPages());
 //        System.out.println("Current Page: " + jobPostingPage.getNumber());
 //        System.out.println("Job Posts Content: " + jobPostingPage.getContent().size());
@@ -182,39 +184,59 @@ public class ViewController {
 			@PathVariable("jobId") Integer jobId,
 			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
 		
-		// Fetch the job post by ID
 	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);	    
 	    Integer jobSeekerId = jobSeeker.getJobSeekerId();
 	    
-	    //checking if already applied by jobseeker or not
-	    //if  jobid jobseekerid are found then already applied 
-	    JobApplication appliedjobPost = jobApplicationService.getJobPostingByJobIdAndJobSekerId(jobId,jobSeekerId);
-	    if(appliedjobPost != null) {
-		    model.addAttribute("appliedjobPost", appliedjobPost);
+
+	    //getting applicationDeadline and checking remaining time
+	    LocalDate applicationDeadline = jobPost.getApplicationDeadline();
+	    if(applicationDeadline != null ) {
+	    	String deadline = jobPostingService.getRemainingTime(applicationDeadline);
+	    	
+    		model.addAttribute("canApply",true);
+	    	//if deadline is set to "Deadline has passed" and jobPost isAvailable that means true true so change jobPost availability to false
+	    	if( "Deadline has passed".equals(deadline) ) {
+	    		jobPostingService.saveJobPostingAvailability(jobPost); // Save the updated job post
+	    		model.addAttribute("canApply",false);
+	    	}
+	    	
+	    	if(jobPost.isAvailable() == true) {
+	    		model.addAttribute("available",true);
+	    	}else{
+	    		model.addAttribute("available",false);
+	    	}
+	    	model.addAttribute("deadlineDays", deadline);
 	    }
+	    
+	    if(applicationDeadline == null) {
+	    	model.addAttribute("available",false);
+    		model.addAttribute("canApply",false);
+	    }
+	    
+	    //for apply and save options
+	    JobApplication appliedjobPost = jobApplicationService.getJobApplicationByJobIdAndJobSekerId(jobId,jobSeekerId);
+	    //if appliedjobPost is null we can apply but cannot apply when not null
+	    if(appliedjobPost != null ) {    	
+	    	model.addAttribute("appliedjobPost", appliedjobPost);   	
+	    }
+
 	    SavedJobs savedjobPost = savedJobsService.getJobPostingByJobIdAndJobSekerId(jobId,jobSeekerId);
 	    if(savedjobPost != null) {
 		    model.addAttribute("savedjobPost", savedjobPost);
 	    }
 	    
-	    //getting applicationDeadline and checking remaining time
-	    LocalDate applicationDeadline = jobPost.getApplicationDeadline();
-	    if(applicationDeadline != null) {
-		    String deadlineDays = jobPostingService.getRemainingTime(applicationDeadline);
-			model.addAttribute("deadlineDays", deadlineDays);
-	    }
 	    // Fetch related jobs, for example by category or employer
 		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
 		//model.addAttribute("relatedJobs", relatedJobs); 
 	    
 	    model.addAttribute("jobPost", jobPost);
 	    
-	    
 	    return "jobListing";  
 	}
 	
-	//view all jobposts of specific employer
-	//by using employerId
+	//view all jobposts of specific employer and profile 
+	// employerId required
+	//jobId required
 	//no login required
 	@GetMapping("/view/jobposts/{jobId}/of/employer/{employerId}")
 		public String listAllJobPostsOfEmployer(Model model,
@@ -243,6 +265,21 @@ public class ViewController {
 		return "employer/employer-profile";
 	}	
 	
-	
+	//view  employers profile
+	//no login required
+    @GetMapping("/view/employers/profile/{employerId}")
+    public String viewEmployersProfile(Model model,
+    		@PathVariable("employerId") Integer employerId) {
+    	
+    	List<JobPosting> myJobPosts = jobPostingService.getJobPostingByEmployerId(employerId);		
+		List<Integer> jobAppCount = jobApplicationService.countTotalApplicantsOfEmployer(employerId);
+		Employer employer = employerService.findByEmployerId(employerId);
+		
+		model.addAttribute("jobAppCount",jobAppCount);	
+		model.addAttribute("myJobPosts", myJobPosts);
+		model.addAttribute("employer",employer);	
+		
+        return "employer/employer-profile";
+    }
 	
 }

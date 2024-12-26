@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.NotificationMessage;
+import com.example.springTrain.entity.Users;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<NotificationMessage,Integer> {
@@ -22,7 +23,9 @@ public interface NotificationRepository extends JpaRepository<NotificationMessag
 	long countByUsers_JobSeekerAndStatus(JobSeeker jobSeeker, String string);
 	long countByUsers_EmployerAndStatus(Employer employer, String string);
 	
-	long countByUsers_JobSeeker(JobSeeker jobSeeker);
-	long countByUsers_Employer(Employer employer);
+//	long countByUsers_JobSeeker(JobSeeker jobSeeker);
+//	long countByUsers_Employer(Employer employer);
+
+	long countByUsersAndStatus(Users user, String string);
 
 }

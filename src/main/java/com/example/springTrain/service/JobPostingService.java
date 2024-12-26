@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.entity.Employer;
@@ -38,6 +39,9 @@ public class JobPostingService {
 		return jobPostingRepository.findByJobId(jobId);
 	}
 	
+//	public List<JobPosting> getAllAvailablePosts() {
+//		return jobPostingRepository.findByAvailable(true);
+//	}
 	//find all jobpostings
     public List<JobPosting> findAllJobPostings() {
         return jobPostingRepository.findAll();
@@ -83,7 +87,12 @@ public class JobPostingService {
     public JobPosting createJobPosting(JobPosting jobPosting, Employer employer) {
     	// Set the employer for the job posting
 	    jobPosting.setEmployer(employer);
-	    jobPosting.setAvailable(true);
+	    
+	    if(jobPosting.getApplicationDeadline() != null ) {
+		    jobPosting.setAvailable(true);
+	    }else {
+	    	jobPosting.setAvailable(false);
+	    }
         return jobPostingRepository.save(jobPosting);
     }
 
@@ -101,13 +110,19 @@ public class JobPostingService {
         jobPostingRepository.delete(jobPosting);
     }
 
+	//save available to false
+	public void saveJobPostingAvailability(JobPosting jobPost) {
+		jobPost.setAvailable(false);
+		jobPostingRepository.save(jobPost);
+	}
+
     // to calculate remaining time to apply for job
 	public String getRemainingTime(LocalDate applicationDeadline) {
 		 
 		//if deadline is before current time 
 		//applying time has passed already
-		if (applicationDeadline.isBefore(LocalDate.now())) {
-	        return "Application deadline has passed";
+		if ( applicationDeadline == null || applicationDeadline.isBefore(LocalDate.now())) {
+	        return "Deadline has passed";
 	    }
 		//return days between applicationDeadline and current Date
 		long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), applicationDeadline);
@@ -148,35 +163,35 @@ public class JobPostingService {
 	
 	//to get jobPosting in pages in Descending order
 	public Page<JobPosting> getPaginatedJobPostingInDesc(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		return jobPostingRepository.findAllByOrderByCreatedAtDesc(pageable);
+		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Order.desc("createdAt")));
+		return jobPostingRepository.findByAvailable(true,pageable);
 	}
 	
 	//to find jobPosting in pages 
 	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByJobCategory(jobCategory,pageable);
+		return jobPostingRepository.findAllJobPostingByJobCategoryAndAvailable(jobCategory,true,pageable);
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByJobType(jobType,pageable);	
+		return jobPostingRepository.findAllJobPostingByJobTypeAndAvailable(jobType,true,pageable);	
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByCityLocation(location,pageable);	
+		return jobPostingRepository.findAllJobPostingByCityLocationAndAvailable(location,true,pageable);	
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);		
-		return jobPostingRepository.findAllJobPostingByExperienceLevel(expLevel,pageable);	
+		return jobPostingRepository.findAllJobPostingByExperienceLevelAndAvailable(expLevel,true,pageable);	
 	}
 	
 
 	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);
-    	return jobPostingRepository.findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContaining(keyword, keyword, keyword, pageable);
+    	return jobPostingRepository.findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContainingAndAvailable(keyword, keyword, keyword,true, pageable);
 	}
 	
 	public Integer countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {
@@ -230,27 +245,6 @@ public class JobPostingService {
 		}
 		return countList;
 	}
-
-
-
-//	public JobPosting findByEmployerIdAndJobId(Integer employerId, Integer jobId) {
-//		return jobPostingRepository.findByEmployerIdAndJobId(employerId,jobId);
-//	}
-
-//	public JobPosting findByJobIdAndEmployer_EmployerId(Integer jobId, Integer employerId) {
-//		return jobPostingRepository.findByJobIdAndEmployer_EmployerId(jobId,employerId);
-//
-//	}
-
-//	public JobPosting getByEmployerId(Integer employerId) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-
-
-
-
 
 
 	

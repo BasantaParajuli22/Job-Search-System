@@ -18,9 +18,10 @@
         	<ul>
            	 	<li th:each="jobSeeker : ${jobSeekers}">
                 	<!-- Displaying only necessary details -->
-                	<p><strong>Username:</strong> <span th:text="${jobSeeker.jobSeekerUsername}">Username</span></p>
+                	<p><strong>Username:</strong> <span th:text="${jobSeeker.fullName}">Username</span></p>
                 	<p><strong>Email:</strong> <span th:text="${jobSeeker.email}">Email</span></p>
-                	<p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
+					<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
+					<p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
 					<p><a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Visit profile</a></p>
 					<hr>
             	</li>
@@ -30,8 +31,9 @@
 	<!-- Display specific job seeker's profile if jobSeeker is available -->
 	<!---->
 	<div th:if="${jobSeeker != null}">
-	    <h2>Profile of <span th:text="${jobSeeker.jobSeekerUsername}">Username</span></h2>
+	    <h2>Profile of <span th:text="${jobSeeker.fullName}">Username</span></h2>
 	    <p><strong>Email:</strong> <span th:text="${jobSeeker.email}">Email</span></p>
+		<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
 	    <p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
 	    <p><a th:href="@{/view/jobseekers}">Back to Job Seekers List</a></p>
 	</div>

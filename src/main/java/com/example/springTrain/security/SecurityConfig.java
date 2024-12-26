@@ -1,5 +1,6 @@
 package com.example.springTrain.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -8,22 +9,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
 	
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(auth -> auth
-            	.requestMatchers("/", "/login", "/employer/register", "/jobseeker/register",
-            			"/css/**", "/js/**","/photo/**",
-            			"/view/**","/search/**").permitAll() // Allow access to these pages
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/jobseekers/**").hasRole("JOBSEEKER")
-                .requestMatchers("/employers/**").hasRole("EMPLOYER")
-                .anyRequest().authenticated()
-            )
+	 @Autowired
+	 private BlockedUserFilter blockedUserFilter;
+
+	 @Bean
+	 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	     
+		 http.addFilterBefore(blockedUserFilter, UsernamePasswordAuthenticationFilter.class)
+	       
+		 		.authorizeHttpRequests(auth -> auth
+	             .requestMatchers("/", "/login", "/employer/register", "/jobseeker/register",
+	                     "/css/**", "/js/**", "/photo/**", "/view/**", "/search/**")
+	                     .permitAll() // Allow access to these pages
+	             .requestMatchers("/admin/**").hasRole("ADMIN")
+	             .requestMatchers("/jobseekers/**").hasRole("JOBSEEKER")
+	             .requestMatchers("/employers/**").hasRole("EMPLOYER")
+	             .requestMatchers("/access-denied").authenticated() // Restrict access to /access-denied
+	             .anyRequest().authenticated()
+	         )	    
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/", true) // Redirect to /home after successful login

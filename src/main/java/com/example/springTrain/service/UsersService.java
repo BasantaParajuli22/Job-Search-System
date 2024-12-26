@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
-import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
+import com.example.springTrain.enums.UserStatus;
 import com.example.springTrain.repository.EmployerRepository;
 import com.example.springTrain.repository.JobSeekerRepository;
 import com.example.springTrain.repository.UsersRepository;
@@ -44,6 +44,8 @@ public class UsersService {
   		user.setPassword(passwordEncoder.encode(jobSeekerDTO.getPassword())); //encoding password before saving
     	user.setEmail(jobSeekerDTO.getEmail());
   		user.setUsertype(jobSeekerDTO.getUsertype());
+  		user.setUserStatus(UserStatus.UNBLOCKED);
+
 
   		// Save the user and associate it with the JobSeeker
   		jobSeeker.setUsers(user);
@@ -62,7 +64,8 @@ public class UsersService {
 		user.setEmail(employerDTO.getEmail());
   		user.setPassword(passwordEncoder.encode(employerDTO.getPassword())); 
   		user.setUsertype(employerDTO.getUsertype());
-
+  		user.setUserStatus(UserStatus.UNBLOCKED);
+  		
         employer.setUsers(user);
         employer.setEmail(employerDTO.getEmail());
   		employer.setCompanyName(employerDTO.getCompanyName());
@@ -91,12 +94,27 @@ public class UsersService {
 
 	public Users findByEmail(String userEmail) {
 		return usersRepository.findByEmail(userEmail);
-
 	}
 
 	public Users findByEmployer_EmployerId(Integer employerId) {
 		return usersRepository.findByEmployer_EmployerId(employerId);
+	}
 
+	public Users findByUserId(Integer userId) {
+		return usersRepository.findByUserId(userId);
+		
+	}
+
+	public void blockUser(Users user) {
+		
+		user.setUserStatus(UserStatus.BLOCKED);		
+		usersRepository.save(user); 
+	}
+
+	public void unBlockUser(Users user) {
+		
+		user.setUserStatus(UserStatus.UNBLOCKED);
+		usersRepository.save(user); 
 	}
 
 

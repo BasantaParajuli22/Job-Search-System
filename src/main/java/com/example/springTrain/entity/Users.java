@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.example.springTrain.enums.UserStatus;
 import com.example.springTrain.enums.Usertype;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -49,6 +50,7 @@ public class Users {
 	@CreationTimestamp
 	private LocalDate createdAt;	
 	
+	private UserStatus userStatus;
 	
 	public Integer getUserId() {
 		return userId;
@@ -97,9 +99,16 @@ public class Users {
 	}
 	public void setNotification(List<NotificationMessage> notification) {
 		this.notification = notification;
-	}	public boolean isEmpty() {
+	}
+	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
 	}
 
 

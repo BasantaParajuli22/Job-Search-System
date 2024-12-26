@@ -56,6 +56,10 @@ public class NotificationService {
 		notificationRepository.deleteAll(notification);
 	}
 
+	public long countUnreadNotifications(Users user) {
+		return notificationRepository.countByUsersAndStatus(user, "not-viewed");
+	}
+
 	//count notifications by unread 
 	public long countUnreadNotificationsOfjobSeeker(JobSeeker jobSeeker) {
 		return notificationRepository.countByUsers_JobSeekerAndStatus(jobSeeker, "not-viewed");
@@ -64,12 +68,14 @@ public class NotificationService {
 		return notificationRepository.countByUsers_EmployerAndStatus(employer, "not-viewed");
 	}
 	
-	//count notifications all 
-	public long countNotificationsOfjobSeeker(JobSeeker jobSeeker) {
-		return notificationRepository.countByUsers_JobSeeker(jobSeeker);
-	}	
-	public long countNotificationsOfEmployer(Employer employer) {
-		return notificationRepository.countByUsers_Employer(employer);
-	}
+//	//count notifications all 
+//	public long countNotificationsOfjobSeeker(JobSeeker jobSeeker) {
+//		return notificationRepository.countByUsers_JobSeeker(jobSeeker);
+//	}	
+//	public long countNotificationsOfEmployer(Employer employer) {
+//		return notificationRepository.countByUsers_Employer(employer);
+//	}
+	
+	
 	
 }

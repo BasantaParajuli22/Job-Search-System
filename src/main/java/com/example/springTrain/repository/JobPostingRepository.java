@@ -18,9 +18,7 @@ import com.example.springTrain.enums.JobType;
 public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>{
 
 	JobPosting findByJobId(Integer jobId);
-   // JobPosting findByJobIdAndEmployer_EmployerId(Integer jobId, Integer employerId);
 	JobPosting findByEmployer_EmployerIdAndJobId(Integer employerId,Integer jobId);
-
 	JobPosting findByJobIdAndJobApplication_JobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
 
 	//to find jobPosting by Order according to  CreatedAt field
@@ -44,23 +42,29 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	//to display jobPostings in pages
 	Page<JobPosting> findAll(Pageable page);
 	Page<JobPosting> findAllByOrderByCreatedAtDesc(Pageable pageable);
-	Page<JobPosting> findAllJobPostingByJobType(JobType jobType, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByJobCategory(JobCategory jobCategory, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByJobType(JobType jobType, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByCityLocation(CityLocation location, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByExperienceLevel(ExperienceLevel expLevel, Pageable pageable);
-	Page<JobPosting> findAllJobPostingsByEmployer_CompanyName(String companyName, Pageable pageable);
-	Page<JobPosting> findAllJobPostingByTitle(String title, Pageable pageable);
-	
-	//finding keyword if it is title skills or companyName
 	Page<JobPosting> findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContaining(String k1, String k2,String k3, Pageable pageable);
     
+	
+	Page<JobPosting> findByAvailable(Boolean available, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByJobCategoryAndAvailable(JobCategory jobCategory, boolean b, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByJobTypeAndAvailable(JobType jobType, boolean b, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByCityLocationAndAvailable(CityLocation location, boolean b, Pageable pageable);
+	Page<JobPosting> findAllJobPostingByExperienceLevelAndAvailable(ExperienceLevel expLevel, boolean b,
+			Pageable pageable);
+	Page<JobPosting> findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContainingAndAvailable(
+			String keyword, String keyword2, String keyword3, boolean b, Pageable pageable);
+	
+	
 	//for counting 
 	List<Integer> countByJobCategory(JobCategory jobCategory);
 	Integer countJobPostingByJobCategory(JobCategory jobCategory);
 	Integer countJobPostingByJobType(JobType type);
 	Integer countJobPostingByExperienceLevel(ExperienceLevel exp);
 	Integer countJobPostingByCityLocation(CityLocation city);
-	
-	
+
 
 }

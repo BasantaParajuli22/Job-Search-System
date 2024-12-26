@@ -32,7 +32,7 @@ public class NotificationController {
 	@GetMapping("/notification/all")
 	public String getAllNotification(Model model) {
 		
-		String userEmail = UserAuthorization.getLoggedInUsername();
+		String userEmail = UserAuthorization.getLoggedInUserEmail();
 		Users loggedInUser = userService.findByEmail(userEmail);
 		
 		if(loggedInUser == null) {	
@@ -51,7 +51,7 @@ public class NotificationController {
 	public String postReadedNotification(Model model,
 			@PathVariable("notificationId")Integer notificationId) {
 		
-		String userEmail = UserAuthorization.getLoggedInUsername();	
+		String userEmail = UserAuthorization.getLoggedInUserEmail();	
 		Users loggedInUser = userService.findByEmail(userEmail);
 		NotificationMessage notification = notificationService.getNotificationById(notificationId);
 		
@@ -68,7 +68,7 @@ public class NotificationController {
 		public String postDeleteSpecificNotification(Model model,
 				@PathVariable("notificationId")Integer notificationId) {
 			
-			String userEmail = UserAuthorization.getLoggedInUsername();	
+			String userEmail = UserAuthorization.getLoggedInUserEmail();	
 			Users loggedInUser = userService.findByEmail(userEmail);
 			NotificationMessage notification = notificationService.getNotificationById(notificationId);
 			
@@ -86,7 +86,7 @@ public class NotificationController {
 		public String postDeleteAllNotification(Model model,
 				@PathVariable("userId")Integer userId) {
 			
-			String userEmail = UserAuthorization.getLoggedInUsername();	
+			String userEmail = UserAuthorization.getLoggedInUserEmail();	
 			Users loggedInUser = userService.findByEmail(userEmail);
 			List<NotificationMessage> notification = notificationService.getAllNotificationsByUserId(userId);
 			
