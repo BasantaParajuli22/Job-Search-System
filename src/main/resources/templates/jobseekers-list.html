@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Job Seekers List</title>
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -19,7 +20,7 @@
            	 	<li th:each="jobSeeker : ${jobSeekers}">
                 	<!-- Displaying only necessary details -->
                 	<p><strong>Username:</strong> <span th:text="${jobSeeker.fullName}">Username</span></p>
-                	<p><strong>Email:</strong> <span th:text="${jobSeeker.email}">Email</span></p>
+                	<p><strong>Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
 					<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
 					<p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
 					<p><a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Visit profile</a></p>
@@ -32,7 +33,7 @@
 	<!---->
 	<div th:if="${jobSeeker != null}">
 	    <h2>Profile of <span th:text="${jobSeeker.fullName}">Username</span></h2>
-	    <p><strong>Email:</strong> <span th:text="${jobSeeker.email}">Email</span></p>
+	    <p><strong>Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
 		<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
 	    <p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
 	    <p><a th:href="@{/view/jobseekers}">Back to Job Seekers List</a></p>

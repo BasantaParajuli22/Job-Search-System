@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.springTrain.dto.EmployerDTO;
-import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;

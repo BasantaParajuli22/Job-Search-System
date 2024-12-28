@@ -45,7 +45,6 @@ public class Users {
 	@OneToOne(mappedBy = "users", cascade = CascadeType.ALL)
 	private JobSeeker jobSeeker;
 	
-	//private String session;
 	
 	@CreationTimestamp
 	private LocalDate createdAt;	

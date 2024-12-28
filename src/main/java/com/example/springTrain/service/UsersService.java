@@ -49,7 +49,6 @@ public class UsersService {
 
   		// Save the user and associate it with the JobSeeker
   		jobSeeker.setUsers(user);
-  		jobSeeker.setEmail(jobSeekerDTO.getEmail());
   		jobSeeker.setNumber(jobSeekerDTO.getNumber());
  		jobSeeker.setFullName(jobSeekerDTO.getFullName());
  		jobSeeker.setSkills(jobSeekerDTO.getSkills());
@@ -67,7 +66,6 @@ public class UsersService {
   		user.setUserStatus(UserStatus.UNBLOCKED);
   		
         employer.setUsers(user);
-        employer.setEmail(employerDTO.getEmail());
   		employer.setCompanyName(employerDTO.getCompanyName());
   		employer.setCompanyDescription(employerDTO.getCompanyDescription());
   		employer.setAddress(employerDTO.getAddress());

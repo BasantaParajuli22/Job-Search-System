@@ -13,211 +13,171 @@ body {
     line-height: 1.6;
 }
 
-/* Main Container Styling */
+/* Main Container */
 .maincontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100%;
-    padding: 12px;
-    margin-top: 10%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
+/* Header Titles */
 .headtitle {
-    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-h2, h4 {
-    padding: 12px;
-    text-align: center;
+.headtitle h2 {
+    font-size: 24px;
     color: #333;
 }
 
-
-/* Navigation Bar */
-nav {
-    background-color: #007BFF;
-    padding: 12px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-between; /* Spread the items across */
-    align-items: center;
-}
-
-nav ul li {
-    margin-right: 20px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Move Login/Logout buttons to the right side */
-nav ul li:last-child {
-    margin-left: auto;
+.headtitle h4 {
+    font-size: 18px;
+    color: #555;
 }
 
 /* Form Styling */
 .formtable {
-    padding: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
 }
 
 .form-register {
-    background-color: transparent;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px; /* Limit width for larger screens */
-    margin: 0 auto;  /* Center the form */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-/* Form Group */
 .form-group {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 }
 
-label {
-    display: inline-block;
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
     margin-bottom: 5px;
     color: #333;
-    font-weight: bold;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="number"],
-input[type="password"] {
-    width: 100%;
-    padding: 8px;
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="password"] {
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-    box-sizing: border-box;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-/* Password Field Group */
-.pass-group input[type="password"],
-.pass-group input[type="text"] {
-    width: 75%;
-}
-
-.passButton {
-    display: inline;
-    width: 20%;
-    padding: 2%;
     outline: none;
-    color: #4cae4c;
-    border: 1px solid #ccc;
-    background-color: #f4f4f4;
+    width: 100%;
 }
 
-.passButton:hover {
-    border: 1px solid #625050;
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="password"]:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
 }
 
-/* Form Focus */
-.form-group input:focus,
-.pass-group input:focus {
-    outline: none;
-    border-color: #5cb85c;
-}
-
-/* Error Message Styling */
-.error {
+/* Error Messages */
+.form-group .error {
     color: red;
     font-size: 12px;
+    margin-top: 5px;
 }
 
-/* General Button Styling */
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #5cb85c;
+/* Buttons */
+.form-group button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
     border: none;
     border-radius: 4px;
-    color: white;
-    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #4cae4c;
+.form-group button:hover {
+    background-color: #0056b3;
 }
 
-#logoutButton {
-    display: none;
-    background-color: #dc3545;
+/* Links */
+.form-group a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-#logoutButton:hover {
-    background-color: #c82333;
+.form-group a:hover {
+    text-decoration: underline;
 }
 
-/* Flex Utilities */
-.spacebetn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Checkbox and Terms Styling */
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+    vertical-align: middle;
 }
 
-/* Media Queries for Responsiveness */
+.form-group label[for="terms"] {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    color: #333;
+    vertical-align: middle;
+}
+
+.form-group a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.form-group a:hover {
+    text-decoration: underline;
+}
+
+.form-group div.error {
+    margin-top: 5px;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .maincontainer {
-        margin-top: 20%;
-    }
-
-    .form-register {
-		/* Make form take most of the screen on small devices */
-        width: 90%;  
         padding: 15px;
     }
 
-    h2, h4 {
-        font-size: 18px;
+    .headtitle h2 {
+        font-size: 20px;
     }
 
-    .form-group input {
+    .headtitle h4 {
+        font-size: 16px;
+    }
+
+    .form-group button {
         font-size: 14px;
-        padding: 10px;
+        padding: 8px 12px;
     }
 }
 
 @media (max-width: 480px) {
-    .form-register {
-		/* Form takes nearly full width on very small devices */
-        width: 95%;  
+    .headtitle h2 {
+        font-size: 18px;
     }
 
-    button {
-        font-size: 14px;
-        padding: 12px;
-    }
-
-    label {
+    .headtitle h4 {
         font-size: 14px;
     }
 
-    h2, h4 {
-        font-size: 16px;
+    .form-group label,
+    .form-group input,
+    .form-group button {
+        font-size: 12px;
     }
 }

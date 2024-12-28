@@ -1,0 +1,87 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Navigation Bar */
+#uniqueNavbar {
+    background-color: #007BFF;
+    padding: 12px;
+}
+
+#uniqueNavbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#uniqueNavbar ul li {
+    margin-right: 20px;
+}
+
+#uniqueNavbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#uniqueNavbar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Move Login/Logout buttons to the right side */
+#uniqueNavbar ul li:last-child {
+    margin-left: auto;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+footer .footer-content p {
+    margin: 5px 0;
+}
+
+footer .footer-content a {
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+footer .footer-content a:hover {
+    text-decoration: underline;
+    color: #1E90FF;
+}
+
+/* Make the navigation links (except Login/Logout) align to the left */
+@media (max-width: 768px) {
+    #uniqueNavbar ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #uniqueNavbar ul li:last-child {
+        margin-left: 0;
+    }
+
+    #uniqueNavbar ul li {
+        margin-right: 0;
+    }
+}

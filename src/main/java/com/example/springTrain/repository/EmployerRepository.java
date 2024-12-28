@@ -11,7 +11,6 @@ public interface EmployerRepository extends JpaRepository<Employer, Integer>{
 	
 	Employer findByEmployerId(Integer employerId);
 	Employer findByCompanyName(String companyName);
-	Employer findByEmail(String email);
 	Employer findByUsers(Users users);
 	Employer findByJobPosting_JobId(Integer jobId);
 	

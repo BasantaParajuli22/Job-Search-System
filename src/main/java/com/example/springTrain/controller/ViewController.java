@@ -112,17 +112,7 @@ public class ViewController {
 		model.addAttribute("employers",employers); 
 		return "employers-list";
 	}
-	
-	//display specific employers profile
-//	@GetMapping("/view/employers/profile/{employerId}")
-//	public String listSpecificEmployer(Model model,
-//			@PathVariable ("employerId") Integer employerId) {
-//		
-//		Employer employer = employerService.findByEmployerId(employerId);
-//		model.addAttribute("employer",employer);	        
-//		return "employers-list";
-//	}
-	
+		
 	
 	//display all lists of jobseekers
 	@GetMapping("/view/jobseekers")
@@ -158,7 +148,6 @@ public class ViewController {
 //        System.out.println("Current Page: " + jobPostingPage.getNumber());
 //        System.out.println("Job Posts Content: " + jobPostingPage.getContent().size());
 //        System.out.println("Is Empty: " + jobPostingPage.isEmpty());
-
         	
         //if same employer jobPosting and same loggedin employer jobPosting
         //edit and delete option available

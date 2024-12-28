@@ -71,9 +71,8 @@ public class RegisterController {
 	      validationError.clear();
 
 	      // Check if email is unique in both JobSeeker and Employer tables
-	      JobSeeker existingJobEmail = jobSeekerService.findByEmail(jobSeekerDTO.getEmail());
-	      Employer existingEmployerEmail = employerService.findByEmail(jobSeekerDTO.getEmail());
-	      if (existingEmployerEmail != null || existingJobEmail != null) {
+	      Users existingJobEmail = usersService.findByEmail(jobSeekerDTO.getEmail());
+	      if (existingJobEmail != null) {
 	          validationError.setEmail("Sorry, this email is already taken.");
 	      }
 
@@ -108,9 +107,8 @@ public class RegisterController {
 	  		System.out.println("Sorry username is already taken " + employerDTO.getCompanyName()); // Debugging	
 	  	}
 	  	//email should be unique in employer table
-	  	JobSeeker existingJobEmail = jobSeekerService.findByEmail(employerDTO.getEmail());
-	  	Employer existingEmployerEmail = employerService.findByEmail(employerDTO.getEmail());
-	  	if(existingEmployerEmail != null || existingJobEmail != null) {
+	  	Users existingEmployerEmail = usersService.findByEmail(employerDTO.getEmail());
+	  	if(existingEmployerEmail != null) {
 	  		validationError.setEmail("Sorry email is already taken ");
 	  	}		
 	  	

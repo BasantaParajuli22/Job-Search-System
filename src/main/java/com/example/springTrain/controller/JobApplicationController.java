@@ -292,12 +292,5 @@ public class JobApplicationController {
 			return "redirect:/view/jobposts/details/" +jobId;
 		}
 		
-	
-	
-	//cv upload
-//	@GetMapping("/upload/files")
-//	public String uploadFilesFormByJobSeeker(Model model) {
-//		
-//		return "";
-//	}
+		
 }

@@ -60,6 +60,7 @@ public class JobPostingController {
         	return "login";
 	    }
 	    
+
 		jobPostingService.createJobPosting(jobPosting,employer);//jobposting created
 		return "redirect:/view/jobposts";
 	}

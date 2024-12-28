@@ -4,30 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
-	
-    <div class="mainContainer">
-		    <h1>Welcome, Job Seeker!</h1>
-			<p>jobSeekerId: <span th:text="${jobSeeker.jobSeekerId}"></span></p>
-			<p>Username: <span th:text="${jobSeeker.fullName}"></span></p>
-		    <p>Email: <span th:text="${jobSeeker.email}"></span></p>
-		    <p>Skills: <span th:text="${jobSeeker.skills}"></span></p>
-		    <p>number: <span th:text="${jobSeeker.number}"></span></p>
-			<p>CreatedAt: <span th:text="${jobSeeker.createdAt}"></span></p>
 
-			
-		   <!--
-		    <h3>Saved Jobs</h3>
-		    <ul>
-		        <li th:each="job : ${jobSeeker.savedJobs}">
-		            <span th:text="${job.title}"></span> at <span th:text="${job.company}"></span>
-		        </li>
-		    </ul>
-			-->
-			
+    <!-- Main Profile Content -->
+    <div class="profile-container">
+		<h1>Profile: <span th:text="${jobSeeker.fullName}"></span></h1>
+        <!-- Job Seeker Information -->
+        <div class="profile-info">
+            <p><strong>Job Seeker ID:</strong> <span th:text="${jobSeeker.jobSeekerId}"></span></p>
+            <p><strong>Username:</strong> <span th:text="${jobSeeker.fullName}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${jobSeeker.users.email}"></span></p>
+            <p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}"></span></p>
+            <p><strong>Contact Number:</strong> <span th:text="${jobSeeker.number}"></span></p>
+            <p><strong>Created At:</strong> <span th:text="${jobSeeker.createdAt}"></span></p>		
+        </div>
+    </div>
+
 </body>
 </html>

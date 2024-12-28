@@ -46,11 +46,6 @@ public class EmployerService {
 		return employerRepository.count();
 	}
 
-	public Employer findByEmail(String employerEmail) {
-		return employerRepository.findByEmail(employerEmail);
-
-	}
-
 	public Employer findByJobPosting_JobId(Integer jobId) {
 		return employerRepository.findByJobPosting_JobId(jobId);
 

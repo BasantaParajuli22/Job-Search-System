@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Employers List</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/post-style.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -18,7 +19,7 @@
 	        	<p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
 				<p><strong>Company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
 				<p><strong>Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
-				<p><strong>Company email:</strong> <span th:text="${employer.email}">Company email</span></p>
+				<p><strong>Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
 				<p><a th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}">Visit profile</a></p>
 				<hr>
 	    	</ul>
@@ -30,7 +31,7 @@
 	    <p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
 		<p><strong>company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
 		<p><strong>Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
-		<p><strong>Company email:</strong> <span th:text="${employer.email}">Company email</span></p>
+		<p><strong>Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
 		<p><a th:href="@{/view/employers}">Back to EmployersList</a></p>
 
 	</div>

@@ -4,55 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-	<link rel="stylesheet" th:href="@{/css/form.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
-	<!-- Navigation Bar -->
-	<header th:replace="~{fragments/nav :: nav}"></header>
-	
-		<div class="mainContainer">
-
-    <div class="headtitle">
-        <h2>Welcome Back!!</h2>
-        <h4>Please Log in to Continue</h4>
-    </div>
-    <div class="formtable">
-        <form th:action="@{/login}" method="post" class="form-register">
-            <div class="form-group">
-                <input type="text" id="username" name="username" placeholder="Your Email" required th:value="${username}">	
-				<p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
-			</div>
-
-            <div class="pass-group">
-                <input type="password" id="password" name="password" placeholder="Enter your Password" required th:value="${password}">
-				<p th:if="${error?.password != null}"><span th:text="${error.password}" class="error"></span></p>
-                <button type="button" id="togglePassword" class="passButton" style="color: blue;">Show</button>
-            </div>
-            
-            <div class="form-group">
-                <p id="message" class="error" th:text="${errorMessage}"></p>
-            </div>
-			
-            <div class="spacebetn">
-                <div class="form-group">
-                    <input type="checkbox" id="rememberMe" name="rememberMe" checked>
-                    <label for="rememberMe">Remember me</label>
-                </div>
-                <div class="form-group">
-                    <a href="#">Forgot password</a>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <button type="submit" id="loginButton" >Login</button>
-            </div>
-         </form>
-            <div class="form-group">
-                <button id="logoutButton" class="button-type1" th:onclick="window.location.href='@{/logout}'">Logout</button>
-            </div>
+    <!-- Navigation Bar -->
+    <header th:replace="~{fragments/nav :: nav}"></header>
+    
+    <div class="mainContainer">
+        <div class="headtitle">
+            <h2>Welcome Back!!</h2>
+            <h4>Please Log in to Continue</h4>
         </div>
-</div>
+        
+        <div class="formtable">
+            <form th:action="@{/login}" method="post" class="form-register">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" placeholder="Your Email" th:value="${username}">
+                    <p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
+                </div>
 
-<script th:src="@{/js/login.js}"></script>
+				<div class="form-group" style="display: flex; align-items: center;">
+				    <input type="password" id="password" name="password" placeholder="Enter your Password" th:value="${password}">
+				    <button type="button" id="togglePassword" class="passButton" style="color: blue; margin-left: 10px;">Show</button>
+				    <p th:if="${error?.password != null}"><span th:text="${error.password}" class="error"></span></p>
+				</div>
+
+
+                <div class="form-group">
+                    <p id="message" class="error" th:text="${errorMessage}"></p>
+                </div>
+                
+                <div class="spacebetn">
+                    <div class="form-group">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" checked>
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" id="loginButton">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/js/login.js}"></script>
 </body>
 </html>

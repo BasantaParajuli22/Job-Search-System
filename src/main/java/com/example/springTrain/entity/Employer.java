@@ -23,7 +23,6 @@ public class Employer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer employerId;
 	
-	private String email;
 	private String number;
 	private String companyName;
 	private String companyDescription;
@@ -96,13 +95,6 @@ public class Employer {
 		this.createdAt = createdAt;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public String getNumber() {
 		return number;

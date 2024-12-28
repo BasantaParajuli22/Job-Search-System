@@ -11,7 +11,6 @@ import com.example.springTrain.entity.Users;
 public interface JobSeekerRepository extends JpaRepository<JobSeeker, Integer>{
 	
 	JobSeeker findByJobSeekerId(Integer jobSeekerId);
-	JobSeeker findByEmail(String email);
 	JobSeeker findByUsers(Users user);
 	JobSeeker findByFullName(String name);
 	

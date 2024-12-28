@@ -161,9 +161,13 @@ public class JobPostingService {
 	}
 	
 	
-	//to get jobPosting in pages in Descending order
+	//to get jobPosting in pages in order 
 	public Page<JobPosting> getPaginatedJobPostingInDesc(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Order.desc("createdAt")));
+		return jobPostingRepository.findByAvailable(true,pageable);
+	}
+	public Page<JobPosting> getPaginatedJobPostingInAsc(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Order.asc("createdAt")));
 		return jobPostingRepository.findByAvailable(true,pageable);
 	}
 	

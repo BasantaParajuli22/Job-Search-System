@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job seeker form</title>
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/form.css}">
 </head>
 <body>
@@ -17,8 +18,7 @@
         	<h4>JobSeeker Registration</h4>
     	</div>
     <div class="formtable">
-		<!-- url by string concatation-->
-			
+		
 			<form th:action="@{/jobseeker/register}" method="post" id="registrationForm"  th:object="${jobSeekerDTO}" class="form-register">
             
 			<div class="form-group"> 
@@ -71,19 +71,21 @@
 			
 			<div><input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" ></div>
 			
-            <div class="form-group">
-                <label for="terms">Terms and conditoins:</label><br>
-                <input type="checkbox" id="terms" name="terms" checked> I accept all the  
-                <a th:href="@{/}">terms and conditions</a>
-				<div id="termsError" class="error"></div>
-            </div>
+			<div class="form-group" style="display: block;">
+			    <input type="checkbox" id="terms" name="terms" checked>
+			    <label for="terms">
+			        I accept all the <a th:href="@{/}">terms and conditions</a>
+			    </label>
+			    <div id="termsError" class="error"></div>
+			</div>
+
 
             <div class="form-group"><button type="submit">Register</button></div>
             
-            <div class="form-group"> Already have an account <a th:href="@{/login}">Log in</a></div>
+            <div class="form-group" style="display: block;"> Already have an account <a th:href="@{/login}">Log in</a></div>
         </form>
     </div>
 </div>
-    <script th:src="@{/js/jobvalidate.js}"></script>
+    <script th:src="@{/js/jobseeker-validate.js}"></script>
 </body>
 </html>

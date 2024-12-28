@@ -1,0 +1,65 @@
+/* Common Styles for Profile Edit Forms */
+#employer-profile-edit-heading, #profile-edit-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 40px;
+    color: #333;
+}
+
+#employer-profile-form, #jobseeker-profile-form {
+    background-color: #fff;
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.profile-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-input, .profile-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box; /* To include padding in width calculation */
+}
+
+.profile-textarea {
+    height: 150px;
+}
+
+#save-changes-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#save-changes-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    #employer-profile-form, #jobseeker-profile-form {
+        width: 80%;
+    }
+
+    #employer-profile-edit-heading, #profile-edit-heading {
+        font-size: 20px;
+    }
+}

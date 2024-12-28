@@ -4,86 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employer Profile</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/profile.css}">
+    <link rel="stylesheet" th:href="@{/css/post-style.css}">
 </head>
 <body>
     <!-- Navigation Bar -->
     <header th:replace="~{fragments/nav :: nav}"></header>
 
-    <div class="mainContainer">
+    <div class="profile-container">
         <h1>Profile: <span th:text="${employer.companyName}"></span></h1>
 
-        <!-- Employer Information -->
-        <p><strong>Company Name:</strong> <span th:text="${employer.companyName}"></span></p>
-        <p><strong>Description:</strong> <span th:text="${employer.companyDescription}"></span></p>
-        <p><strong>Contact Number:</strong> <span th:text="${employer.number}"></span></p>
-        <p><strong>Address:</strong> <span th:text="${employer.address}"></span></p>
-        <p><strong>Email:</strong> <span th:text="${employer.email}"></span></p>
-        <p><strong>Created At:</strong> <span th:text="${employer.createdAt}"></span></p>
+        <!-- Employer Information Section -->
+        <div class="profile-info">
+            <p><strong>Company Name:</strong> <span th:text="${employer.companyName}"></span></p>
+            <p><strong>Description:</strong> <span th:text="${employer.companyDescription}"></span></p>
+            <p><strong>Contact Number:</strong> <span th:text="${employer.number}"></span></p>
+            <p><strong>Address:</strong> <span th:text="${employer.address}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${employer.users.email}"></span></p>
+            <p><strong>Created At:</strong> <span th:text="${employer.createdAt}"></span></p>
+        </div>
+    </div>
 
-        <!-- Job Posts Section -->
+    <div class="job-posts">
+        <h2>Job Posts</h2>
         <div th:if="${myJobPosts.isEmpty()}">
             <p>No job posts available for this employer.</p>
         </div>
 
-        <div th:unless="${myJobPosts.isEmpty()}">
-            <ul>
-                <hr>
-                <li th:each="jobPost, iterStat : ${myJobPosts}">
-                    <!-- Job Title with link to full details -->
-					
-					<strong>Employer ID:</strong> <span th:text="${jobPost.employer.employerId}"></span><br>
-					                <strong>Job ID:</strong> <span th:text="${jobPost.jobId}"></span><br>
-									
-                    <h3>
-                        <a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
-                           th:text="${jobPost.title}">Job Title</a>
-                    </h3>
-                    
-                    <!-- Limited job details -->
-                    <p><strong>Location:</strong> <span th:text="${jobPost.cityLocation}">Location</span></p>
-                    <p><strong>Job Type:</strong> <span th:text="${jobPost.jobType}">Job Type</span></p>
-                    <p><strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}">Experience Level</span></p>
-                    <p><strong>Application Deadline:</strong> <span th:text="${jobPost.applicationDeadline}">Deadline</span></p>
-                    <p><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}">View More....</a></p>
-                    
-                    <!-- Display Applications Count for Same Employer -->
-                    <div th:if="${jobAppCount != null}">
-                        <p><strong>Total Applications:</strong> 
-                            <span th:text="${jobAppCount[iterStat.index]}"></span>
-                        </p>
-                        <p th:if="${loggedInEmployer != null}">
-                            <a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}(employerId=${employer.employerId},jobId=${jobPost.jobId})}">
-                                View Applications
-                            </a>
-                        </p>
-                    </div>
-					
-					<div th:if="${loggedInEmployer != null and loggedInEmployer.employerId == jobPost.employer.employerId}">
-						<div>
-							<!-- Edit Button(only visible if employer object is not null) -->
-							<div th:if="${employer != null}" style="display: flex; gap: 10px; align-items: center;">
-					   			<form th:action="@{/jobposts/{jobId}/edit/by/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" method="get" style="display:inline;">
-					        	<button type="submit" class="buttonSmall"style="display:inline;">EditByCompany</button>
-					   		 	</form>
-							</div>
+        <div th:unless="${myJobPosts.isEmpty()}" >
+			<div class="job-post-grid">
 
-							<!-- Delete Button -->
-							<div >
-					   			<form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${jobPost.jobId})}" method="post" style="display:inline;">
-					        		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> 
-					        		<button type="submit" class="buttonSmall" style="display:inline;">Delete</button>
-					    		</form>
-							</div>
-						</div>
+                <div th:each="jobPost, iterStat : ${myJobPosts}" class="job-post">
+					<div class="job-info">
+						<strong>Employer ID:</strong> <span th:text="${jobPost.employer.employerId}"></span><br>
+						<strong>Job ID:</strong> <span th:text="${jobPost.jobId}"></span><br>
+						<strong>Company Name:</strong> <span th:text="${jobPost.employer.companyName}" ></span><br>
+						<strong>Title:</strong> <span th:text="${jobPost.title}"></span><br>
+						<strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
+						<strong>Requirements:</strong> <span th:text="${jobPost.requirements}" class="truncate-text"></span><br>
+						<strong>Job Description:</strong> <span th:text="${jobPost.jobDescription}" class="truncate-text"></span><br>
+						<strong>Salary Range:</strong> <span th:text="${jobPost.salaryRange}"></span><br>
+						<strong>Created At:</strong> <span th:text="${jobPost.createdAt}"></span><br>
 					</div>
 					
-                    <hr>
-                </li>
-            </ul>
-        </div>
+					<div class="job-actions">
+					    <!-- Applications Count & View Applications Button -->
+					    <div class="app-count">
+					        <p><strong>Total Applications:</strong> <span th:text="${jobAppCount != null ? jobAppCount[iterStat.index] : 0}"></span></p>
+					        <p th:if="${loggedInEmployer != null}">
+					            <a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}(employerId=${employer.employerId},jobId=${jobPost.jobId})}">
+					                <button type="button" class="buttonSmall">View Applications</button>
+					            </a>
+					        </p>
+					    </div>
 
-    </div> <!-- mainContainer -->
+					    <!-- Job Post Buttons (View, Edit, Delete) -->
+					    <div class="buttons">
+					        <a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}">
+					            <button type="button" class="buttonSmall">View</button>
+					        </a>
+
+					        <div th:if="${loggedInEmployer != null and loggedInEmployer.employerId == jobPost.employer.employerId}" class="edit-delete-buttons">
+					            <!-- Edit Button -->
+					            <form th:action="@{/jobposts/{jobId}/edit/by/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" method="get" style="display:inline;">
+					                <button type="submit" class="buttonSmall">Edit</button>
+					            </form>
+
+					            <!-- Delete Button -->
+					            <form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${jobPost.jobId})}" method="post" style="display:inline;">
+					                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" /> 
+					                <button type="submit" class="buttonSmall">Delete</button>
+					            </form>
+					        </div>
+					    </div>
+					</div>
+
+				</div>
+             </div>
+         </div>
+	</div>
+</div>
+</div>
+
 
 </body>
 </html>

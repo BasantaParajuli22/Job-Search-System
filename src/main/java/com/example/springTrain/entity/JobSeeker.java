@@ -25,15 +25,13 @@ public class JobSeeker {
 	private Integer jobSeekerId;
 
 	private String fullName;
-	private String email;
 	private String number;	
-	private String skills;//skills will be in list//
+	private String skills;
 //	private String resume;
 
 	@CreationTimestamp
 	private LocalDate createdAt;
 
-	
 	//The owning side manages the relationship, defined with @JoinColumn.
 	//The inverse side is the side that simply mirrors the relationship using mappedBy.
 	//mappedBy is  used on the inverse side to specify the field name
@@ -66,13 +64,6 @@ public class JobSeeker {
 		this.users = users;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public String getNumber() {
 		return number;

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>All Applications for Employer's Job Posts</title>
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
@@ -36,8 +37,8 @@
 							th:text="${jobApplication.jobPosting.title}"></a>					
 					</td>
 					<td>
-					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.email}}"
-					       th:text="${jobApplication.jobSeeker.email}">Send email</a>
+					    <a th:href="@{'mailto:' + ${jobApplication.jobSeeker.users.email}}"
+					       th:text="${jobApplication.jobSeeker.users.email}">Send email</a>
 					</td>
 					<td th:if="${jobApplication.fileName != null}">
 					    <a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">

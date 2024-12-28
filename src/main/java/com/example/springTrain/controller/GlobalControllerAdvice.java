@@ -54,7 +54,6 @@ public class GlobalControllerAdvice {
 	    	}
 	    	if("ROLE_EMPLOYER".equals(userRole)) {
 	    		if (user != null) { 
-	    	    	System.out.println(user);
 	    		    Employer employer = employerService.findByUser(user);
 	    		    
 	    		    if(employer != null) {	    		    	

@@ -43,9 +43,6 @@ public class JobSeekerService {
 		return jobSeekerRepository.count();
 	}
 
-	public JobSeeker findByEmail(String email) {
-		return jobSeekerRepository.findByEmail(email);
-	}
 
 	public void updateJobSeeker(ProfileDTO profileDTO, JobSeeker jobSeeker) {
 		jobSeeker.setFullName(profileDTO.getFullName());

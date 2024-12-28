@@ -1,0 +1,68 @@
+/* Job Post Grid Layout */
+.job-post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 columns per row */
+    gap: 20px;  /* Adjust gap between items */
+}
+
+/* Job post item styles */
+.job-post {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure buttons are aligned properly inside the job-actions */
+.job-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.job-actions .app-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.job-actions .buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Button Styles */
+.buttonSmall {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonSmall:hover {
+    background-color: #0056b3;
+}
+
+.truncate-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;  /* Adjust this to control how many lines to show before truncating */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .job-post-grid {
+        grid-template-columns: 1fr;  /* 1 column per row on small screens */
+    }
+}

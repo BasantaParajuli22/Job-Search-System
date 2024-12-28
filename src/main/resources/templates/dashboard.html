@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -61,7 +62,7 @@
 				<td><a th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}" 
 						th:text="${employer.companyName}">Company Name</a>
 				</td>
-                <td th:text="${employer.email}"></td>
+                <td th:text="${employer.users.email}"></td>
 			<td>
 			<!-- for blocking and unblocking user-->
 			<form th:action="@{/admin/block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;">
@@ -98,7 +99,7 @@
 					th:text="${jobSeeker.fullName}">Company Name</a>
 				</td>
 
-                <td th:text="${jobSeeker.email}"></td>
+                <td th:text="${jobSeeker.users.email}"></td>
 				
 				<!-- for blocking and unblocking user-->
 				<td>

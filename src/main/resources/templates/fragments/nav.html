@@ -1,80 +1,75 @@
- <!-- fragments/nav.html -->
- <nav>
-     <ul>
-         <li><a th:href="@{/}">Home</a></li>
+<!-- fragments/nav.html -->
+<nav id="uniqueNavbar">
+    <ul>
+        <li><a th:href="@{/}">Home</a></li>
 
-         <!-- Profile Links  -->
-         <li sec:authorize="hasRole('ROLE_JOBSEEKER')">
-             <a th:href="@{/jobseekers/profile}">My Profile</a>
-         </li>
-         <li sec:authorize="hasRole('ROLE_EMPLOYER')">
-             <a th:href="@{/employers/profile}">My Profile</a>
-         </li>
-  
-		 <!-- All Jobs (visible to all users) -->
-		 <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
+        <!-- Profile Links -->
+        <li sec:authorize="hasRole('ROLE_JOBSEEKER')">
+            <a th:href="@{/jobseekers/profile}">My Profile</a>
+        </li>
+        <li sec:authorize="hasRole('ROLE_EMPLOYER')">
+            <a th:href="@{/employers/profile}">My Profile</a>
+        </li>
 
-         <!-- Job Seeker Specific Links -->
-		 <li th:if="${jobSeeker != null}">
-			<ul sec:authorize="hasRole('ROLE_JOBSEEKER')">
-				<li>
-					<a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
-				</li>
-         		<li>
-         			<a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
-         		</li>
-         		<li>
-         			<a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
-         		</li>
-			</ul>
-		 </li>
-		 <!-- Employer Specific Links -->
-		 <li th:if="${employer != null}">
-			<ul>
-				<li sec:authorize="hasRole('ROLE_EMPLOYER')">
-					<a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
-				</li>
-		  	</ul>
-		 </li>
+        <!-- All Jobs (visible to all users) -->
+        <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
 
-		 <!-- Employer Specific Links -->
-		 <li>
-		 <ul sec:authorize="hasRole('ROLE_ADMIN')">
-		 	<li >
-		 		<a th:href="@{/admin/view/dashboard}">Dashboard</a>
-		 	</li>
-			<li>
-				<a th:href="@{/view/employers}">All Employers</a>
-		 	</li>
-			<li >
-				<a th:href="@{/view/jobseekers}">All Jobseekers</a>
-			</li>						
-		  	</ul>
-		 </li>
-		 
-         <!-- Register Links (only for non-authenticated users) for them to register -->
-         <li sec:authorize="!isAuthenticated()">
-             <a th:href="@{/jobseeker/register}">Register as Job Seeker</a>
-         </li>
-         <li sec:authorize="!isAuthenticated()">
-             <a th:href="@{/employer/register}">Register as Employer</a>
-         </li>
-		 <!--Notification Message Link only if authenticated-->
-		 <li sec:authorize="isAuthenticated()">
-			<a th:href="@{/notification/all}">Notification</a>
-			<span th:if="${notificationCount > 0}" th:text="${notificationCount}"></span>
-		 </li>
+        <!-- Job Seeker Specific Links -->
+        <li th:if="${jobSeeker != null}">
+            <ul sec:authorize="hasRole('ROLE_JOBSEEKER')">
+                <li>
+                    <a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
+                </li>
+                <li>
+                    <a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
+                </li>
+                <li>
+                    <a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
+                </li>
+            </ul>
+        </li>
 
-         <!-- Login/Logout -->
-         <li sec:authorize="!isAuthenticated()">
-             <a th:href="@{/login}">Login</a>
-         </li>
-		 <!-- Logout needs to send by post method for Spring Security -->
-         <li sec:authorize="isAuthenticated()">
-             <form th:action="@{/logout}" method="post" style="display:inline;">
-                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                 <button type="submit">Logout</button>
-             </form>
-         </li>
-     </ul>
- </nav>
+        <!-- Employer Specific Links -->
+        <li th:if="${employer != null}">
+            <ul>
+                <li sec:authorize="hasRole('ROLE_EMPLOYER')">
+                    <a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- Admin Specific Links -->
+        <li>
+            <ul sec:authorize="hasRole('ROLE_ADMIN')">
+                <li><a th:href="@{/admin/view/dashboard}">Dashboard</a></li>
+                <li><a th:href="@{/view/employers}">All Employers</a></li>
+                <li><a th:href="@{/view/jobseekers}">All Jobseekers</a></li>
+            </ul>
+        </li>
+
+        <!-- Register Links (only for non-authenticated users) -->
+        <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/jobseeker/register}">Register as Job Seeker</a>
+        </li>
+        <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/employer/register}">Register as Employer</a>
+        </li>
+
+        <!-- Notification Message Link only if authenticated -->
+        <li sec:authorize="isAuthenticated()">
+            <a th:href="@{/notification/all}">Notification</a>
+            <span th:if="${notificationCount > 0}" th:text="${notificationCount}"></span>
+        </li>
+
+        <!-- Login/Logout -->
+        <li sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}">Login</a>
+        </li>
+        <li sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <button type="submit">Logout</button>
+            </form>
+        </li>
+    </ul>
+</nav>

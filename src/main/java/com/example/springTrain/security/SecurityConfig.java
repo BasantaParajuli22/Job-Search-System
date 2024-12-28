@@ -58,13 +58,6 @@ public class SecurityConfig {
             		.expiredUrl("/logout")
             		)
             ;
-        
-         // Using custom AccessDeniedHandler
-//            to redirect user whose role doesnot match the content based on role
-//            or requires different role
-//            .exceptionHandling(exception -> exception
-//            		.accessDeniedHandler(new CustomAccessDeniedHandler()))
-//        ;
         return http.build();
     }
 
