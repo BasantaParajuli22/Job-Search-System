@@ -1,58 +1,52 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("jobseeker-profile-form");
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener("submit", function (event) {
         let isValid = true;
 
         // Clear previous error messages
-        clearErrors();
+        document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
 
         // Validate Full Name
-        const fullName = document.getElementById('fullName').value.trim();
-        if (fullName === '') {
-            showError('fullName', 'Full Name is required.');
+        const fullName = document.getElementById("fullName").value.trim();
+        if (!fullName) {
             isValid = false;
+            addErrorMessage("fullName", "Full Name is required.");
         }
 
         // Validate Skills
-        const skills = document.getElementById('skills').value.trim();
-        if (skills === '') {
-            showError('skills', 'Skills are required.');
+        const skills = document.getElementById("skills").value.trim();
+        if (!skills) {
             isValid = false;
+            addErrorMessage("skills", "Skills are required.");
         }
 
         // Validate Phone Number
-        const phoneNumber = document.getElementById('number').value.trim();
-        if (phoneNumber === '') {
-            showError('number', 'Phone Number is required.');
+        const number = document.getElementById("number").value.trim();
+        const phonePattern = /^[0-9]{10,15}$/; 
+        if (!number) {
             isValid = false;
-        } else if (!validatePhoneNumber(phoneNumber)) {
-            showError('number', 'Phone Number must be 10 digits long.');
+            addErrorMessage("number", "Phone Number is required.");
+        } else if (!phonePattern.test(number)) {
             isValid = false;
+            addErrorMessage("number", "Please enter a valid phone number (10-15 digits).");
         }
 
-        // Prevent form submission if invalid
+        // Prevent form submission if validation fails
         if (!isValid) {
             event.preventDefault();
         }
     });
 
-    function validatePhoneNumber(number) {
-        const numberRegex = /^\d{10}$/; // Checks for 10 digits
-        return numberRegex.test(number);
-    }
-
-    function showError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.createElement('div');
-        errorElement.className = 'error';
-        errorElement.style.color = 'red';
+    // Function to add error message
+    function addErrorMessage(inputId, message) {
+        const inputElement = document.getElementById(inputId);
+        let errorElement = inputElement.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains("error-message")) {
+            errorElement = document.createElement("span");
+            errorElement.classList.add("error-message");
+            inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+        }
         errorElement.textContent = message;
-        field.parentNode.insertBefore(errorElement, field.nextSibling);
-    }
-
-    function clearErrors() {
-        const errors = document.querySelectorAll('.error');
-        errors.forEach(error => error.remove());
     }
 });

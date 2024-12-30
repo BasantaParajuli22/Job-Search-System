@@ -11,8 +11,7 @@
     <!-- Navigation Bar -->
     <header th:replace="~{fragments/nav :: nav}"></header>
 
-    <div class="profile-container">
-        <h1>Job Postings</h1>
+    <div class="main-container">
 
         <!-- Display message from SearchController -->
         <div th:if="${keyword}">
@@ -22,14 +21,9 @@
         <p th:if="${filterName != null}" th:text="'Showing JobPosts of: ' + ${filterName}"></p>
         <p th:if="${totalPosts != null}" th:text="'Total Posts: ' + ${totalPosts}"></p>
 
-        <!-- If employer, provide a link to create new job posts -->
-        <p th:if="${employer != null}" sec:authorize="hasRole('ROLE_EMPLOYER')">
-            <a href="/jobposts/new/create">Create New Job Posting</a>
-        </p>
-
         <!-- Job Posts Section -->
         <div class="job-posts">
-            <h2>Job Posts</h2>
+            <h1>Job Posts</h1>
             <div th:if="${jobPosts.isEmpty()}">
                 <p>No job posts available.</p>
             </div>
@@ -40,8 +34,10 @@
 						<div class="job-info">
 						    <strong>Employer ID:</strong> <span th:text="${jobPost.employer.employerId}"></span><br>
 						    <strong>Job ID:</strong> <span th:text="${jobPost.jobId}"></span><br>
-						    <strong>Company Name:</strong> <span th:text="${jobPost.employer.companyName}"></span><br>
-						    <strong>Title:</strong> <span th:text="${jobPost.title}"></span><br>
+						    <strong>Company Name:</strong><span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
+																 th:text="${jobPost.employer.companyName}"></a></span> <br>
+							<strong>Title:</strong><span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}"
+															th:text="${jobPost.title}"></a></span><br>
 						    <strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
 						    <strong>Requirements:</strong> <span th:text="${jobPost.requirements}" class="truncate-text"></span><br>
 						    <strong>Job Description:</strong> <span th:text="${jobPost.jobDescription}" class="truncate-text"></span><br>

@@ -1,6 +1,7 @@
 package com.example.springTrain.controller;
 
 
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
+import com.example.springTrain.entity.Users;
+import com.example.springTrain.enums.Usertype;
+import com.example.springTrain.security.UserAuthorization;
 import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobPostingService;
+import com.example.springTrain.service.NotificationService;
+import com.example.springTrain.service.UsersService;
 
 @Controller
 @RequestMapping("/jobposts")
@@ -30,7 +36,10 @@ public class JobPostingController {
 	private JobPostingService jobPostingService;
 	@Autowired
 	private EmployerService employerService;
-
+	@Autowired
+	private UsersService usersService;
+	@Autowired
+	private NotificationService notificationService;
 	
 	//to create a jobposting 
 	//user must be authenticated and should be employer
@@ -173,4 +182,31 @@ public class JobPostingController {
 
 	    return "redirect:/view/jobposts";
 	}	
+	
+	//deleting a jobPosting By admin 
+    //using employerid and jobId
+	//send notification message to employer 
+    @PostMapping("/{jobId}/delete/byadmin/of/employerId/{employerId}")
+    public String deleteJobPostingByAdmin(@PathVariable("jobId") Integer jobId,
+    		@PathVariable("employerId") Integer employerId,
+    		 @RequestParam("message") String message) {
+    	    	
+        String email = UserAuthorization.getLoggedInUserEmail();
+        if (email != null) {
+            Users user = usersService.findByEmail(email);
+            if (user != null && Usertype.ADMIN.equals(user.getUsertype())) {
+                JobPosting jobPost = jobPostingService.getJobPostingByEmployerIdAndJobId(employerId, jobId);
+                Users employer = usersService.findByEmployer_employerId(employerId);
+                if (jobPost == null || employer == null) {
+                	 logger.warn("Id didnot match whether the employer or jobpost");
+               	return "login";
+               }
+                String deleteMessage = "Your jobPost "+ jobPost.getTitle() +" has been deleted by admin " +message;
+                notificationService.createNotification(employer, deleteMessage);
+                jobPostingService.deleteJobPosting(jobPost);
+            }
+        }
+		  return "redirect:/admin/view/dashboard";    	
+    }
+    
 }

@@ -14,7 +14,7 @@
     <!-- Main Profile Content -->
     <div class="profile-container">
 		<h1>Profile: <span th:text="${jobSeeker.fullName}"></span></h1>
-        <!-- Job Seeker Information -->
+
         <div class="profile-info">
             <p><strong>Job Seeker ID:</strong> <span th:text="${jobSeeker.jobSeekerId}"></span></p>
             <p><strong>Username:</strong> <span th:text="${jobSeeker.fullName}"></span></p>
@@ -23,7 +23,20 @@
             <p><strong>Contact Number:</strong> <span th:text="${jobSeeker.number}"></span></p>
             <p><strong>Created At:</strong> <span th:text="${jobSeeker.createdAt}"></span></p>		
         </div>
+		<div th:if="${loggedInJobSeeker != null }" class="link-group">
+			<div > 		
+				<a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
+			</div>
+			<div>
+		   		<a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>	
+			</div>
+			<div>
+				<a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
+			</div>
+
+		</div>
     </div>
+
 
 </body>
 </html>

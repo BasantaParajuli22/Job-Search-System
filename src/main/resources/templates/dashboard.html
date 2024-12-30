@@ -30,13 +30,23 @@
                 <td th:text="${jobPost.jobId}"></td>
 				<td ><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
 						th:text="${jobPost.title}">Job Title</a></td>
-                <td th:text="${jobPost.employer.companyName}"></td>
+				<td><a th:href="@{/view/employers/profile/{employerId}(employerId=${jobPost.employer.employerId})}" 
+						th:text="${jobPost.employer.companyName}">Company Name</a>
+				</td>
                 <td th:text="${jobPost.cityLocation}"></td>
                 <td th:text="${jobPost.salaryRange}"></td>
 				<td>
 					<form th:action="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" method="get" style="display:inline;">
-						<button type="submit" class="btn btn-danger">View</button>
+						<button type="submit" class="button-green">View</button>
 					</form>
+					<form th:action="@{/jobposts/{jobId}/delete/byadmin/of/employerId/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
+					      method="post" 
+					      onsubmit="return confirmDelete();" 
+					      style="display:inline;">
+					    <input type="hidden" name="message" id="deleteReasonInput">
+					    <button type="submit" class="btn btn-danger">Delete</button>
+					</form>
+
 				</td>
             </tr>
         </tbody>
@@ -45,7 +55,7 @@
     <!-- Employers Section -->
     <h2>Employers and their jobPosts</h2>
 	<a th:href="@{/view/employers}" style="display:inline;">
-			<button type="submit" class="btn btn-danger">View all employers</button>
+			<button type="submit" class="button-green">View all employers</button>
 	</a>
 	
     <table border="1" th:if="${employers != null}">
@@ -64,15 +74,16 @@
 				</td>
                 <td th:text="${employer.users.email}"></td>
 			<td>
-			<!-- for blocking and unblocking user-->
-			<form th:action="@{/admin/block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;">
-				<button type="submit" class="btn btn-danger">Block</button>
-			</form>
-			</td>
-			<td>
-			<form th:action="@{/admin/un-block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;">
-				<button type="submit" class="btn btn-danger">UnBlock</button>
-			</form>
+			<!-- for blocking and unblocking employer-->
+				<form th:action="@{/admin/block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;"
+				th:if="${employer.users.userStatus.name() == 'UNBLOCKED'}">
+					<button type="submit" class="btn btn-danger">Block</button>
+				</form>
+			
+				<form th:action="@{/admin/un-block-user/{userId}(userId=${employer.users.userId})}" method="post" style="display:inline;"
+				th:if="${employer.users.userStatus.name() == 'BLOCKED'}">
+					<button type="submit" class="btn btn-danger">UnBlock</button>
+				</form>
 			</td>
 		</tr>
         </tbody>
@@ -81,7 +92,7 @@
     <!-- Job Seekers Section -->
     <h2>Job Seekers</h2>
 		<a th:href="@{/view/jobseekers}" style="display:inline;">
-			<button type="submit" class="btn btn-danger">View all jobSeekers</button>
+			<button type="submit" class="button-green">View all jobSeekers</button>
 		</a>
     <table border="1" th:if="${jobseekers != null}">
         <thead>
@@ -101,20 +112,35 @@
 
                 <td th:text="${jobSeeker.users.email}"></td>
 				
-				<!-- for blocking and unblocking user-->
+				<!-- for blocking and unblocking jobSeeker-->
 				<td>
-				<form th:action="@{/admin/block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;">
-					<button type="submit" class="btn btn-danger">Block</button>
-				</form>
-				</td>
-				<td>
-				<form th:action="@{/admin/un-block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;">
-					<button type="submit" class="btn btn-danger">UnBlock</button>
-				</form>
+					<form th:action="@{/admin/block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;"
+					th:if="${jobSeeker.users.userStatus.name() == 'UNBLOCKED'}">
+
+						<button type="submit" class="btn btn-danger">Block</button>
+					</form>
+					<form th:action="@{/admin/un-block-user/{userId}(userId=${jobSeeker.users.userId})}" method="post" style="display:inline;"
+					th:if="${jobSeeker.users.userStatus.name() == 'BLOCKED'}">
+
+						<button type="submit" class="btn btn-danger">UnBlock</button>
+					</form>
 				</td> 
             </tr>
         </tbody>
     </table>
+	
+
+		<script>
+		    function confirmDelete() {
+		        const message = prompt("Please provide a reason for deleting this job post:");
+		        if (message === null || message.trim() === "") {
+		            alert("Deletion canceled. Reason is required.");
+		            return false; // Prevent the form submission
+		        }
+		        document.getElementById('deleteReasonInput').value = message.trim();
+		        return true; // Allow the form submission
+		    }
+		</script>
 
 </body>
 </html>

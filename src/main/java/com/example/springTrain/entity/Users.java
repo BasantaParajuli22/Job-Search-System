@@ -49,6 +49,7 @@ public class Users {
 	@CreationTimestamp
 	private LocalDate createdAt;	
 	
+	@Enumerated(EnumType.STRING) 
 	private UserStatus userStatus;
 	
 	public Integer getUserId() {

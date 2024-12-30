@@ -6,7 +6,6 @@
     <title>Job Vacancy</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -37,29 +36,33 @@
         </div>
 
         <div class="job-info-section">
-            <h3>Job Description</h3>
+            <h3>Job Description:</h3>
             <p th:text="${jobPost.jobDescription}"></p>
         </div>
+		<div class="job-info-section">
+		      <h3>Job requirements:</h3>
+		      <p th:text="${jobPost.requirements}"></p>
+		  </div>
 		
 		<div class="job-info-section">
-		     <h3>jobType</h3>
+		     <h3>jobType:</h3>
 		     <p th:text="${jobPost.jobType}"></p>
 		</div>
 		<!-- Background, Skills & Experience -->
 		<div class="job-info-section">
-		    <h3>Experience</h3>	    
+		    <h3>Experience:</h3>	    
 		    <p th:text="'Experience Level: ' + ${jobPost.experienceLevel}"></p>
 		</div>
 
 		<!-- Remote/Onsite Section -->
 		<div class="job-info-section">
-		    <h3>Work Type</h3>
+		    <h3>Work Type:</h3>
 		    <p th:text="${jobPost.isRemote ? 'Remote' : 'Onsite'}"></p>
 		</div>
 
 		<!-- Contact Info -->
 		<div class="job-info-section">
-		    <h3>Contact Information</h3>
+		    <h3>Contact Information:</h3>
 		    <p>Email: <span th:text="${jobPost.contactEmail}"></span></p>
 		</div>
 

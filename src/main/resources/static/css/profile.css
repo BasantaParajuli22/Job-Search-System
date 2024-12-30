@@ -14,5 +14,31 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
+.link-group {
+    display: flex;
+    gap: 15px;
+    background-color: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    justify-content: left;
+    align-items: left;
+}
+
+.link-group a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.link-group a:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
 
 

@@ -13,6 +13,12 @@ document.addEventListener("DOMContentLoaded", function () {
             isValid = false;
             document.querySelector("#title + .error-message").textContent = "Job Title is required.";
         }
+		// Validate Job Title
+		const requirements = document.getElementById("requirements").value.trim();
+		if (!requirements) {
+		    isValid = false;
+		    document.querySelector("#requirements + .error-message").textContent = "Requirements is required.";
+		}
 
         // Validate Job Description
         const jobDescription = document.getElementById("jobDescription").value.trim();

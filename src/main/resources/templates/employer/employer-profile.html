@@ -24,6 +24,11 @@
             <p><strong>Email:</strong> <span th:text="${employer.users.email}"></span></p>
             <p><strong>Created At:</strong> <span th:text="${employer.createdAt}"></span></p>
         </div>
+		<div th:if="${loggedInEmployer != null}" class="link-group">	
+			<div><a href="/jobposts/new/create">Create New Job Post</a></div>
+			<div><a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a></div>
+		</div>
+
     </div>
 
     <div class="job-posts">

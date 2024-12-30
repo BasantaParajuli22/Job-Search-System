@@ -29,7 +29,6 @@ public class SecurityConfig {
 	             .requestMatchers("/admin/**").hasRole("ADMIN")
 	             .requestMatchers("/jobseekers/**").hasRole("JOBSEEKER")
 	             .requestMatchers("/employers/**").hasRole("EMPLOYER")
-	             .requestMatchers("/access-denied").authenticated() // Restrict access to /access-denied
 	             .anyRequest().authenticated()
 	         )	    
             .formLogin(form -> form

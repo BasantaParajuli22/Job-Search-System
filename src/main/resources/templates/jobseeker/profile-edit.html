@@ -11,19 +11,22 @@
 
     <h1 id="profile-edit-heading">Edit Your Profile</h1>
     
-    <form id="jobseeker-profile-form" th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}" method="post">
-        
-		<label for="fullName" class="profile-label">Full Name:</label>
-		<input type="text" id="fullName" name="fullName" th:value="${profileDTO.fullName}" placeholder="Full Name" class="profile-input"><br>
+	<form id="jobseeker-profile-form" th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}" method="post">
+	    <label for="fullName" class="profile-label">Full Name:</label>
+	    <input type="text" id="fullName" name="fullName" th:value="${profileDTO.fullName}" placeholder="Full Name" class="profile-input">
+	    <span class="error-message"></span><br>
 
-		<label for="skills" class="profile-label">Skills:</label>
-		<input type="text" id="skills" name="skills" th:value="${profileDTO.skills}" placeholder="Skills" class="profile-input"><br>
+	    <label for="skills" class="profile-label">Skills:</label>
+	    <input type="text" id="skills" name="skills" th:value="${profileDTO.skills}" placeholder="Skills" class="profile-input">
+	    <span class="error-message"></span><br>
 
-		<label for="number" class="profile-label">Phone Number:</label>
-		<input type="text" id="number" name="number" th:value="${profileDTO.number}" placeholder="Phone Number" class="profile-input"><br>
+	    <label for="number" class="profile-label">Phone Number:</label>
+	    <input type="text" id="number" name="number" th:value="${profileDTO.number}" placeholder="Phone Number" class="profile-input">
+	    <span class="error-message"></span><br>
 
-        <button type="submit" id="save-changes-btn">Save Changes</button>
-    </form>
+	    <button type="submit" id="save-changes-btn">Save Changes</button>
+	</form>
+
 
 	<script th:src="@{/js/jobseeker-profile-edit-validate.js}"></script>
 

@@ -45,6 +45,8 @@ public class ProfileController{
     @GetMapping("/jobseekers/profile")
     public String getJobseekersProfile(Model model,
     		@ModelAttribute ("jobSeeker") JobSeeker jobSeeker) {
+    	
+    	model.addAttribute("loggedInJobSeeker",jobSeeker);
         return "jobseeker/jobseeker-profile";
     }
     

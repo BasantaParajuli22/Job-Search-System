@@ -14,36 +14,10 @@
         <!-- All Jobs (visible to all users) -->
         <li><a th:href="@{/view/jobposts}">All Jobs</a></li>
 
-        <!-- Job Seeker Specific Links -->
-        <li th:if="${jobSeeker != null}">
-            <ul sec:authorize="hasRole('ROLE_JOBSEEKER')">
-                <li>
-                    <a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
-                </li>
-                <li>
-                    <a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
-                </li>
-                <li>
-                    <a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
-                </li>
-            </ul>
-        </li>
-
-        <!-- Employer Specific Links -->
-        <li th:if="${employer != null}">
-            <ul>
-                <li sec:authorize="hasRole('ROLE_EMPLOYER')">
-                    <a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
-                </li>
-            </ul>
-        </li>
-
         <!-- Admin Specific Links -->
         <li>
             <ul sec:authorize="hasRole('ROLE_ADMIN')">
-                <li><a th:href="@{/admin/view/dashboard}">Dashboard</a></li>
-                <li><a th:href="@{/view/employers}">All Employers</a></li>
-                <li><a th:href="@{/view/jobseekers}">All Jobseekers</a></li>
+                <li><a th:href="@{/admin/view/dashboard}">Dashboard</a></li>             
             </ul>
         </li>
 
@@ -66,7 +40,7 @@
             <a th:href="@{/login}">Login</a>
         </li>
         <li sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}" method="post" style="display:inline;">
+            <form th:action="@{/logout}" method="post" style="display:inline;" class="form1">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <button type="submit">Logout</button>
             </form>

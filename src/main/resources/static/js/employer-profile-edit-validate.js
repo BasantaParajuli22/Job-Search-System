@@ -1,65 +1,59 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("employer-profile-form");
 
-    form.addEventListener('submit', function (event) {
+    form.addEventListener("submit", function (event) {
         let isValid = true;
 
         // Clear previous error messages
-        clearErrors();
+        document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
 
         // Validate Company Name
-        const companyName = document.getElementById('companyName').value.trim();
-        if (companyName === '') {
-            showError('companyName', 'Company Name is required.');
+        const companyName = document.getElementById("companyName").value.trim();
+        if (!companyName) {
             isValid = false;
+            addErrorMessage("companyName", "Company Name is required.");
         }
 
         // Validate Company Description
-        const companyDescription = document.getElementById('companyDescription').value.trim();
-        if (companyDescription === '') {
-            showError('companyDescription', 'Company Description is required.');
+        const companyDescription = document.getElementById("companyDescription").value.trim();
+        if (!companyDescription) {
             isValid = false;
+            addErrorMessage("companyDescription", "Company Description is required.");
         }
 
         // Validate Address
-        const address = document.getElementById('address').value.trim();
-        if (address === '') {
-            showError('address', 'Address is required.');
+        const address = document.getElementById("address").value.trim();
+        if (!address) {
             isValid = false;
+            addErrorMessage("address", "Address is required.");
         }
 
         // Validate Contact Number
-        const contactNumber = document.getElementById('number').value.trim();
-        if (contactNumber === '') {
-            showError('number', 'Contact Number is required.');
+        const number = document.getElementById("number").value.trim();
+        const phonePattern = /^[0-9]{10,15}$/; // Adjust pattern based on the desired phone number format
+        if (!number) {
             isValid = false;
-        } else if (!validateContactNumber(contactNumber)) {
-            showError('number', 'Contact Number must be 10 digits long.');
+            addErrorMessage("number", "Contact Number is required.");
+        } else if (!phonePattern.test(number)) {
             isValid = false;
+            addErrorMessage("number", "Please enter a valid phone number (10-15 digits).");
         }
 
-        // Prevent form submission if invalid
+        // Prevent form submission if validation fails
         if (!isValid) {
             event.preventDefault();
         }
     });
 
-    function validateContactNumber(number) {
-        const numberRegex = /^\d{10}$/; // Checks for 10 digits
-        return numberRegex.test(number);
-    }
-
-    function showError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.createElement('div');
-        errorElement.className = 'error';
-        errorElement.style.color = 'red';
+    // Function to add error message
+    function addErrorMessage(inputId, message) {
+        const inputElement = document.getElementById(inputId);
+        let errorElement = inputElement.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains("error-message")) {
+            errorElement = document.createElement("span");
+            errorElement.classList.add("error-message");
+            inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+        }
         errorElement.textContent = message;
-        field.parentNode.insertBefore(errorElement, field.nextSibling);
-    }
-
-    function clearErrors() {
-        const errors = document.querySelectorAll('.error');
-        errors.forEach(error => error.remove());
     }
 });

@@ -34,36 +34,30 @@ public class GlobalControllerAdvice {
 	    Users user = userService.findByEmail(email);
 	    
 	    
-	    if (email != null ) {
+	    if (email != null || user != null) {
 	    	String userRole = UserAuthorization.getLoggedInUserRole();
 	    	
-	    	System.out.println(userRole);
-	    	System.out.println(user);
-	    	
 	    	if("ROLE_JOBSEEKER".equals(userRole)) {
-	    		if (user != null) {	
-	    		    JobSeeker jobSeeker = jobSeekerService.findByUsers(user);
-	    		    if( jobSeeker != null) {
-	    		    	
-	    		    	long notificationCount = notificationService.countUnreadNotificationsOfjobSeeker(jobSeeker);
-	    		    	model.addAttribute("notificationCount",notificationCount);
-	    		    	model.addAttribute("jobSeeker", jobSeeker);
-	    		    	
-	    		    }
+	    		JobSeeker jobSeeker = jobSeekerService.findByUsers(user);
+	    		
+	    		 if( jobSeeker != null) {
+	    		  	long notificationCount = notificationService.countUnreadNotificationsOfjobSeeker(jobSeeker);
+	    		    model.addAttribute("notificationCount",notificationCount);
+	    		    model.addAttribute("jobSeeker", jobSeeker); 	
 	    		}
 	    	}
+	    	
 	    	if("ROLE_EMPLOYER".equals(userRole)) {
-	    		if (user != null) { 
-	    		    Employer employer = employerService.findByUser(user);
+	    		Employer employer = employerService.findByUser(user);
 	    		    
-	    		    if(employer != null) {	    		    	
-	    		    	long notificationCount = notificationService.countUnreadNotificationsOfEmployer(employer);
-	    		    	model.addAttribute("notificationCount",notificationCount);
-	    		    	model.addAttribute("employer", employer);
+	    		if(employer != null) {	    		    	
+	    		    long notificationCount = notificationService.countUnreadNotificationsOfEmployer(employer);
+	    		    model.addAttribute("notificationCount",notificationCount);
+	    		    model.addAttribute("employer", employer);
 	    		    	
-	    		    }
 	    		}
 	    	}
+	    	
 	    }
 	}
 }

@@ -70,6 +70,81 @@ footer .footer-content a:hover {
     color: #1E90FF;
 }
 
+
+/* Form styles */
+.form1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+	padding: 10px 15px;
+	margin:10px;
+}
+
+.form1 label {
+    font-weight: bold;
+}
+
+.form1 input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form1 button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form1 button:hover {
+	text-decoration: underline;
+	text-decoration-color: white;  
+}
+
+/* Button Styles */
+.buttonSmall {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonSmall:hover {
+    background-color: #0056b3;
+}
+
+
+/* Button Styles */
+.button-green {
+    padding: 8px 16px;
+    background-color: #28a745; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.button-green:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+
 /* Make the navigation links (except Login/Logout) align to the left */
 @media (max-width: 768px) {
     #uniqueNavbar ul {

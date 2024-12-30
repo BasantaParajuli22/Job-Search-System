@@ -66,6 +66,7 @@ public class UsersService {
   		user.setUserStatus(UserStatus.UNBLOCKED);
   		
         employer.setUsers(user);
+        employer.setNumber(employerDTO.getNumber());
   		employer.setCompanyName(employerDTO.getCompanyName());
   		employer.setCompanyDescription(employerDTO.getCompanyDescription());
   		employer.setAddress(employerDTO.getAddress());

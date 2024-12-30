@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             showError('numberError', 'Contact Number is required.');
             isValid = false;
         } else if (!validateContactNumber(contactNumber)) {
-            showError('numberError', 'Contact Number must be 10 digits long.');
+            showError('numberError', 'Contact Number must be 10 to 15  digits long.');
             isValid = false;
         }
 
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validateContactNumber(number) {
-        const numberRegex = /^\d{10}$/; // Checks for 10 digits
+        const numberRegex = /^[0-9]{10,15}$/; // Checks for 10 to 15 digits
         return numberRegex.test(number);
     }
 
