@@ -14,6 +14,7 @@ import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.enums.JobType;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -46,8 +47,13 @@ public class JobPosting {
 	private List<SavedJobs> savedJobs;
 
 	private String title;
+	
+	@Column(length = 1000)
 	private String requirements;
+	
+	@Column(length = 1000)
 	private String jobDescription;
+	
 	private String salaryRange;
 	private String contactEmail;
 	private boolean remote;

@@ -1,0 +1,100 @@
+/* Container for the job post */
+.job-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+/* Header section */
+.job-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.job-header h1 {
+    font-size: 1.8rem;
+    margin: 10px 0;
+}
+
+.deadline {
+    color: #888;
+    margin-left: auto;
+}
+.deadline1 {
+    color: rgb(255, 0, 0);
+    margin-left: auto;
+}
+
+/* Job information */
+.job-info {
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.job-info strong {
+    color: #555;
+}
+
+.job-info a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.job-info a:hover {
+    text-decoration: underline;
+}
+
+.truncate-text span {
+    display: inline-block;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+input[type="file"] {
+    margin-bottom: 10px;
+}
+
+
+
+
+#cv {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#cv:hover {
+    background-color: #e6e6e6;
+    border-color: #999;
+}
+
+#cv:focus {
+    outline: none;
+    box-shadow: 0 0 3px #007bff;
+    border-color: #007bff;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .job-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .urgent-badge, .deadline {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

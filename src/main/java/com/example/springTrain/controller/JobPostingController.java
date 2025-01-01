@@ -48,7 +48,7 @@ public class JobPostingController {
 			@ModelAttribute("employer") Employer employer) {
 	     	 
          if(employer == null) {
-        	 logger.warn("User not suitable for creating jobposting");
+        	 logger.warn("User not available to create jobPosts");
             return "login";
          }
         model.addAttribute("employer", employer);
@@ -68,7 +68,6 @@ public class JobPostingController {
        	 logger.warn("User not suitable for posting jobposting");
         	return "login";
 	    }
-	    
 
 		jobPostingService.createJobPosting(jobPosting,employer);//jobposting created
 		return "redirect:/view/jobposts";

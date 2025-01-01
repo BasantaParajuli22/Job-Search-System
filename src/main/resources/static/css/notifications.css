@@ -1,0 +1,56 @@
+/* General Container */
+.notifications-container {
+	padding: 20px;
+  	background-color: #f9f9f9;
+  	border-radius: 8px;
+  	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin:0px
+}
+
+/* No Notifications */
+.no-notifications p {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+}
+
+/* Notification List */
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.notification-message {
+    flex: 1;
+}
+
+/* Default unread notification button */
+.read-btn {
+    background-color: rgb(255, 255, 255); /* Black for unread notifications */
+    color: rgb(0, 0, 0); /* White text for contrast */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.read-btn:hover {
+    background-color: rgb(192, 192, 192); /* Slightly lighter black on hover */
+    color: #0056b3; /* Light gray text for hover effect */
+}

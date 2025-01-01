@@ -55,6 +55,7 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	Page<JobPosting> findAllJobPostingByCityLocationAndAvailable(CityLocation location, boolean b, Pageable pageable);
 	Page<JobPosting> findAllJobPostingByExperienceLevelAndAvailable(ExperienceLevel expLevel, boolean b,
 			Pageable pageable);
+	
 	Page<JobPosting> findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContainingAndAvailable(
 			String keyword, String keyword2, String keyword3, boolean b, Pageable pageable);
 	

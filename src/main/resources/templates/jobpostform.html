@@ -29,21 +29,21 @@
 		<!-- Job Title -->
 		<div>
 		    <label for="title">Job Title:</label>
-		    <input type="text" id="title" name="title" th:field="*{title}">
+		    <input type="text" id="title" name="title" th:field="*{title}" maxlength="255">
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
 		<!-- Job Description -->
 		<div>
 		    <label for="jobDescription">Job Description:</label>
-		    <textarea id="jobDescription" name="jobDescription" rows="4" th:field="*{jobDescription}"></textarea>
+		    <textarea id="jobDescription" name="jobDescription" rows="4" th:field="*{jobDescription}" maxlength="1000"></textarea>
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
 		<!-- Job Description -->
 		<div>
 		    <label for="requirements">Job requirements:</label>
-		    <textarea id="requirements" name="requirements" rows="4" th:field="*{requirements}"></textarea>
+		    <textarea id="requirements" name="requirements" rows="4" th:field="*{requirements}" maxlength="1000"></textarea>
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
@@ -51,7 +51,7 @@
 		<!-- Contact Email -->
 		    <div>
 		        <label for="contactEmail">Contact Email:</label>
-		        <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}">
+		        <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}" maxlength="255">
 		        <span class="error-message" style="color: red;"></span>
 		    </div>
 		
@@ -74,14 +74,11 @@
 		<div>
 		    <label for="cityLocation">Location:</label>
 			<select id="cityLocation" name="cityLocation" th:field="*{cityLocation}">
-				<option value="KATHMANDU">KATHMANDU</option>
-				<option value="BHAKTAPUR">BHAKTAPUR</option>
-				<option value="RUPANDEHI">RUPANDEHI</option>
-				<option value="HIMALAYAN_REGION">HIMALAYAN_REGION</option>
-				<option value="TERAI_REGION">TERAI_REGION</option>
-				<option value="HILLY_REGION">HILLY_REGION</option>
-				<option value="OUTSIDE_NEPAL">OUTSIDE_NEPAL</option>
-				<option value="OTHER_SPECIFY">OTHERS</option>
+				<option value="KATHMANDU">Kathmandu</option>
+				<option value="BHAKTAPUR">Bhaktapur</option>
+				<option value="RUPANDEHI">Rupandehi</option>
+				<option value="OUTSIDE_NEPAL">outside_nepal</option>
+				<option value="OTHER_SPECIFY">other</option>
 			</select>
 		</div>
 		

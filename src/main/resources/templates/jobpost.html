@@ -13,6 +13,11 @@
 
     <div class="main-container">
 
+		<!-- Display Error Message -->
+		<div th:if="${errorMessage}" class="alert alert-danger">
+		    <p th:text="${errorMessage}"></p>
+		</div>
+		
         <!-- Display message from SearchController -->
         <div th:if="${keyword}">
             <h2 th:text="'Searching for: ' + ${keyword}"></h2>
@@ -32,17 +37,27 @@
                 <div class="job-post-grid">
                     <div th:each="jobPost : ${jobPosts}" class="job-post">
 						<div class="job-info">
-						    <strong>Employer ID:</strong> <span th:text="${jobPost.employer.employerId}"></span><br>
-						    <strong>Job ID:</strong> <span th:text="${jobPost.jobId}"></span><br>
-						    <strong>Company Name:</strong><span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
-																 th:text="${jobPost.employer.companyName}"></a></span> <br>
-							<strong>Title:</strong><span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}"
-															th:text="${jobPost.title}"></a></span><br>
+							
+							<div class="truncate-text"><strong>Company Name:</strong>
+								<span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" th:text="${jobPost.employer.companyName}" class="truncate-text"></a></span>
+							</div>
+							<div class="truncate-text"><strong>Title:</strong>
+								<span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" th:text="${jobPost.title}" class="truncate-text"></a></span>
+							</div>
+						    <div class="truncate-text"><strong>Requirements:</strong>
+								 <span th:text="${jobPost.requirements}" class="truncate-text"></span>
+							</div>
+							<div class="truncate-text"><strong>Job Description:</strong>
+								 <span th:text="${jobPost.jobDescription}" class="truncate-text"></span>
+							</div>						    
+							<div class="truncate-text"><strong>Salary Range:</strong>
+								 <span th:text="${jobPost.salaryRange}" class="truncate-text"></span>
+							</div>
+							<strong>Category:</strong> <span th:text="${jobPost.jobCategory}"></span><br>
 						    <strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
-						    <strong>Requirements:</strong> <span th:text="${jobPost.requirements}" class="truncate-text"></span><br>
-						    <strong>Job Description:</strong> <span th:text="${jobPost.jobDescription}" class="truncate-text"></span><br>
-						    <strong>Salary Range:</strong> <span th:text="${jobPost.salaryRange}"></span><br>
-						    <strong>Created At:</strong> <span th:text="${jobPost.createdAt}"></span><br>
+							<strong>Job Type:</strong> <span th:text="${jobPost.jobType}"></span><br>
+						    <strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}"></span><br>
+							<strong>Application Deadline:</strong> <span th:text="${jobPost.applicationDeadline}"></span><br>
 						</div>
 
 

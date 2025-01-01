@@ -4,6 +4,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin:0px
 }
 
 
@@ -61,17 +62,22 @@
 }
 
 .truncate-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 1;  /* Adjust this to control how many lines to show before truncating */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
 /* Media Queries */
-@media (max-width: 768px) {
+@media (max-width: 1080px) {
     .job-post-grid {
         grid-template-columns: 1fr;  /* 1 column per row on small screens */
     }
+	.truncate-text {
+	  width: 400px;
+	  white-space: nowrap;
+	  overflow: hidden;
+	  text-overflow: ellipsis;
+	}
+	
 }

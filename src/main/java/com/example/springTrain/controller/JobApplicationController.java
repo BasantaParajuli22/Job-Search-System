@@ -173,12 +173,19 @@ public class JobApplicationController {
 					@ModelAttribute("jobSeeker") JobSeeker jobSeeker,
 					RedirectAttributes redirectAttributes) {
 	     
+    	System.out.println("more than 2 mb or not");
+
 		// Validate file type
-	    // Validate file type
 	    String contentType = file.getContentType();
 	    if (contentType == null || !contentType.equals("application/pdf")) {
 	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid file type. Please upload a valid PDF.");
 	    	return "redirect:/view/jobposts/details/" +jobId;
+	    }
+	    // Check file size (2 MB limit)
+	    if (file.getSize() > 2 * 1024 * 1024) {  // 2 MB in bytes
+	    	System.out.println("more than 2 mb");
+	        redirectAttributes.addFlashAttribute("errorMessage", "File size exceeds the maximum allowed size of 2 MB.");
+	        return "redirect:/view/jobposts/details/" + jobId;
 	    }
 	    
 		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
@@ -193,7 +200,6 @@ public class JobApplicationController {
 			logger.warn("Not same jobSeeker so cannot apply");
 			return "redirect:/view/jobposts";
 		}
-	
          if(employer == null ||jobPosting == null || user == null || jobApplication != null) {
  			logger.warn("Unable  to apply to jobPosts ");
             return "redirect:/view/jobposts";

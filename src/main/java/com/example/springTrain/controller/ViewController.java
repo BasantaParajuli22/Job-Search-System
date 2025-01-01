@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
@@ -218,8 +219,7 @@ public class ViewController {
 		//List<JobPosting> relatedJobs = jobPostingService.findRelatedJobPostings(jobPost.getCategory(), jobPost.getEmployer().getUsers().getUserId());		 
 		//model.addAttribute("relatedJobs", relatedJobs); 
 	    
-	    model.addAttribute("jobPost", jobPost);
-	    
+	    model.addAttribute("jobPost", jobPost);	    
 	    return "jobListing";  
 	}
 	

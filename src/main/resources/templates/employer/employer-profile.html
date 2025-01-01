@@ -42,15 +42,27 @@
 
                 <div th:each="jobPost, iterStat : ${myJobPosts}" class="job-post">
 					<div class="job-info">
-						<strong>Employer ID:</strong> <span th:text="${jobPost.employer.employerId}"></span><br>
-						<strong>Job ID:</strong> <span th:text="${jobPost.jobId}"></span><br>
-						<strong>Company Name:</strong> <span th:text="${jobPost.employer.companyName}" ></span><br>
-						<strong>Title:</strong> <span th:text="${jobPost.title}"></span><br>
-						<strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
-						<strong>Requirements:</strong> <span th:text="${jobPost.requirements}" class="truncate-text"></span><br>
-						<strong>Job Description:</strong> <span th:text="${jobPost.jobDescription}" class="truncate-text"></span><br>
-						<strong>Salary Range:</strong> <span th:text="${jobPost.salaryRange}"></span><br>
-						<strong>Created At:</strong> <span th:text="${jobPost.createdAt}"></span><br>
+												
+						<div class="truncate-text"><strong>Company Name:</strong>
+							<span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" th:text="${jobPost.employer.companyName}"></a></span>
+						</div>
+						<div class="truncate-text"><strong>Title:</strong>
+							<span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" th:text="${jobPost.title}"></a></span>
+						</div>
+					    <div class="truncate-text"><strong>Requirements:</strong>
+							 <span th:text="${jobPost.requirements}" ></span>
+						</div>
+						<div class="truncate-text"><strong>Job Description:</strong>
+							 <span th:text="${jobPost.jobDescription}"></span>
+						</div>						    
+						<div class="truncate-text"><strong>Salary Range:</strong>
+							 <span th:text="${jobPost.salaryRange}"></span>
+						</div>
+						<strong>Category:</strong> <span th:text="${jobPost.jobCategory}"></span><br>
+					    <strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
+						<strong>Job Type:</strong> <span th:text="${jobPost.jobType}"></span><br>
+					    <strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}"></span><br>
+						<strong>Application Deadline:</strong> <span th:text="${jobPost.applicationDeadline}"></span><br>
 					</div>
 					
 					<div class="job-actions">
@@ -59,7 +71,7 @@
 					        <p><strong>Total Applications:</strong> <span th:text="${jobAppCount != null ? jobAppCount[iterStat.index] : 0}"></span></p>
 					        <p th:if="${loggedInEmployer != null}">
 					            <a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}(employerId=${employer.employerId},jobId=${jobPost.jobId})}">
-					                <button type="button" class="buttonSmall">View Applications</button>
+					                <button type="button" class="button-green">View Applications</button>
 					            </a>
 					        </p>
 					    </div>

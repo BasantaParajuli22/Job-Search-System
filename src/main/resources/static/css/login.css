@@ -19,39 +19,6 @@ h2, h4 {
     color: #333;
 }
 
-
-/* Navigation Bar */
-nav {
-    background-color: #007BFF;
-    padding: 12px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-between; /* Spread the items across */
-    align-items: center;
-}
-
-nav ul li {
-    margin-right: 20px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Move Login/Logout buttons to the right side */
-nav ul li:last-child {
-    margin-left: auto;
-}
-
 /* Form Styling */
 .formtable {
     padding: 12px;

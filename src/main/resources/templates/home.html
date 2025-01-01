@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Job Search System</title>
-	<link rel="stylesheet" th:href="@{/css/home.css}">
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
-<body>
+<div>
 	<!--<div class="backImage"><img src="photo/freeimageai.jpg" ></div>-->
+	
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
-
 
 	<!-- Main Content -->
 	<div class="container">
@@ -20,10 +20,10 @@
 
 	    <!-- Search Form -->
 		<!-- -->
-	    <form th:action="@{/search}" method="get" class="form2">
+	    <form th:action="@{/search}" method="get" class="search-form">
 	        <label for="keyword">Search for jobs:</label>
 	        <input type="text" id="keyword" name="keyword" placeholder="Enter job title, skills, or company name">
-	        <button type="submit" class="buttonSmall">Search</button>
+	        <button type="submit" class="button-green">Search</button>
 	    </form>
 		
 	    <!-- Search Results (if any) -->
@@ -33,14 +33,16 @@
 	</div>
 
 
-	<div>
-		<div th:if="${jobSeekerCount}" th:text=" 'total jobSeeker ' + ${jobSeekerCount}"></div>
-		<div th:if="${employerCount}" th:text="  'total employer ' +  ${employerCount}"></div>
-		<div th:if="${jobPostingCount}" th:text="'total jobPosts ' + ${jobPostingCount}"></div>
+	<div class="stats-box">
+		<div th:if="${jobSeekerCount}" th:text=" 'Total jobSeeker: ' + ${jobSeekerCount}" class="stat-item"></div>
+		<div th:if="${employerCount}" th:text="  'Total employer: ' +  ${employerCount}" class="stat-item"></div>
+		<div th:if="${jobPostingCount}" th:text="'Total jobPosts created: ' + ${jobPostingCount}" class="stat-item"></div>
 
 	</div>
+	
+<div class="categories-grid">
 	<!-- Job Categories Section -->
-	<div>
+	<div class="category-box">
 	    <h1>Job Categories</h1>
 	    <ul>
 	        <li th:each="jobCategory, iterStat : ${jobCategories}">
@@ -52,7 +54,7 @@
 	</div>
 
 	<!-- Job Types Section -->
-	<div>
+	<div class="category-box">
 	    <h1>Job Types</h1>
 	    <ul th:if="${jobTypes}">
 	        <li th:each="jobType, iterStat : ${jobTypes}">
@@ -64,7 +66,7 @@
 	</div>
 
 	<!-- Experience Levels Section -->
-	<div>
+	<div class="category-box">
 	    <h1>Experience Levels</h1>
 	    <ul th:if="${experienceLevel}">
 	        <li th:each="expLevel, iterStat : ${experienceLevel}">
@@ -76,7 +78,7 @@
 	</div>
 
 	<!-- City Locations Section -->
-	<div>
+	<div class="category-box">
 	    <h1>Locations</h1>
 	    <ul th:if="${cityLocation}">
 	        <li th:each="location, iterStat : ${cityLocation}">
@@ -86,10 +88,8 @@
 	        </li>
 	    </ul>
 	</div>
-
+</div>
 	<!-- Footer -->
-	<footer th:replace="~{fragments/footer :: footer}"></footer>
-	   
-    <script th:src="@{/js/search.js}"></script>
+	<footer th:replace="~{fragments/footer :: footer}"></footer>	   
 </body>
 </html>

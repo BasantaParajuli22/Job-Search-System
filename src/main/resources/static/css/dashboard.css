@@ -39,22 +39,6 @@ table tr:nth-child(even) {
 }
 
 
-/* Buttons Styling */
-button.btn-danger {
-	padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-	font-weight: bold;
-    background-color: #dc3545;
-    color: white;
-}
-
-button.btn-danger:hover {
-    background-color: #a71d2a;
-}
-
 /* Links in Tables */
 a {
     color: #007BFF;
