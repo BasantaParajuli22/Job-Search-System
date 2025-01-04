@@ -59,13 +59,21 @@ public interface JobPostingRepository extends JpaRepository<JobPosting, Integer>
 	Page<JobPosting> findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContainingAndAvailable(
 			String keyword, String keyword2, String keyword3, boolean b, Pageable pageable);
 	
+	Page<JobPosting> findByTitleContainingIgnoreCaseOrEmployer_CompanyNameContainingIgnoreCaseAndAvailable(
+			String keyword, String keyword2,boolean b, Pageable pageable);
 	
 	//for counting 
-	List<Integer> countByJobCategory(JobCategory jobCategory);
+	Integer countByJobCategory(JobCategory jobCategory);
 	Integer countJobPostingByJobCategory(JobCategory jobCategory);
 	Integer countJobPostingByJobType(JobType type);
 	Integer countJobPostingByExperienceLevel(ExperienceLevel exp);
 	Integer countJobPostingByCityLocation(CityLocation city);
+	
+	int countJobPostingByJobCategoryAndAvailable(JobCategory jobCategory, boolean b);
+	int countJobPostingByJobTypeAndAvailable(JobType ty, boolean b);
+	int countJobPostingByExperienceLevelAndAvailable(ExperienceLevel ty, boolean b);
+	int countJobPostingByCityLocationAndAvailable(CityLocation ty, boolean b);
+	
 
 
 }

@@ -179,7 +179,7 @@ public class JobPostingController {
 	    // Save the updated job post
 	    jobPostingService.updateJobPosting(jobId, existingJobPosting);
 
-	    return "redirect:/view/jobposts";
+	    return "redirect:/employers/profile";
 	}	
 	
 	//deleting a jobPosting By admin 

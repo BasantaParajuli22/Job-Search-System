@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Validate Contact Number
         const number = document.getElementById("number").value.trim();
-        const phonePattern = /^[0-9]{10,15}$/; // Adjust pattern based on the desired phone number format
+        const phonePattern = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits //
         if (!number) {
             isValid = false;
             addErrorMessage("number", "Contact Number is required.");

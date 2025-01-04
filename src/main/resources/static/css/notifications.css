@@ -54,3 +54,20 @@
     background-color: rgb(192, 192, 192); /* Slightly lighter black on hover */
     color: #0056b3; /* Light gray text for hover effect */
 }
+
+/** give notification a color based on status*/
+.viewed {
+    background-color: lightgray; 
+    color: gray;
+}
+
+.viewed:hover {
+    background-color: lightgray; 
+    color: gray;
+}
+
+.not-viewed {
+    background-color: lightblue; 
+    color: black;
+}
+

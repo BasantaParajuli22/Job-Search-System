@@ -46,6 +46,7 @@ public class JobPosting {
 	@OneToMany(mappedBy ="jobPosting", cascade = CascadeType.ALL)
 	private List<SavedJobs> savedJobs;
 
+	@Column(length = 50)
 	private String title;
 	
 	@Column(length = 1000)
@@ -54,8 +55,12 @@ public class JobPosting {
 	@Column(length = 1000)
 	private String jobDescription;
 	
+	@Column(length = 250)
 	private String salaryRange;
+	
+	@Column(length = 250)
 	private String contactEmail;
+	
 	private boolean remote;
 	
 	@Enumerated(EnumType.STRING)

@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create/Edit Job Posting</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/form.css}">
+
 
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
-    <!-- Header to determine if it's an edit or create form -->
-    <h1 th:text="${jobPosting.jobId != null} ? 'Edit Job Posting' : 'Create Job Posting'"></h1>
 
 	<!-- Form Action URL - new or update based on jobId -->
 	<!-- Dynamic URL Construction (String Concatenation)-->
 	<!-- Works well for more complex URL logic and multiple conditions like in a ternary operator (? :)-->
+	<div class="maincontainer">
+		<!-- Header to determine if it's an edit or create form -->
+		<h1 th:text="${jobPosting.jobId != null} ? 'Edit Job Posting' : 'Create Job Posting'"></h1>
+
+	<div class="formtable">
 	<form th:action="${jobPosting.jobId != null ? 
 	    '/jobposts/' + jobPosting.jobId + '/edit/by/' + jobPosting.employer.employerId : 
 	    '/jobposts/new/create'}" 
@@ -27,43 +31,43 @@
         <input type="hidden" th:value="${employer.employerId}" name="employerId">
 
 		<!-- Job Title -->
-		<div>
+		<div class="form-group">
 		    <label for="title">Job Title:</label>
-		    <input type="text" id="title" name="title" th:field="*{title}" maxlength="255">
+		    <input type="text" id="title" name="title" th:field="*{title}" maxlength="50">
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
 		<!-- Job Description -->
-		<div>
+		<div class="form-group">
 		    <label for="jobDescription">Job Description:</label>
-		    <textarea id="jobDescription" name="jobDescription" rows="4" th:field="*{jobDescription}" maxlength="1000"></textarea>
+		    <textarea id="jobDescription" name="jobDescription" rows="4" th:field="*{jobDescription}" maxlength="900"></textarea>
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
 		<!-- Job Description -->
-		<div>
+		<div class="form-group">
 		    <label for="requirements">Job requirements:</label>
-		    <textarea id="requirements" name="requirements" rows="4" th:field="*{requirements}" maxlength="1000"></textarea>
+		    <textarea id="requirements" name="requirements" rows="4" th:field="*{requirements}" maxlength="900"></textarea>
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 
 
 		<!-- Contact Email -->
-		    <div>
+		    <div class="form-group">
 		        <label for="contactEmail">Contact Email:</label>
-		        <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}" maxlength="255">
+		        <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}" maxlength="250">
 		        <span class="error-message" style="color: red;"></span>
 		    </div>
 		
 		<!-- Salary Range -->
-		<div>
+		<div class="form-group">
 		    <label for="salaryRange">Salary Range:</label>
-		    <input type="text" id="salaryRange" name="salaryRange" th:field="*{salaryRange}">
+		    <input type="text" id="salaryRange" name="salaryRange" th:field="*{salaryRange}" maxlength="250">
 		    <span class="error-message" style="color: red;"></span>
 		</div>
 		
 		<!-- Application Deadline -->
-		<div>
+		<div class="form-group">
 		    <label for="applicationDeadline">Application Deadline:</label>
 		    <input type="date" id="applicationDeadline" name="applicationDeadline" th:field="*{applicationDeadline}">
 		    <span class="error-message" style="color: red;"></span>
@@ -71,7 +75,7 @@
 
 
 		<!-- Job Location -->
-		<div>
+		<div  class="form-group">
 		    <label for="cityLocation">Location:</label>
 			<select id="cityLocation" name="cityLocation" th:field="*{cityLocation}">
 				<option value="KATHMANDU">Kathmandu</option>
@@ -83,7 +87,7 @@
 		</div>
 		
 		<!-- Job Type (e.g., Full-time, Part-time, Contract) -->
-		 <div>
+		 <div  class="form-group">
 		     <label for="jobType">Job Type:</label>
 		     <select id="jobType" name="jobType" th:field="*{jobType}">
 		         <option value="FULL_TIME">Full-Time</option>
@@ -94,7 +98,7 @@
 		 </div>
 		 
         <!-- Experience Level -->
-        <div>
+        <div class="form-group">
             <label for="experienceLevel">Experience Level:</label>
             <select id="experienceLevel" name="experienceLevel" th:field="*{experienceLevel}">
                 <option value="ENTRY">Entry</option>
@@ -104,7 +108,7 @@
         </div>
 		
 		<!-- Job Category -->
-		<div>
+		<div  class="form-group">
 		     <label for="category">Job Category:</label>
 			 <select id="jobCategory" name="jobCategory" th:field="*{jobCategory}">
 			        <option value="IT">IT</option>
@@ -119,20 +123,22 @@
 
 		
 		<!-- Remote Job cannot set this nullable -->
-		<div>
+		<div  class="form-group" style="display: block;">
 		    <label for="isRemote">Is this job remote?if Yes</label>
 		    <input type="checkbox" id="isRemote" name="remote" th:field="*{remote}" > 
 		</div>
 		<!-- set availability-->
-		<div>
+		<div >
 		    <input type="hidden" id="isRemote" name="available" th:field="*{available}" > 
 		</div>
         <!-- Submit and Cancel Buttons -->
         <div>
-            <button type="submit">Save</button>
+            <button type="submit" class="button-green">Save</button>
             <a href="/view/jobposts">Cancel</a>
         </div>
     </form>
+	</div>
+	</div>
 	<script th:src="@{/js/jobpost-validate.js}"></script>
 
 </body>

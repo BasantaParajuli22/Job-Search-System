@@ -52,41 +52,32 @@ public class ViewController {
 	public String getHomepage(Model model) {
 		
 		JobCategory[] jobCategories = jobPostingService.getAllCategories();
-		List<Integer> categoryCount = jobPostingService.countJobPostingByJobCategory();
-		
-		model.addAttribute("jobCategories", jobCategories);
-		model.addAttribute("categoryCount",categoryCount);
-
-		
 		JobType[] jobTypes = jobPostingService.getAllJobTypes();
-		List<Integer> typeCount = jobPostingService.countJobPostingOfJobType(); 
-		
-		model.addAttribute("jobTypes", jobTypes);
-		model.addAttribute("typeCount",typeCount);
-
-	
 		ExperienceLevel[] experienceLevel = jobPostingService.getAllExperienceLevel();
-		List<Integer> xpCount = jobPostingService.countJobPostingOfExpType(); 
-
-		model.addAttribute("experienceLevel", experienceLevel);
-		model.addAttribute("xpCount",xpCount);
-
 		CityLocation[] cityLocation = jobPostingService.getAllCityLocation();
-		List<Integer> cityCount = jobPostingService.countJobPostingOfCityLocation(); 
-		
-		model.addAttribute("cityLocation", cityLocation);
-		model.addAttribute("cityCount",cityCount);
 
-		
+		List<Integer> cityCount = jobPostingService.countJobPostingOfCityLocation(); 
+		List<Integer> typeCount = jobPostingService.countJobPostingOfJobType(); 
+		List<Integer> xpCount = jobPostingService.countJobPostingOfExpType(); 
+		List<Integer> categoryCount = jobPostingService.countJobPostingByJobCategory();
+
 		long jobSeekerCount = jobSeekerService.countAlljobSeekers();
 		long employerCount = employerService.countAllEmployers();
 		long jobPostingCount = jobPostingService.countAllJobPosting();
 
+		model.addAttribute("jobCategories", jobCategories);
+		model.addAttribute("jobTypes", jobTypes);
+		model.addAttribute("experienceLevel", experienceLevel);
+		model.addAttribute("cityLocation", cityLocation);
+		
+		model.addAttribute("cityCount",cityCount);
+		model.addAttribute("typeCount",typeCount);
+		model.addAttribute("categoryCount",categoryCount);
+		model.addAttribute("xpCount",xpCount);
 		
 		model.addAttribute("jobSeekerCount", jobSeekerCount);
 		model.addAttribute("employerCount",employerCount);
 		model.addAttribute("jobPostingCount",jobPostingCount);
-
 		
 		return "home";
 	}
@@ -192,9 +183,10 @@ public class ViewController {
 	    	
 	    	if(jobPost.isAvailable() == true) {
 	    		model.addAttribute("available",true);
-	    	}else{
+	    	}else {	
 	    		model.addAttribute("available",false);
 	    	}
+	   
 	    	model.addAttribute("deadlineDays", deadline);
 	    }
 	    
@@ -271,4 +263,8 @@ public class ViewController {
         return "employer/employer-profile";
     }
 	
+    @GetMapping("/view/info")
+    public String showInfoPage() {
+        return "info"; 
+    }
 }

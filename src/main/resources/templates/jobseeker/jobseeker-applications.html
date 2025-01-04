@@ -3,7 +3,7 @@
 <head>
     <title>My Job Applications</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/style.css}"></head>
+	<link rel="stylesheet" th:href="@{/css/dashboard.css}"></head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
@@ -21,24 +21,46 @@
                 <thead>
                     <tr>
                         <th>Job Title</th>
-                        <th>Status</th>
+						<th>View option </th>
+						<th>View option </th>
                         <th>Applied At</th>
-						<th>Applied At</th>
-
+						<th>Deadline </th>
                         <th>Days Left</th> <!-- Days until the deadline -->
+                        <th>Status</th>
+						<th>Contact</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="jobApplication, iterStat : ${allJobApplicants}">
-                        <td th:text="${jobApplication.jobPosting.title}">Job Title</td>
-                        <td th:text="${jobApplication.applicationStatus}">Status</td>
-                        <td th:text="${jobApplication.appliedAt}">JobPost CreatedAt</td>
+						<td>
+							<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobApplication.jobPosting.jobId})}" 
+								th:text="${jobApplication.jobPosting.title}"></a>					
+						</td>
+
 						<td th:if="${jobApplication.fileName != null}">
 							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">
 							View File </a>
 						</td>
+						<td th:if="${jobApplication.imageName != null}">
+							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" target="_blank">
+								<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" 
+										alt="Job Application Image" 
+										style="width: 90px; height: auto;" />
+							</a>
+						</td>
+
+						<td th:text="${jobApplication.appliedAt}">JobPost appliedAt</td>
 						<td th:text="${jobApplication.jobPosting.applicationDeadline}">Deadline</td>
                         <td th:text="${applicationDeadline[iterStat.index]}">Days Left</td>
+						
+						<td th:text="${jobApplication.applicationStatus}"></td>
+						
+							<td th:if="${jobApplication.applicationStatus == 'Accepted'}">
+						    	<a th:href="@{'mailto:' + ${jobApplication.jobPosting.contactEmail}}"
+						       		th:text="'Send email'"></a>
+							</td>
+						
                     </tr>
                 </tbody>
             </table>
@@ -62,8 +84,13 @@
                 </thead>
                 <tbody>
                     <tr th:each="savedPost,iterStat : ${savedPosts}">
-                        <td th:text="${savedPost.jobPosting.title}">Job Title</td>
-                        <td th:text="${savedPost.jobPosting.employer.companyName}">Company Name</td>
+						<td>
+							<a th:href="@{/view/jobposts/details/{jobId}(jobId=${savedPost.jobPosting.jobId})}" 
+								th:text="${savedPost.jobPosting.title}"></a>					
+						</td>
+						<td><a th:href="@{/view/employers/profile/{employerId}(employerId=${savedPost.jobPosting.employer.employerId})}" 
+							th:text="${savedPost.jobPosting.employer.companyName}">Company Name</a>
+						</td>
                         <td th:text="${savedPost.jobPosting.cityLocation}">Location</td>
                         <td th:text="${savedPost.jobPosting.jobType}">Job Type</td>
 						<td th:if="${savedDeadline != null}" th:text="${savedPost.jobPosting.applicationDeadline}">Deadline</td>
@@ -74,8 +101,6 @@
         </div>       
     </main>
 
-    <!-- Footer 
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
-    -->
+
 </body>
 </html>

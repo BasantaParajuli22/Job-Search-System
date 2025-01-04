@@ -21,14 +21,14 @@
 
                 <div class="form-group">
                     <label for="companyName">Company/Organization Name:</label>
-                    <input type="text" name="companyName" id="name" placeholder="Enter your Company/Organization" th:field="*{companyName}">
+                    <input type="text" name="companyName" id="name" placeholder="Enter your Company/Organization" th:field="*{companyName}"maxlength="50">
                     <span id="nameError" class="error"></span>
                     <p th:if="${error?.username != null}"><span th:text="${error.username}" class="error"></span></p>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="text" name="email" id="email" placeholder="example@example.com" th:field="*{email}">
+                    <input type="text" name="email" id="email" placeholder="example@example.com" th:field="*{email}" maxlength="250">
                     <span id="emailError" class="error"></span>
                     <span class="error" th:text="${emailExists}"></span>
                     <p th:if="${error?.email != null}"><span th:text="${error.email}" class="error"></span></p>
@@ -36,19 +36,19 @@
 
                 <div class="form-group">
                     <label for="contactNumber">Number:</label>
-                    <input type="number" name="number" id="number" placeholder="987653210" th:field="*{number}">
+                    <input type="number" name="number" id="number" placeholder="987653210" th:field="*{number}" maxlength="20">
                     <span id="numberError" class="error"></span>
                 </div>
 				
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <input type="text" name="address" id="address" placeholder="Enter your address" th:field="*{address}">
+                    <input type="text" name="address" id="address" placeholder="Enter your address" th:field="*{address}" maxlength="250">
                     <span id="addressError" class="error"></span>
                 </div>
 				
                 <div class="form-group">
                     <label for="companyDescription">Company Description:</label>
-                    <input type="text" name="companyDescription" id="companyDescription" placeholder="Company Description: Best company" th:field="*{companyDescription}">
+                    <input type="text" name="companyDescription" id="companyDescription" placeholder="Company Description: Best company" th:field="*{companyDescription}" maxlength="900">
                     <span id="companyDescriptionError" class="error"></span>
                 </div>
 				

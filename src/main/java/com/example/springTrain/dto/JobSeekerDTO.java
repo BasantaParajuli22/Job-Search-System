@@ -1,5 +1,7 @@
 package com.example.springTrain.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.springTrain.enums.Usertype;
 
 public class JobSeekerDTO {
@@ -13,6 +15,24 @@ public class JobSeekerDTO {
     private String skills;
     private String resume;
     private Usertype usertype;
+    
+    private MultipartFile  file;
+    private MultipartFile  imagefile;
+    
+    
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+	public MultipartFile getImagefile() {
+		return imagefile;
+	}
+	public void setImagefile(MultipartFile imagefile) {
+		this.imagefile = imagefile;
+	}
+
 
 	public String getPassword() {
 		return password;

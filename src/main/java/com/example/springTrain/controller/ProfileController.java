@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
@@ -22,6 +23,7 @@ import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
+import com.example.springTrain.validation.ValidationError;
 
 
 @Controller
@@ -99,6 +101,7 @@ public class ProfileController{
 			@PathVariable("employerId") Integer employerId,
 			@ModelAttribute ("employer")Employer employer) {
 		
+
 		//there is two same username in user and jobseeker entity
        Employer submittedEmployer = employerService.findByEmployerId(employer.getEmployerId());
        Users submittedUser = usersService.findByEmployer_employerId(employer.getEmployerId());
@@ -153,23 +156,37 @@ public class ProfileController{
     public String getEmployerProfileEdit(Model model,
     		@ModelAttribute ProfileDTO employerDTO,
     		@PathVariable("employerId") Integer employerId,
-    		@ModelAttribute ("employer")Employer employer ) {
+    		@ModelAttribute ("employer")Employer employer,
+    		RedirectAttributes redirectAttributes) {
         
-		//there is two same username in user and jobseeker entity
+	  	ValidationError validationError = new ValidationError();
+	  	validationError.clear();
+	  	
+	  	Employer existinguser = employerService.findByCompanyName(employerDTO.getCompanyName());
+	  	//error if companyName exists already and
+	  	//if it doesnot have same employerId as being edited employerId
+	  	if(existinguser != null && !existinguser.getEmployerId().equals(employerId)) {
+	  		validationError.setUsername("Sorry username is already taken ");
+	  	}
+	  	
+		//chekcing if id exists in both table 
        Employer submittedEmployer = employerService.findByEmployerId(employerId);
        Users submittedUser = usersService.findByEmployer_EmployerId(employerId);
-       
        if( submittedEmployer == null || submittedUser == null) {
-    	   logger.warn("Submitted company not found in post"); 
+    	   logger.warn("Submitted company not found in table"); 
     	   return"login";
        }
        
-       if(!employer.getCompanyName().equals(submittedEmployer.getCompanyName())) {
-    	   logger.warn("not same submittedEmployer and loggedinEmployer"); 
-    	   return"login";
-       }
-       
- 		employerService.updateEmployer(employerDTO,submittedEmployer);      
+	  	if(validationError.hasErrors()) {
+	  		// Re-add the input data to the model to repopulate the form
+	  		System.out.println(validationError);
+	  		model.addAttribute("employerDTO", employerDTO);
+	  		redirectAttributes.addFlashAttribute("errorMessage",validationError.getUsername());
+	  		return "redirect:/employers/profile/edit/" + employerId;
+	  	}
+	  	
+	  	employerService.updateEmployer(employerDTO,submittedEmployer);      
+
         return "redirect:/employers/profile";
     }
 	

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,10 +35,25 @@ public class JobApplication{
     private Employer employer;
 
 	private String applicationStatus;//changeable by employer
-	private String fileName;
 	
 	@CreationTimestamp
 	private LocalDate appliedAt;
+
+	
+	//details submitted by jobseeker
+	private String fileName;
+	private String imageName;
+	
+	@Column(length = 50)
+	private String fullName;
+	
+	@Column(length = 20)
+	private String email;
+	
+	@Column(length = 20)
+	private String number;
+	
+	
 
 	
 	
@@ -95,6 +111,39 @@ public class JobApplication{
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 }

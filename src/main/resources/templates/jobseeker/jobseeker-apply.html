@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Apply for Job</title>
+	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+	<link rel="stylesheet" th:href="@{/css/form.css}">
+
+</head>
+<body>
+	
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+	    <p th:text="${errorMessage}"></p>
+	</div>
+	
+    <div class="maincontainer">
+        <h1>Apply for Job</h1>
+        <form th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}
+		(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}"
+			 method="post" enctype="multipart/form-data" th:object="${jobSeekerDTO}" class="form-register">
+            <!-- Job Seeker Details -->
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="fullName" th:value="${jobSeekerDTO.fullName}" required />
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" th:value="${jobSeekerDTO.email}" required />
+            </div>
+            <div class="form-group">
+                <label for="contactNumber">Contact Number:</label>
+                <input type="text" id="contactNumber" name="number" th:value="${jobSeekerDTO.number}" required />
+            </div>
+			
+            <!-- File Uploads -->
+            <div class="form-group">
+                <label for="cv">Upload CV (PDF only):</label>
+                <input type="file" id="cv" name="file" accept=".pdf"  onchange="validateFileSize(this)"/>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Profile Image (PNG/JPG only):</label>
+                <input type="file" id="image" name="imagefile" accept=".png, .jpg, .jpeg, .webp" onchange="validateFileSize(this)" />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="buttonSmall">Apply</button>
+            </div>
+        </form>
+    </div>
+	
+	<script>
+	    function validateFileSize(input) {
+	        const file = input.files[0];
+	        if (file && file.size > 1 * 1024 * 1024) { // 1 MB limit
+	            alert("File size exceeds the maximum allowed size of 1 MB.");
+	            input.value = ""; // Clear the input
+	        }
+		}
+	</script>
+
+</body>
+</html>

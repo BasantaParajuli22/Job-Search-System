@@ -66,14 +66,11 @@
 			<p th:if="${available == false}" th:text="'Deadline is Over'">	</p>
 			
    		 	<div th:if="${available == true && canApply == true && appliedjobPost == null }">
+				
 				<form th:if="${jobSeeker != null}"
 					th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
-					method="post"  enctype="multipart/form-data" class="form1">
-			    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-					<!-- File input for CV -->
-					   <label for="cv">Upload CV:</label>
-					   <input type="hidden" name="jobId" value="${jobPost.jobId}">
-					   <input type="file" id="cv" name="cv" accept=".pdf" >
+					method="get"  class="form1">
+
 			    	<button type="submit" class="button-green">Apply</button>
 				</form>
 			</div>

@@ -29,10 +29,10 @@
             <a th:href="@{/employer/register}">Register as Employer</a>
         </li>
 
-        <!-- Notification Message Link only if authenticated -->
-        <li sec:authorize="isAuthenticated()">
+        <!-- Notification Message Link only if   has any role -->
+        <li sec:authorize="hasAnyRole('ROLE_JOBSEEKER', 'ROLE_EMPLOYER')">
             <a th:href="@{/notification/all}">Notification</a>
-            <span th:if="${notificationCount > 0}" th:text="${notificationCount}"></span>
+            <span th:if="${notificationCount > 0}" th:text="${notificationCount}" style="color: red;"></span>
         </li>
 
         <!-- Login/Logout -->

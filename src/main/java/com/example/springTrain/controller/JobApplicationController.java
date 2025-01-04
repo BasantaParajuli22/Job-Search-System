@@ -1,5 +1,6 @@
 package com.example.springTrain.controller;
 
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
@@ -77,6 +79,9 @@ public class JobApplicationController {
         	logger.warn("Couldnot find the jobApplications");
 			return "redirect:/view/jobposts";
 		}
+		JobPosting jobPost = jobPostingService.getByJobId(jobId);
+		
+		model.addAttribute("jobPost",jobPost);	        
 		model.addAttribute("allJobApplications",allJobApplications);	        
 		return "application-all";
 	}
@@ -92,6 +97,10 @@ public class JobApplicationController {
 	        String contentType = "application/octet-stream";
 	        if (fileName.endsWith(".pdf")) {
 	            contentType = "application/pdf";
+	        }else if(fileName.endsWith(".jpg") || fileName.endsWith(".jpeg") || fileName.endsWith(".png") || fileName.endsWith(".webp")){
+	        	//lastIndexOf includes . so add +1 
+	        	//now file.jpg will be // jpg
+	        	contentType = "image/" + fileName.substring(fileName.lastIndexOf('.') + 1);
 	        }
 
 	        return ResponseEntity.ok()
@@ -159,7 +168,33 @@ public class JobApplicationController {
 		return "jobseeker/jobseeker-applications";
 	}
 
-	
+	//to apply for jobposts 
+	@GetMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}")
+	public String showApplyForJobPosts(
+	    @PathVariable("jobId") Integer jobId,
+	    @PathVariable("jobSeekerId") Integer jobSeekerId,
+	    @ModelAttribute("jobSeeker") JobSeeker jobSeeker,
+	    @ModelAttribute("jobSeekerDTO") JobSeekerDTO jobSeekerDTO,
+	    Model model) {
+
+	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
+
+	    model.addAttribute("jobPost", jobPost);
+	    model.addAttribute("jobSeeker", jobSeeker);
+
+	    if (jobSeekerDTO == null || jobSeekerDTO.getFullName() == null) {
+	        // Populate DTO only if not passed from flash attributes
+	        jobSeekerDTO = new JobSeekerDTO();
+	        jobSeekerDTO.setFullName(jobSeeker.getFullName());
+	        jobSeekerDTO.setEmail(jobSeeker.getUsers().getEmail());
+	        jobSeekerDTO.setNumber(jobSeeker.getNumber());
+	    }
+
+	    model.addAttribute("jobSeekerDTO", jobSeekerDTO);
+
+	    return "jobseeker/jobseeker-apply";
+	}
+
 	//to apply for jobposts of employer
 	//jobposts id required
 	//jobseekerId required
@@ -169,44 +204,50 @@ public class JobApplicationController {
 					@PathVariable("jobSeekerId") Integer jobSeekerId,
 					@PathVariable("jobId") Integer jobId,
 					@PathVariable("employerId") Integer employerId,
-					@RequestParam("cv")MultipartFile file,
+					@ModelAttribute("jobseekerDTO") JobSeekerDTO jobseekerDTO,
 					@ModelAttribute("jobSeeker") JobSeeker jobSeeker,
+					@RequestParam("file")MultipartFile file,
+					@RequestParam("imagefile")MultipartFile imagefile,
 					RedirectAttributes redirectAttributes) {
 	     
-    	System.out.println("more than 2 mb or not");
-
 		// Validate file type
-	    String contentType = file.getContentType();
-	    if (contentType == null || !contentType.equals("application/pdf")) {
+	    String filecontentType = file.getContentType();
+	    String imageContentType = imagefile.getContentType();
+
+	    if (filecontentType == null || !filecontentType.equals("application/pdf")) {
 	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid file type. Please upload a valid PDF.");
-	    	return "redirect:/view/jobposts/details/" +jobId;
+	    	return "redirect:/applications/applyBy/"+ jobSeekerId + "/to/"+jobId+"/"+ employerId ;
 	    }
-	    // Check file size (2 MB limit)
-	    if (file.getSize() > 2 * 1024 * 1024) {  // 2 MB in bytes
-	    	System.out.println("more than 2 mb");
-	        redirectAttributes.addFlashAttribute("errorMessage", "File size exceeds the maximum allowed size of 2 MB.");
-	        return "redirect:/view/jobposts/details/" + jobId;
+	    if (imageContentType == null ||
+	    		( !imageContentType.equals("image/png") &&
+	    		  !imageContentType.equals("image/jpg") &&
+	    		  !imageContentType.equals("image/jpeg")&&
+	    		  !imageContentType.equals("image/webp"))
+	    	) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid image type. Please upload a valid .jpg .png .jpeg .webp");
+	    	return "redirect:/applications/applyBy/"+ jobSeekerId + "/to/"+jobId+"/"+ employerId ;
 	    }
-	    
+	      
 		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 		JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndJobSekerId(jobId,jobSeekerId); 
 		Employer employer = employerService.findByEmployerId(employerId); 
 		Users user = userService.findByEmployer_employerId(employerId); 
-		
-		
+			
 		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
 			logger.warn("Not same jobSeeker so cannot apply");
 			return "redirect:/view/jobposts";
 		}
-         if(employer == null ||jobPosting == null || user == null || jobApplication != null) {
+         if(employer == null ||jobPosting == null || user == null || jobApplication != null || jobseekerDTO == null) {
  			logger.warn("Unable  to apply to jobPosts ");
             return "redirect:/view/jobposts";
          }      
         	 
-        String filename = jobApplicationService.saveFile(file);
-        jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,filename);
+        String fileName = jobApplicationService.saveFile(file);
+        String imageFileName = jobApplicationService.saveFile(imagefile);
+
+        jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,fileName,imageFileName,jobseekerDTO);
         
         // Send a notification to the employer
         String message = "You have a new application for the job: " + jobPosting.getTitle();
@@ -214,7 +255,7 @@ public class JobApplicationController {
         
         redirectAttributes.addFlashAttribute("successMessage", "Your application has been submitted successfully!");
 
-    	return "redirect:/view/jobposts/details/" +jobId;
+    	return "redirect:/view/jobposts/details/" + jobId;
 	}
 	
 	

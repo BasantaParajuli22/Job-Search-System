@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Validate Phone Number
         const number = document.getElementById("number").value.trim();
-        const phonePattern = /^[0-9]{10,15}$/; 
+        const phonePattern = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits
         if (!number) {
             isValid = false;
             addErrorMessage("number", "Phone Number is required.");

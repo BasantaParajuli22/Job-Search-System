@@ -24,7 +24,7 @@
 			<div class="form-group"> 
 				<!-- cannot change username once created  -->
 				<label for="username">Name:</label>
-				<input type="text" id="username" th:field="*{fullName}" placeholder="Enter your username">
+				<input type="text" id="username" th:field="*{fullName}" placeholder="Enter your username" maxlength="50">
 				
 				<span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
@@ -36,7 +36,7 @@
 			<div class="form-group">
 				<!-- Email input -->
 				<label for="email">Email:</label>
-				<input type="text" id="email" th:field="*{email}" placeholder="example@example.com">
+				<input type="text" id="email" th:field="*{email}" placeholder="example@example.com" maxlength="250">
 				<span id="emailError" class="error"></span>
 				<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></span>
 			    <p th:if="${error?.email != null}">
@@ -46,13 +46,13 @@
 
             <div class="form-group">
                 <label for="number">Number:</label>
-                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:field="*{number}">
+                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:field="*{number}" maxlength="20">
                 <span id="numberError" class="error"></span>
             </div>
 
 			<div  class="form-group">
 				    <label for="skills">Skills:</label>
-				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}">
+				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}" maxlength="250">
 				    <span id="skillsError" class="error"></span>
 			</div>	
 				

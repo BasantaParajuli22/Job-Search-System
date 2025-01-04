@@ -23,7 +23,9 @@
             <h2 th:text="'Searching for: ' + ${keyword}"></h2>
         </div>
 
-        <p th:if="${filterName != null}" th:text="'Showing JobPosts of: ' + ${filterName}"></p>
+        <p th:if="${filterName != null}">
+		 Showing JobPosts of Category: <b th:text="${filterName}"></b>
+	 	</p>
         <p th:if="${totalPosts != null}" th:text="'Total Posts: ' + ${totalPosts}"></p>
 
         <!-- Job Posts Section -->
@@ -80,7 +82,7 @@
                                 <div th:if="${loggedInEmployer != null and loggedInEmployer.employerId == jobPost.employer.employerId}">
                                     <form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${jobPost.jobId})}" method="post">
                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                        <button type="submit" class="buttonSmall">Delete</button>
+                                        <button type="submit" class="btn-danger">Delete</button>
                                     </form>
                                 </div>
                             </div>

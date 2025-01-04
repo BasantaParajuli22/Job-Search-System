@@ -17,6 +17,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
@@ -91,7 +92,8 @@ public class JobApplicationService {
     }
 	
 	
-	public void applyForJobPost(Integer jobId, Integer employerId, Integer jobSeekerId,String filename) {
+	public void applyForJobPost(Integer jobId, Integer employerId, Integer jobSeekerId,
+			String filename,String imageFileName, JobSeekerDTO jobseekerDTO) {
 		
 		JobApplication jobApplication = new JobApplication();		
 		
@@ -103,7 +105,13 @@ public class JobApplicationService {
 		jobApplication.setJobPosting(jobPosting);
 		jobApplication.setEmployer(employer);
 		jobApplication.setApplicationStatus("not-viewed");
+		
 		jobApplication.setFileName(filename);
+		jobApplication.setImageName(imageFileName);
+
+		jobApplication.setEmail(jobseekerDTO.getEmail());
+		jobApplication.setNumber(jobseekerDTO.getNumber());
+		jobApplication.setFullName(jobseekerDTO.getFullName());
 		//saving jobApplication to repository
 		jobApplicationRepository.save(jobApplication);
 
@@ -137,12 +145,12 @@ public class JobApplicationService {
 				String message ="no deadline found";
 				dates.add(message);	
 			}else if(deadline.isBefore(LocalDate.now() )) {
-				String message ="-----Time is up";
+				String message ="Time is up";
 				dates.add(message);				
 			}
 			else if(deadline.isAfter(LocalDate.now() )){
 				Long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), deadline);
-				String totaldays = "-----" + daysLeft +" days left";
+				String totaldays = daysLeft +" days";
 				dates.add(totaldays);
 			}
 		}		

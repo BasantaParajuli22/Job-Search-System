@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.enums.CityLocation;
 import com.example.springTrain.enums.ExperienceLevel;
@@ -195,11 +194,16 @@ public class JobPostingService {
 
 	public Page<JobPosting> findAllJobPostingByKeyword(String keyword,int page,int size) {
 		Pageable pageable = PageRequest.of(page, size);
-    	return jobPostingRepository.findByTitleContainingOrSalaryRangeContainingOrEmployer_CompanyNameContainingAndAvailable(keyword, keyword, keyword,true, pageable);
+		String key = keyword.toLowerCase();
+    	return jobPostingRepository.findByTitleContainingIgnoreCaseOrEmployer_CompanyNameContainingIgnoreCaseAndAvailable(key, key,true, pageable);
 	}
 	
 	public Integer countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {
 		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
+	}
+	
+	public int countJobPostingOfSpecificJobCategoryAndAvailable(JobCategory jobCategory) {
+		return jobPostingRepository.countJobPostingByJobCategoryAndAvailable(jobCategory,true);
 	}
 	
 	//to count jobPostings
@@ -208,7 +212,7 @@ public class JobPostingService {
 		ArrayList<Integer> countList = new ArrayList<>();
 
 		for (JobCategory ty : types) {
-			int count =  jobPostingRepository.countJobPostingByJobCategory(ty);
+			int count =  jobPostingRepository.countJobPostingByJobCategoryAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
@@ -221,7 +225,7 @@ public class JobPostingService {
 		ArrayList<Integer> countList = new ArrayList<>();
 		
 		for (JobType ty : types) {
-			int count =  jobPostingRepository.countJobPostingByJobType(ty);
+			int count =  jobPostingRepository.countJobPostingByJobTypeAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
@@ -233,7 +237,7 @@ public class JobPostingService {
 		ArrayList<Integer> countList = new ArrayList<>();
 		
 		for (ExperienceLevel ty : types) {
-			int count =  jobPostingRepository.countJobPostingByExperienceLevel(ty);
+			int count =  jobPostingRepository.countJobPostingByExperienceLevelAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
@@ -244,7 +248,7 @@ public class JobPostingService {
 		ArrayList<Integer> countList = new ArrayList<>();
 		
 		for (CityLocation ty : types) {
-			int count =  jobPostingRepository.countJobPostingByCityLocation(ty);
+			int count =  jobPostingRepository.countJobPostingByCityLocationAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;

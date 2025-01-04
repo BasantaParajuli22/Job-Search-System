@@ -24,6 +24,7 @@ public class SearchController {
 
 	@Autowired
 	private JobPostingService jobPostingService;
+	
 	//Search by givng input can be 
 	//title or
 	//companyName
@@ -48,12 +49,12 @@ public class SearchController {
 			 Model model) { 
 
         Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(jobCategory,page, size);
-        Integer totalPosts = jobPostingService.countJobPostingOfSpecificJobCategory(jobCategory);
+        int totalPosts = jobPostingService.countJobPostingOfSpecificJobCategoryAndAvailable(jobCategory);
        
         model.addAttribute("jobPosts", jobPostingPage);        
-        //to display total posts counts
-        model.addAttribute("totalPosts",totalPosts);
+        model.addAttribute("totalPosts",totalPosts);//to display total posts counts
 	    model.addAttribute("filterName",jobCategory);//jobPosts category/type/location/Explvl/location
+	    
 	    return "jobpost";
 	}
 	
@@ -61,7 +62,7 @@ public class SearchController {
 	@GetMapping("/search/byjobtype/{jobType}")
 	 public String searchByJobType(@PathVariable("jobType") JobType jobType, 
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
-	            @RequestParam(name ="size", defaultValue = "9") int size, 
+	         @RequestParam(name ="size", defaultValue = "9") int size, 
 			 Model model) { 
 	    
         Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(jobType,page, size);
@@ -98,13 +99,6 @@ public class SearchController {
 	    return "jobpost";
 	}
 	
-	
-//	//Search by givng input can be title companyName
-//	@GetMapping("/search/filter")
-//	public String getSearchFilter(Model model) {
-//		return "search";
-//	}
-	
 
-
+	
 }

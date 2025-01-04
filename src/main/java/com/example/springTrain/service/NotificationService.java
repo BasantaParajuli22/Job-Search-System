@@ -3,6 +3,7 @@ package com.example.springTrain.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.springTrain.entity.Employer;
@@ -10,6 +11,7 @@ import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.NotificationRepository;
+
 
 @Service
 public class NotificationService {
@@ -42,9 +44,10 @@ public class NotificationService {
 	public NotificationMessage getNotificationById(Integer notificationId) {
 		return notificationRepository.findByNotificationId(notificationId);
 	}
-	//getting all notifications by Users 
+	//getting all notifications by UserId 
 	public List<NotificationMessage> getAllNotificationsByUserId(Integer userId){	
-		return notificationRepository.findAllByUsers_UserId(userId);
+		return notificationRepository.findAllByUsers_UserId(userId,
+				Sort.by(Sort.Direction.DESC,"messageAt"));
 	}
 	
 	//delete notification individual 

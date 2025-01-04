@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,9 +25,18 @@ public class JobSeeker {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer jobSeekerId;
 
+	@Column(length = 50)
 	private String fullName;
+	
+	@Column(length = 20)
 	private String number;	
+	
+	@Column(length = 250)
 	private String skills;
+	
+	@Column(length = 250)
+	private String description;
+	
 //	private String resume;
 
 	@CreationTimestamp

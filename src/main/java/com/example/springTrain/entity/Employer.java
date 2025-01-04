@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +24,17 @@ public class Employer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer employerId;
 	
-	private String number;
+	@Column(length = 50)
 	private String companyName;
-	private String companyDescription;
+	
+	@Column(length = 260)
 	private String address;
+	
+	@Column(length = 1020)
+	private String companyDescription;
+	
+	@Column(length = 20)
+	private String number;
 	
 	@CreationTimestamp
 	private LocalDate createdAt;

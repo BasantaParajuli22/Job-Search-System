@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function validateContactNumber(number) {
-        const numberRegex = /^[0-9]{10,15}$/;
+        const numberRegex = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits
         return numberRegex.test(number);
     }
 

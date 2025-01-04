@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.service.EmployerService;
-import com.example.springTrain.service.JobSeekerService;
 import com.example.springTrain.service.UsersService;
 import com.example.springTrain.validation.ValidationError;
 
@@ -31,9 +29,6 @@ public class RegisterController {
 
 	@Autowired
 	private EmployerService employerService;
-
-	@Autowired
-	private JobSeekerService jobSeekerService;
 
 	@GetMapping("/home")
 	public String getHomepage() {
