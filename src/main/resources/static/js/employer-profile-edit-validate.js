@@ -1,59 +1,103 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("employer-profile-form");
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('employer-profile-form');
+    const companyNameInput = document.getElementById('companyName');
+    const companyDescriptionInput = document.getElementById('companyDescription');
+    const addressInput = document.getElementById('address');
+    const numberInput = document.getElementById('number');
+    const websiteInput = document.getElementById('website');
 
-    form.addEventListener("submit", function (event) {
+    const companyNameError = document.getElementById('companyName-error');
+    const companyDescriptionError = document.getElementById('companyDescription-error');
+    const addressError = document.getElementById('address-error');
+    const numberError = document.getElementById('number-error');
+    const websiteError = document.getElementById('website-error');
+    
+
+    form.addEventListener('submit', function (event) {
         let isValid = true;
 
-        // Clear previous error messages
-        document.querySelectorAll(".error-message").forEach(el => el.textContent = "");
+        // Reset error messages
+        resetErrorMessages();
 
-        // Validate Company Name
-        const companyName = document.getElementById("companyName").value.trim();
-        if (!companyName) {
-            isValid = false;
-            addErrorMessage("companyName", "Company Name is required.");
+
+        //Validate company name
+        if (companyNameInput.value.trim() !== '') {
+            if (companyNameInput.value.length > 50) {
+                companyNameError.textContent = 'Company name must be less than 50 characters';
+                isValid = false;
+            } else if(!isValidName(companyNameInput.value)){
+                companyNameError.textContent = "Company name must not contain special character and number";
+                 isValid = false;
+             }
         }
 
-        // Validate Company Description
-        const companyDescription = document.getElementById("companyDescription").value.trim();
-        if (!companyDescription) {
-            isValid = false;
-            addErrorMessage("companyDescription", "Company Description is required.");
+        // Validate Description
+         if (companyDescriptionInput.value.trim() !== '') {
+            if (companyDescriptionInput.value.length > 900) {
+                companyDescriptionError.textContent = 'Description must be less than 900 characters';
+                isValid = false;
+            }
         }
 
-        // Validate Address
-        const address = document.getElementById("address").value.trim();
-        if (!address) {
-            isValid = false;
-            addErrorMessage("address", "Address is required.");
+
+         // Validate address
+        if (addressInput.value.trim() !== '') {
+            if (addressInput.value.length > 240) {
+                addressError.textContent = 'Address must be less than 240 characters';
+                isValid = false;
+            }
         }
 
-        // Validate Contact Number
-        const number = document.getElementById("number").value.trim();
-        const phonePattern = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits //
-        if (!number) {
-            isValid = false;
-            addErrorMessage("number", "Contact Number is required.");
-        } else if (!phonePattern.test(number)) {
-            isValid = false;
-            addErrorMessage("number", "Please enter a valid phone number (10-15 digits).");
+
+        // Validate number
+        if (numberInput.value.trim() !== '') {
+             if(!isValidNumber(numberInput.value)){
+                numberError.textContent = "Number must contains only numbers and should be 10 digit";
+                isValid = false;
+            }else if (numberInput.value.length > 10) {
+                numberError.textContent = 'Number must be 10 digit';
+                isValid = false;
+            }
         }
 
-        // Prevent form submission if validation fails
+        // Validate Website
+          if(websiteInput.value.trim() !== ''){
+              if (!isValidWebsite(websiteInput.value)) {
+                websiteError.textContent = 'Please enter a valid website URL';
+                isValid = false;
+            } else if(websiteInput.value.length > 90){
+                websiteError.textContent = "Website address cannot be greater than 90 characters"
+                isValid = false;
+            }
+          }
+
         if (!isValid) {
-            event.preventDefault();
+            event.preventDefault(); // Prevent form submission
         }
     });
 
-    // Function to add error message
-    function addErrorMessage(inputId, message) {
-        const inputElement = document.getElementById(inputId);
-        let errorElement = inputElement.nextElementSibling;
-        if (!errorElement || !errorElement.classList.contains("error-message")) {
-            errorElement = document.createElement("span");
-            errorElement.classList.add("error-message");
-            inputElement.parentNode.insertBefore(errorElement, inputElement.nextSibling);
+     function isValidName(name) {
+         return /^[a-zA-Z\s]*$/.test(name);
+     }
+
+     function isValidNumber(number) {
+           return /^\d{10}$/.test(number);
+     }
+
+     function isValidWebsite(website) {
+        try {
+            new URL(website);
+            return true;
+        } catch (e) {
+            return false;
         }
-        errorElement.textContent = message;
+    }
+
+    function resetErrorMessages() {
+        companyNameError.textContent = '';
+        companyDescriptionError.textContent = '';
+        addressError.textContent = '';
+        numberError.textContent = '';
+        websiteError.textContent = '';
     }
 });

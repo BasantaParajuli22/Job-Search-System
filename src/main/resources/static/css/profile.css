@@ -1,19 +1,105 @@
-/* Profile Container */
-.profile-container {
+/* Existing CSS code here */
+.main-content {
+    display: flex;
+    flex-direction: column; /* Make the main content a column layout */
+    align-items: center; /* Center items horizontally */
     padding: 20px;
-    background-color: #f9f9f9;
+}
+
+.profile-container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile Information */
-.profile-info {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.profile-section {
     margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 4px;
 }
+
+.profile-section h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.info-grid > div {
+    display: flex;
+    align-items: center;
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.info-grid strong,
+.skills-tags strong,
+.profile-box strong,
+.documents-grid strong {
+    margin-right: 5px;
+    min-width: 100px;
+    display: inline-block;
+}
+
+.profile-box {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+}
+.image-container{
+    position: relative;
+    display: inline-block;
+}
+
+.profile-picture {
+    max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+.resume-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.resume-link:hover {
+    background-color: #0056b3;
+}
+
+.skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+.skill-tag {
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
 .link-group {
     display: flex;
     gap: 15px;
@@ -22,7 +108,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     justify-content: left;
-    align-items: left;
+    flex-wrap: wrap;
 }
 
 .link-group a {
@@ -33,6 +119,7 @@
     padding: 10px 15px;
     border: 1px solid transparent;
     border-radius: 4px;
+    white-space: nowrap;
 }
 
 .link-group a:hover {
@@ -41,4 +128,52 @@
     border-color: #0056b3;
 }
 
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
 
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+     max-width: 500px;
+    position: relative;
+    border-radius: 8px;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.change-photo-btn, .change-resume-btn{
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+.change-photo-btn:hover, .change-resume-btn:hover{
+   background-color: #0056b3;
+}

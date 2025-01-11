@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
@@ -44,14 +45,16 @@ public class JobPostingController {
 	//to create a jobposting 
 	//user must be authenticated and should be employer
 	@GetMapping("/new/create")
-	public String getJobPostForm(Model model,
-			@ModelAttribute("employer") Employer employer) {
+	public String getJobPostForm(Model model) {
 	     	 
-         if(employer == null) {
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+		Employer loggedInEmployer = employerService.findByEmployerId(loggedInEmployerId);
+
+         if(loggedInEmployer == null) {
         	 logger.warn("User not available to create jobPosts");
             return "login";
          }
-        model.addAttribute("employer", employer);
+        model.addAttribute("employer", loggedInEmployer);
         model.addAttribute("jobPosting", new JobPosting());  // Pass a new JobPosting object
         return "jobpostform";
 	}
@@ -60,17 +63,18 @@ public class JobPostingController {
 	//employerId is set in joposting 
 	//and jobposting is created
 	@PostMapping("/new/create")
-	public String createJobPostForm(@ModelAttribute JobPosting jobPosting,
-									@RequestParam("employerId") Integer employerId,
-									@ModelAttribute("employer") Employer employer) {
+	public String createJobPostForm(
+			@ModelAttribute JobPosting jobPosting,
+			@RequestParam("employerId") Long employerId,Model model,
+			RedirectAttributes redirectAttributes) {
 		
-	    if (employer == null) {
-       	 logger.warn("User not suitable for posting jobposting");
-        	return "login";
-	    }
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+		Employer loggedInEmployer = employerService.findByEmployerId(loggedInEmployerId);
 
-		jobPostingService.createJobPosting(jobPosting,employer);//jobposting created
-		return "redirect:/view/jobposts";
+		jobPostingService.createJobPosting(jobPosting,loggedInEmployer);//jobposting created
+		
+        redirectAttributes.addFlashAttribute("successMessage", "Your Job Post has been edited successfully!");
+		return "redirect:/employers/profile";
 	}
 	
 	
@@ -78,7 +82,7 @@ public class JobPostingController {
 	//by ALL
 	//all jobposting can be deleted by all
     @PostMapping("/{id}/delete")
-    public String deleteJobPostingByAdmin(@PathVariable("id") Integer id) {
+    public String deleteJobPostingByAdmin(@PathVariable("id") Long id) {
     	
     	// Fetch the job posting (to ensure it exists)
         JobPosting jobPosting = jobPostingService.getJobPostingById(id);
@@ -94,16 +98,13 @@ public class JobPostingController {
     //employerid and jobId
     //by an employer only
     @PostMapping("/{jobId}/delete/byemployer")
-    public String deleteJobPostingByEmployerId(@PathVariable("jobId") Integer jobId,
-    		@ModelAttribute("employer") Employer employer) {
+    public String deleteJobPostingByEmployerId(@PathVariable("jobId") Long jobId,
+    		Model model,RedirectAttributes redirectAttributes
+    		) {
     	    	
-       if(employer == null) {
-          	 logger.warn("User not suitable for deleting jobposting");
-        	return "login";
-        }
-        
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
         // Fetch the logged-in employerId and job posting by jobId 
-        JobPosting jobPosting = jobPostingService.getJobPostingByEmployerIdAndJobId(employer.getEmployerId(), jobId);
+        JobPosting jobPosting = jobPostingService.getJobPostingByEmployerIdAndJobId(loggedInEmployerId, jobId);
         if (jobPosting == null) {
          	 logger.warn("Id didnot match whether the employer or jobpost");
         	return "login";
@@ -111,6 +112,8 @@ public class JobPostingController {
         
         // Otherwise, proceed with deletion
         jobPostingService.deleteJobPosting(jobPosting);
+        redirectAttributes.addFlashAttribute("successMessage", "Your Job Post has been deleted successfully!");
+
         return "redirect:/employers/profile";
     	
     }
@@ -119,23 +122,26 @@ public class JobPostingController {
     //edit job posts 
 	@GetMapping("/{jobId}/edit/by/{employerId}")
 	public String getEditForm(
-			@PathVariable("jobId") Integer jobId,
-			@PathVariable("employerId") Integer employerId,
-			@ModelAttribute("employer") Employer employer,
+			@PathVariable("jobId") Long jobId,
+			@PathVariable("employerId") Long employerId,
 			Model model) {
  		
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+
     	//checking if Form username and jobid can edit the post
     	JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
-    	Employer submittedemployer = employerService.findByEmployerId(employer.getEmployerId()); 
-     
-       if( jobPost == null || submittedemployer == null || employer == null) {
-       	 logger.warn("Employer or jobid cannot access to edit jobPost");
+    	Employer submittedemployer = employerService.findByEmployerId(employerId); 
+    	Employer loggedInEmployer = employerService.findByEmployerId(loggedInEmployerId); 
+
+       if( jobPost == null || submittedemployer == null) {
+       	 logger.warn("JobPost or submitted employer are null to edit post");
     	   return"login";
        }
-       if (!submittedemployer.equals(employer)) {
-    	   logger.warn("Submitted and loggedin employer doesnot match");
-    	   return"login";
-       }
+       if(!submittedemployer.equals(loggedInEmployer)) {
+         	 logger.warn("submitted employer doesnot match to edit post");
+      	   return"login";
+         }
+       
 		model.addAttribute("employer", submittedemployer);  
 		model.addAttribute("jobPosting", jobPost);
 		
@@ -144,18 +150,19 @@ public class JobPostingController {
 	
 	
 	@PostMapping("/{jobId}/edit/by/{employerId}")
-	public String postEditForm(@PathVariable("jobId") Integer jobId,
+	public String postEditForm(@PathVariable("jobId") Long jobId,
 			@ModelAttribute("jobPosting") JobPosting updatedJobPosting,
-			@ModelAttribute("employer") Employer employer,
-			Model model) {
-	    
+			Model model,RedirectAttributes redirectAttributes) {
+		
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+
 	    JobPosting existingJobPosting = jobPostingService.getJobPostingById(jobId);
 	    if (existingJobPosting == null) {
 	    	logger.warn("Job post not found for jobId: \" + jobId");
 	        return "redirect:/view/jobposts";  
 	    }
 
-	    List<JobPosting> loggedInEmployerPosts = jobPostingService.findByEmployerCompanyName(employer.getCompanyName());
+	    List<JobPosting> loggedInEmployerPosts = jobPostingService.findByEmployerId(loggedInEmployerId);
 	    boolean canEdit = loggedInEmployerPosts.stream().anyMatch(post -> post.getJobId() == jobId);
 
 	    if (!canEdit) {
@@ -179,6 +186,7 @@ public class JobPostingController {
 	    // Save the updated job post
 	    jobPostingService.updateJobPosting(jobId, existingJobPosting);
 
+        redirectAttributes.addFlashAttribute("successMessage", "Your Job Post has been edited successfully!");
 	    return "redirect:/employers/profile";
 	}	
 	
@@ -186,9 +194,9 @@ public class JobPostingController {
     //using employerid and jobId
 	//send notification message to employer 
     @PostMapping("/{jobId}/delete/byadmin/of/employerId/{employerId}")
-    public String deleteJobPostingByAdmin(@PathVariable("jobId") Integer jobId,
-    		@PathVariable("employerId") Integer employerId,
-    		 @RequestParam("message") String message) {
+    public String deleteJobPostingByAdmin(@PathVariable("jobId") Long jobId,
+    		@PathVariable("employerId") Long employerId,
+    		@RequestParam("message") String message) {
     	    	
         String email = UserAuthorization.getLoggedInUserEmail();
         if (email != null) {

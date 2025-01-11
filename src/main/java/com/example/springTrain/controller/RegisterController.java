@@ -30,12 +30,6 @@ public class RegisterController {
 	@Autowired
 	private EmployerService employerService;
 
-	@GetMapping("/home")
-	public String getHomepage() {
-		return "home";
-	}
-
-	
 	//Login page (Get method only)
 	//rest is handled by Spring security
 	@GetMapping("/login")
@@ -66,7 +60,7 @@ public class RegisterController {
 	      validationError.clear();
 
 	      // Check if email is unique in both JobSeeker and Employer tables
-	      Users existingJobEmail = usersService.findByEmail(jobSeekerDTO.getEmail());
+	      Users existingJobEmail = usersService.findByEmail(jobSeekerDTO.getEmail().toLowerCase());
 	      if (existingJobEmail != null) {
 	          validationError.setEmail("Sorry, this email is already taken.");
 	      }
@@ -96,13 +90,13 @@ public class RegisterController {
 	  	validationError.clear();
 	  	
 	  	//companyName should be unique in employer table
-	  	Employer existinguser = employerService.findByCompanyName(employerDTO.getCompanyName());
+	  	Employer existinguser = employerService.findByCompanyName(employerDTO.getCompanyName().toLowerCase());
 	  	if(existinguser != null) {
-	  		validationError.setUsername("Sorry username is already taken ");
-	  		System.out.println("Sorry username is already taken " + employerDTO.getCompanyName()); // Debugging	
+	  		validationError.setCompanyName("Please insert a unique companyName");
 	  	}
 	  	//email should be unique in employer table
-	  	Users existingEmployerEmail = usersService.findByEmail(employerDTO.getEmail());
+	  	//String email = employerDTO.getEmail().toLowerCase();
+	  	Users existingEmployerEmail = usersService.findByEmail(employerDTO.getEmail().toLowerCase());
 	  	if(existingEmployerEmail != null) {
 	  		validationError.setEmail("Sorry email is already taken ");
 	  	}		
@@ -121,7 +115,7 @@ public class RegisterController {
 	  	
 	  
 	  @PostMapping("/admin/block-user/{userId}")
-	  public String blockUserByAdmin(@PathVariable("userId") Integer userId) {
+	  public String blockUserByAdmin(@PathVariable("userId") Long userId) {
 		  Users user = usersService.findByUserId(userId);
 		  if(user !=  null) {
 			  usersService.blockUser(user);
@@ -130,7 +124,7 @@ public class RegisterController {
 	  }
 	  
 	  @PostMapping("/admin/un-block-user/{userId}")
-	  public String unBlockUserByAdmin(@PathVariable("userId") Integer userId) {
+	  public String unBlockUserByAdmin(@PathVariable("userId") Long userId) {
 		  Users user = usersService.findByUserId(userId);
 		  if(user !=  null) {
 			  usersService.unBlockUser(user);

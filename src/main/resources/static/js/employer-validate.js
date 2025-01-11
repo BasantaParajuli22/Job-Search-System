@@ -22,30 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
             isValid = false;
         }
 
-        // Validate Contact Number
-        const contactNumber = document.getElementById('number').value.trim();
-        if (contactNumber === '') {
-            showError('numberError', 'Contact Number is required.');
-            isValid = false;
-        } else if (!validateContactNumber(contactNumber)) {
-            showError('numberError', 'Contact Number must be 10 to 15  digits long.');
-            isValid = false;
-        }
-
-        // Validate Address
-        const address = document.getElementById('address').value.trim();
-        if (address === '') {
-            showError('addressError', 'Address is required.');
-            isValid = false;
-        }
-
-        // Validate Company Description
-        const companyDescription = document.getElementById('companyDescription').value.trim();
-        if (companyDescription === '') {
-            showError('companyDescriptionError', 'Company Description is required.');
-            isValid = false;
-        }
-
         // Validate Password
         const password = document.getElementById('password').value.trim();
         if (password === '') {
@@ -83,11 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
-    }
-
-    function validateContactNumber(number) {
-        const numberRegex = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits
-        return numberRegex.test(number);
     }
 
     function showError(id, message) {

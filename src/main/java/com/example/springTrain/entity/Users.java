@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer userId;
+	private Long userId;
 		
 	private String password;
 	private String email;
@@ -52,10 +52,10 @@ public class Users {
 	@Enumerated(EnumType.STRING) 
 	private UserStatus userStatus;
 	
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 	public String getPassword() {

@@ -4,11 +4,22 @@
     <title>All Applications for Employer's Job Posts</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/dashboard.css}">
+	
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 		
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+	    <p th:text="${errorMessage}"></p>
+	</div>
+
+	<!-- Display Success Message -->
+	<div th:if="${successMessage}" class="alert alert-success">
+	    <p th:text="${successMessage}"></p>
+	</div>
+	
     <h1>Applications Submitted to 
 		<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
 									th:text="${jobPost.title}"></a>	
@@ -26,7 +37,6 @@
                     <th>email</th>
 					<th>number</th>
 					<th>View file</th>
-					<th>View image</th>
                     <th>Status</th>
 					<th>Actions</th>
 
@@ -46,18 +56,19 @@
 					    <a th:href="@{'tel:' + ${jobApplication.number}}"
 					       th:text="${jobApplication.number}">Call</a>
 					</td>
-					<td th:if="${jobApplication.fileName != null}">
-					    <a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">
+					<td th:if="${jobApplication.filePath != null}">
+					    <a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.filePath})}" target="_blank">
 					    View File </a>
 					</td>
+					<!-- 
 					<td th:if="${jobApplication.imageName != null}">
-						<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" target="_blank">
-							<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" 
+						<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.imagePath})}" target="_blank">
+							<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.imagePath})}" 
 									alt="Job Application Image" 
 									style="width: 90px; height: auto;" />
 						</a>
 					</td>
-					
+					-->
                     <td th:text="${jobApplication.applicationStatus}">Application Status</td>
                     <!-- Change or updating statuts of jobApplication -->
 					<td>

@@ -41,11 +41,11 @@ public class NotificationService {
 	}
 	
 	//getting  notification by notificationId 
-	public NotificationMessage getNotificationById(Integer notificationId) {
+	public NotificationMessage getNotificationById(Long notificationId) {
 		return notificationRepository.findByNotificationId(notificationId);
 	}
 	//getting all notifications by UserId 
-	public List<NotificationMessage> getAllNotificationsByUserId(Integer userId){	
+	public List<NotificationMessage> getAllNotificationsByUserId(Long userId){	
 		return notificationRepository.findAllByUsers_UserId(userId,
 				Sort.by(Sort.Direction.DESC,"messageAt"));
 	}

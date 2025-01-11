@@ -22,13 +22,24 @@
         </li>
 
         <!-- Register Links (only for non-authenticated users) -->
+		<li sec:authorize="!isAuthenticated()" class="dropdown" >
+		    <a href="#" class="dropbtn" onclick="toggleDropdown(event)">Register</a>
+		    <ul class="dropdown-content" id="registerDropdown" style="display: none;">
+		        <li><a th:href="@{/jobseeker/register}">Register as Job Seeker</a></li>
+		        <li><a th:href="@{/employer/register}">Register as Employer</a></li>
+		    </ul>
+		</li>
+
+
+		<!---
         <li sec:authorize="!isAuthenticated()">
             <a th:href="@{/jobseeker/register}">Register as Job Seeker</a>
         </li>
         <li sec:authorize="!isAuthenticated()">
             <a th:href="@{/employer/register}">Register as Employer</a>
         </li>
-
+		-->
+		
         <!-- Notification Message Link only if   has any role -->
         <li sec:authorize="hasAnyRole('ROLE_JOBSEEKER', 'ROLE_EMPLOYER')">
             <a th:href="@{/notification/all}">Notification</a>

@@ -6,7 +6,7 @@ import com.example.springTrain.enums.Usertype;
 
 public class JobSeekerDTO {
 	
-	private Integer userId;
+	private Long userId;
 	private String fullName;
     private String password;
     private String confirmPassword;
@@ -82,10 +82,10 @@ public class JobSeekerDTO {
 	public void setResume(String resume) {
 		this.resume = resume;
 	}
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

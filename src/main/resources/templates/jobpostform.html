@@ -6,13 +6,20 @@
     <title>Create/Edit Job Posting</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/form.css}">
-
-
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+	    <p th:text="${errorMessage}"></p>
+	</div>
+
+	<!-- Display Success Message -->
+	<div th:if="${successMessage}" class="alert alert-success">
+	    <p th:text="${successMessage}"></p>
+	</div>
 
 	<!-- Form Action URL - new or update based on jobId -->
 	<!-- Dynamic URL Construction (String Concatenation)-->
@@ -111,17 +118,14 @@
 		<div  class="form-group">
 		     <label for="category">Job Category:</label>
 			 <select id="jobCategory" name="jobCategory" th:field="*{jobCategory}">
-			        <option value="IT">IT</option>
-			        <option value="MARKETING">Marketing</option>
-			        <option value="SALES">Sales</option>
-					<option value="FINANCE">Finance</option>
+			        <option value="IT_AND_TECHNOLOGY">IT & Technology</option>
+			        <option value="MARKETING_AND_SALES">Marketing & Sales</option>
+			        <option value="FINANCE_AND_ACCOUNTING">Finance & accounting</option>
 					<option value="ENGINEERING">Engineering</option>
-					<option value="CUSTOMERSERVICE">Customer Service</option>
+					<option value="CUSTOMER_SERVICE">Customer Service</option>
 			 </select>
 		</div>
-		
-
-		
+			
 		<!-- Remote Job cannot set this nullable -->
 		<div  class="form-group" style="display: block;">
 		    <label for="isRemote">Is this job remote?if Yes</label>
@@ -131,6 +135,7 @@
 		<div >
 		    <input type="hidden" id="isRemote" name="available" th:field="*{available}" > 
 		</div>
+
         <!-- Submit and Cancel Buttons -->
         <div>
             <button type="submit" class="button-green">Save</button>

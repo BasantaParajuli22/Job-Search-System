@@ -4,7 +4,7 @@ import com.example.springTrain.enums.Usertype;
 
 public class EmployerDTO {
 	
-	private Integer userId;
+	private Long userId;
 	private String companyName;
 	private String companyDescription;
     private String password;//for getting data from form not to SAVE//
@@ -62,10 +62,10 @@ public class EmployerDTO {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-	public Integer getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 

@@ -2,33 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Job Seeker Profile</title>
-	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
 </head>
 <body>
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+    	<p th:text="${errorMessage}"></p>
+	</div>
+
+	<!-- Display Success Message -->
+	<div th:if="${successMessage}" class="alert alert-success">
+    	<p th:text="${successMessage}"></p>
+	</div>
+
+<div class="profile-form-container">
     <h1 id="profile-edit-heading">Edit Your Profile</h1>
-    
-	<form id="jobseeker-profile-form" th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}" method="post">
+
+	<form id="jobseeker-profile-form"
+	      th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}"
+	      method="post" th:object="${profileDTO}">
+
 	    <label for="fullName" class="profile-label">Full Name:</label>
-	    <input type="text" id="fullName" name="fullName" th:value="${profileDTO.fullName}" placeholder="Full Name" class="profile-input" maxlength="50">
-	    <span class="error-message"></span><br>
+	    <input type="text" id="fullName" th:field="*{fullName}" placeholder="Full Name"
+	           class="profile-input" maxlength="50">
+	    <span class="error-message" id="fullName-error"></span>
 
-	    <label for="skills" class="profile-label">Skills:</label>
-	    <input type="text" id="skills" name="skills" th:value="${profileDTO.skills}" placeholder="Skills" class="profile-input" maxlength="240">
-	    <span class="error-message"></span><br>
-
+		<select id="skills" name="skills" class="profile-input" multiple>
+		    <option th:each="skill : ${T(com.example.springTrain.enums.Skills).values()}"
+		            th:value="${skill}" th:text="${skill.toString()}"
+		            th:selected="${profileDTO.skills != null and profileDTO.skills.contains(skill)}"></option>
+		</select>
+		
 	    <label for="number" class="profile-label">Phone Number:</label>
-	    <input type="text" id="number" name="number" th:value="${profileDTO.number}" placeholder="Phone Number" class="profile-input" maxlength="20">
-	    <span class="error-message"></span><br>
+	    <input type="text" id="number" th:field="*{number}" placeholder="Phone Number"
+	           class="profile-input" maxlength="10">
+	    <span class="error-message" id="number-error"></span>
 
-	    <button type="submit" id="save-changes-btn">Save Changes</button>
+	     <label for="description" class="profile-label">Description:</label>
+		<textarea id="description"  th:field="*{description}" placeholder="Brief description about you..." class="profile-textarea"></textarea>
+		<span class="error-message" id="description-error"></span>
+
+		<!-- 
+	    <label for="profilePicture" class="profile-label">Profile Picture:</label>
+	    <input type="file" id="profilePicture" name="profilePicture" class="profile-input" accept="image/*">
+	    
+		<span class="error-message" id="profilePicture-error"></span> <br/>
+
+	    <label for="resume" class="profile-label">Resume:</label>
+	    <input type="file" id="resume" name="resume" class="profile-input" accept=".pdf,.doc,.docx">
+	    <span class="error-message" id="resume-error"></span><br/>
+		-->
+		
+		<button type="submit" id="save-changes-btn">Save Changes</button>
 	</form>
+</div>
 
-
-	<script th:src="@{/js/jobseeker-profile-edit-validate.js}"></script>
-
+<script th:src="@{/js/jobseeker-profile-edit-validate.js}"></script>
 </body>
 </html>

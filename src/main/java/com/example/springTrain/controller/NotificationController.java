@@ -39,7 +39,7 @@ public class NotificationController {
         	logger.warn("User not found to show notifiation");
         	return"login";
 		}
-		Integer userId = loggedInUser.getUserId();
+		Long userId = loggedInUser.getUserId();
 		List<NotificationMessage> allNotification = notificationService.getAllNotificationsByUserId(userId); 
 		model.addAttribute("allNotification",allNotification);
 		model.addAttribute("userId",userId);
@@ -49,7 +49,7 @@ public class NotificationController {
 	//change its notification status to read individually 
 	@PostMapping("/notification/read/{notificationId}")
 	public String postReadedNotification(Model model,
-			@PathVariable("notificationId")Integer notificationId) {
+			@PathVariable("notificationId")Long notificationId) {
 		
 		String userEmail = UserAuthorization.getLoggedInUserEmail();	
 		Users loggedInUser = userService.findByEmail(userEmail);
@@ -66,7 +66,7 @@ public class NotificationController {
 		//clear one notification
 		@PostMapping("/notification/delete/{notificationId}")
 		public String postDeleteSpecificNotification(Model model,
-				@PathVariable("notificationId")Integer notificationId) {
+				@PathVariable("notificationId")Long notificationId) {
 			
 			String userEmail = UserAuthorization.getLoggedInUserEmail();	
 			Users loggedInUser = userService.findByEmail(userEmail);
@@ -84,7 +84,7 @@ public class NotificationController {
 		//delete all notification of userId
 		@PostMapping("/notification/deleteAllOf/{userId}")
 		public String postDeleteAllNotification(Model model,
-				@PathVariable("userId")Integer userId) {
+				@PathVariable("userId")Long userId) {
 			
 			String userEmail = UserAuthorization.getLoggedInUserEmail();	
 			Users loggedInUser = userService.findByEmail(userEmail);

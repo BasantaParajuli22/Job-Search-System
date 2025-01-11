@@ -6,6 +6,8 @@
     <title>Job seeker form</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/form.css}">
+	<script th:src="@{/js/navbar.js}" defer></script>
+
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -24,7 +26,7 @@
 			<div class="form-group"> 
 				<!-- cannot change username once created  -->
 				<label for="username">Name:</label>
-				<input type="text" id="username" th:field="*{fullName}" placeholder="Enter your username" maxlength="50">
+				<input type="text" id="username" th:field="*{fullName}" placeholder="Enter your Full Name" maxlength="50">
 				
 				<span id="nameError" class="error"></span>
 				<p th:if="${error?.username != null}">
@@ -43,19 +45,7 @@
 			        <span th:text="${error.email}" class="error"></span>
 			    </p>
 			</div>
-
-            <div class="form-group">
-                <label for="number">Number:</label>
-                <input type="number" name="number" id="number" placeholder="987653210" value="987653210" th:field="*{number}" maxlength="20">
-                <span id="numberError" class="error"></span>
-            </div>
-
-			<div  class="form-group">
-				    <label for="skills">Skills:</label>
-				    <input type="text" name="skills" id="skills" placeholder="Skill name" value="frontend" th:field="*{skills}" maxlength="250">
-				    <span id="skillsError" class="error"></span>
-			</div>	
-				
+	
 			<div  class="form-group">
 			    <label for="password">Password:</label>
 			    <input type="password" name="password" id="password" placeholder="Enter your password"  th:field="*{password}">
@@ -68,13 +58,12 @@
 					<span id="confirmpasswordError" class="error"></span>
 			</div>
 
-			
 			<div><input type="hidden" name="usertype" id="usertype" value="JOBSEEKER" ></div>
 			
 			<div class="form-group" style="display: block;">
 			    <input type="checkbox" id="terms" name="terms" checked>
 			    <label for="terms">
-			        I accept all the <a th:href="@{/}">terms and conditions</a>
+			        I accept all <a th:href="@{/view/terms}"> terms and conditions</a>
 			    </label>
 			    <div id="termsError" class="error"></div>
 			</div>

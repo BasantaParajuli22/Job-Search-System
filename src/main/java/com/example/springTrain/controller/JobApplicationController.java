@@ -29,6 +29,7 @@ import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.SavedJobs;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.service.EmployerService;
+import com.example.springTrain.service.FileStorageService;
 import com.example.springTrain.service.JobApplicationService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.service.JobSeekerService;
@@ -55,43 +56,16 @@ public class JobApplicationController {
 	private NotificationService notificationService;
 	@Autowired
 	private UsersService userService;
+	@Autowired
+	private FileStorageService fileStorageService;
 	
 	
-	//viewing job applications and saved posts
-	//view all lists of my JobPosts Applicants of an employer by employer
-	//Employer login required
-	//same employer can only see JobPosts Applicants
-	@GetMapping("/view/applications/submittedto/employer/{employerId}/of/{jobId}")
-	public String listAllJobApplicants(Model model,
-			@PathVariable ("employerId") Integer employerId,
-			@PathVariable("jobId")Integer jobId,
-			@ModelAttribute("employer") Employer employer) {
-					
-		Employer companyName = employerService.findByCompanyName(employer.getCompanyName());
-		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
-		if(!companyName.equals(submittedCompanyName)) {	
-        	logger.warn("Not a same employerId so cannot view jobApplicants ");
-			return "redirect:/view/jobposts";
-		}
-		
-		List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobId(companyName.getEmployerId(),jobId);
-		if(allJobApplications == null) {
-        	logger.warn("Couldnot find the jobApplications");
-			return "redirect:/view/jobposts";
-		}
-		JobPosting jobPost = jobPostingService.getByJobId(jobId);
-		
-		model.addAttribute("jobPost",jobPost);	        
-		model.addAttribute("allJobApplications",allJobApplications);	        
-		return "application-all";
-	}
-	
-	//view the pdf file in browser
+	//view the pdf png jpg jpeg webp file in browser
 	@GetMapping("/view/application/file/{fileName}")
 	@ResponseBody
 	public ResponseEntity<Resource> viewUploadedFile(@PathVariable("fileName") String fileName) {
 	    try {
-	        Resource resource = jobApplicationService.getFileAsResource(fileName);
+	        Resource resource = fileStorageService.getFileAsResource(fileName);
 
 	        // Determine file type based on the extension
 	        String contentType = "application/octet-stream";
@@ -113,24 +87,54 @@ public class JobApplicationController {
 	        return ResponseEntity.notFound().build();
 	    }
 	}
-
+	
+	//viewing job applications and saved posts
+	//view all lists of my JobPosts Applicants of an employer by employer
+	//Employer login required
+	//same employer can only see JobPosts Applicants
+	@GetMapping("/view/applications/submittedto/employer/{employerId}/of/{jobId}")
+	public String listAllJobApplicants(Model model,
+			@PathVariable ("employerId") Long employerId,
+			@PathVariable("jobId")Long jobId) {
+					
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+		Employer companyName = employerService.findByEmployerId(loggedInEmployerId);
+		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
+		if(!companyName.equals(submittedCompanyName)) {	
+        	logger.warn("Not a same employerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobId(companyName.getEmployerId(),jobId);
+		if(allJobApplications == null) {
+        	logger.warn("Couldnot find the jobApplications");
+			return "redirect:/view/jobposts";
+		}
+		JobPosting jobPost = jobPostingService.getByJobId(jobId);
+		
+		model.addAttribute("jobPost",jobPost);	        
+		model.addAttribute("allJobApplications",allJobApplications);	        
+		return "application-all";
+	}
 	
 	//view all lists of myJobPosts Applicants submitted by the jobseeker
 	//viewing all aplications jobSeeker applied to 
 	//JobSeekerlogin required
 	@GetMapping("/view/application/submittedby/jobseeker/{jobSeekerId}")
 	public String listAllOfMyAppliedJobPosts(Model model,
-			@PathVariable ("jobSeekerId") Integer jobSeekerId,
-			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
+			@PathVariable ("jobSeekerId") Long jobSeekerId) {
 			
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+		Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
+	
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
-		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeekerId(loggedinJobSeeker.getJobSeekerId());
+		List<JobApplication> allJobApplicants = jobApplicationService.findAllJobApplicationByJobSeekerId(submittedJobSeeker.getJobSeekerId());
 		
-		if(!loggedinJobSeeker.equals(submittedJobSeeker)) {	
+		if(!loggedInjobSeekerId.equals(jobSeekerId)) {	
         	logger.warn("Not a same jobSeekerId so cannot view jobApplicants ");
 			return "redirect:/view/jobposts";
 		}
+		
+	
 		
 		if(allJobApplicants != null) {
 			//my applications deadline
@@ -138,7 +142,14 @@ public class JobApplicationController {
 		    
 		    model.addAttribute("applicationDeadline", applicationDeadline);
 		    model.addAttribute("allJobApplicants",allJobApplicants);	
-		}		
+		}	
+		
+		logger.info("Size of allJobApplicants list" + allJobApplicants.size());
+		List<String> applicationDeadline = jobApplicationService.getApplicationDeadlines(allJobApplicants);
+		logger.info("Size of applicationDeadline list:" + applicationDeadline.size());
+		logger.info("Contents of applicationDeadline list: " + applicationDeadline);
+		model.addAttribute("applicationDeadline", applicationDeadline);
+		
 		return "jobseeker/jobseeker-applications";
 	}
 	
@@ -147,10 +158,11 @@ public class JobApplicationController {
 	//login required
 	@GetMapping("/view/savedjobs/submittedby/jobseeker/{jobSeekerId}")
 	public String listAllOfMySavedJobPosts(Model model,
-			@PathVariable ("jobSeekerId") Integer jobSeekerId,
-			@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
+			@PathVariable ("jobSeekerId") Long jobSeekerId) {
 					
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+		Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
+
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		List<SavedJobs> savedPosts = savedJobsService.findAllSavedJobsByJobSeeker(loggedinJobSeeker);
 		
@@ -171,23 +183,25 @@ public class JobApplicationController {
 	//to apply for jobposts 
 	@GetMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}")
 	public String showApplyForJobPosts(
-	    @PathVariable("jobId") Integer jobId,
-	    @PathVariable("jobSeekerId") Integer jobSeekerId,
-	    @ModelAttribute("jobSeeker") JobSeeker jobSeeker,
+	    @PathVariable("jobId") Long jobId,
+	    @PathVariable("jobSeekerId") Long jobSeekerId,
 	    @ModelAttribute("jobSeekerDTO") JobSeekerDTO jobSeekerDTO,
 	    Model model) {
+		
+		Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
 
+		JobSeeker loggedInJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
 	    JobPosting jobPost = jobPostingService.getJobPostingById(jobId);
 
 	    model.addAttribute("jobPost", jobPost);
-	    model.addAttribute("jobSeeker", jobSeeker);
+	    model.addAttribute("jobSeeker", loggedInJobSeeker);
 
 	    if (jobSeekerDTO == null || jobSeekerDTO.getFullName() == null) {
 	        // Populate DTO only if not passed from flash attributes
 	        jobSeekerDTO = new JobSeekerDTO();
-	        jobSeekerDTO.setFullName(jobSeeker.getFullName());
-	        jobSeekerDTO.setEmail(jobSeeker.getUsers().getEmail());
-	        jobSeekerDTO.setNumber(jobSeeker.getNumber());
+	        jobSeekerDTO.setFullName(loggedInJobSeeker.getFullName());
+	        jobSeekerDTO.setEmail(loggedInJobSeeker.getUsers().getEmail());
+	        jobSeekerDTO.setNumber(loggedInJobSeeker.getNumber());
 	    }
 
 	    model.addAttribute("jobSeekerDTO", jobSeekerDTO);
@@ -201,34 +215,23 @@ public class JobApplicationController {
 	//make changes to jobApplication
 	@PostMapping("/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}")
 	public String applyForJobPosts(Model model,
-					@PathVariable("jobSeekerId") Integer jobSeekerId,
-					@PathVariable("jobId") Integer jobId,
-					@PathVariable("employerId") Integer employerId,
+					@PathVariable("jobSeekerId") Long jobSeekerId,
+					@PathVariable("jobId") Long jobId,
+					@PathVariable("employerId") Long employerId,
 					@ModelAttribute("jobseekerDTO") JobSeekerDTO jobseekerDTO,
-					@ModelAttribute("jobSeeker") JobSeeker jobSeeker,
 					@RequestParam("file")MultipartFile file,
-					@RequestParam("imagefile")MultipartFile imagefile,
 					RedirectAttributes redirectAttributes) {
 	     
-		// Validate file type
-	    String filecontentType = file.getContentType();
-	    String imageContentType = imagefile.getContentType();
+		Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
 
-	    if (filecontentType == null || !filecontentType.equals("application/pdf")) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid file type. Please upload a valid PDF.");
-	    	return "redirect:/applications/applyBy/"+ jobSeekerId + "/to/"+jobId+"/"+ employerId ;
-	    }
-	    if (imageContentType == null ||
-	    		( !imageContentType.equals("image/png") &&
-	    		  !imageContentType.equals("image/jpg") &&
-	    		  !imageContentType.equals("image/jpeg")&&
-	    		  !imageContentType.equals("image/webp"))
-	    	) {
-	        redirectAttributes.addFlashAttribute("errorMessage", "Invalid image type. Please upload a valid .jpg .png .jpeg .webp");
-	    	return "redirect:/applications/applyBy/"+ jobSeekerId + "/to/"+jobId+"/"+ employerId ;
+		// Validate file type
+	    Boolean validFileType = fileStorageService.checkFileType(file);
+	    if(!validFileType) {
+	        redirectAttributes.addFlashAttribute("errorMessage", "File type needs to be in .pdf format");
+	        return "redirect:/applications/applyBy/"+ jobSeekerId + "/to/"+jobId+"/"+ employerId ;
 	    }
 	      
-		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+		JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
 		JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 		JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 		JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndJobSekerId(jobId,jobSeekerId); 
@@ -244,16 +247,14 @@ public class JobApplicationController {
             return "redirect:/view/jobposts";
          }      
         	 
-        String fileName = jobApplicationService.saveFile(file);
-        String imageFileName = jobApplicationService.saveFile(imagefile);
-
-        jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,fileName,imageFileName,jobseekerDTO);
+      
+        jobApplicationService.applyForJobPost(jobId,employerId,jobSeekerId,jobseekerDTO,file);
         
         // Send a notification to the employer
         String message = "You have a new application for the job: " + jobPosting.getTitle();
         notificationService.createNotification(user, message);
         
-        redirectAttributes.addFlashAttribute("successMessage", "Your application has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("successMessage", "Application status has been updated successfully!");
 
     	return "redirect:/view/jobposts/details/" + jobId;
 	}
@@ -264,8 +265,9 @@ public class JobApplicationController {
 	@PostMapping("/application/submittedto/employer/{employerId}/statusUpdate/{applicationId}")
 	public String updateApplicationStatusByEmployer(
 		@RequestParam("applicationStatus") String applicationStatus,
-	    @PathVariable("employerId") Integer employerId,
-	    @PathVariable("applicationId") Integer applicationId) {
+	    @PathVariable("employerId") Long employerId,
+	    @PathVariable("applicationId") Long applicationId,
+	    RedirectAttributes redirectAttributes) {
 		
 
 		Employer employer = employerService.findByEmployerId(employerId);
@@ -285,6 +287,7 @@ public class JobApplicationController {
         notificationService.createNotification(jobSeekerUser, message); 
 		jobApplicationService.updateStatus(applicationId,applicationStatus);
 		
+		redirectAttributes.addFlashAttribute("successMessage", "Your application has been submitted successfully!");
 	    // Redirect back to the list of job applications of the specific employerId
 	    return "redirect:/view/applications/submittedto/employer/" + employerId +"/of/" + jobApplication.getJobPosting().getJobId();
 	
@@ -295,11 +298,13 @@ public class JobApplicationController {
 		//needs JobSeeker to login
 		@PostMapping("/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}")
 		public String saveJobsByJobSeeker(Model model,
-				@PathVariable("jobSeekerId") Integer jobSeekerId,
-				@PathVariable("jobId") Integer jobId,
-				@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
-				       
-			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+				@PathVariable("jobSeekerId") Long jobSeekerId,
+				@PathVariable("jobId") Long jobId,
+			    RedirectAttributes redirectAttributes) {
+			
+			Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
+
+			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
 			JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 			JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
 			SavedJobs alreadySaved= savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
@@ -313,21 +318,26 @@ public class JobApplicationController {
 	         }   
 	         
 			 savedJobsService.saveJobForJobSeeker(jobPosting,loggedinJobSeeker);
+				redirectAttributes.addFlashAttribute("successMessage", "Job  has been saved successfully!");
+
 			return "redirect:/view/jobposts/details/" +jobId;
 		}
 		
 		@PostMapping("/unsaveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}")
 		public String unSaveJobsByJobSeeker(Model model,
-				@PathVariable("jobSeekerId") Integer jobSeekerId,
-				@PathVariable("jobId") Integer jobId,
-				@ModelAttribute("jobSeeker") JobSeeker jobSeeker) {
+				@PathVariable("jobSeekerId") Long jobSeekerId,
+				@PathVariable("jobId") Long jobId,
+			    RedirectAttributes redirectAttributes,
+				@RequestParam(value = "fromApplications", required = false, defaultValue = "false")boolean fromApplications) {
 				       
-			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(jobSeeker.getJobSeekerId());
+			Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
+
+			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
 			JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
 			JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
-			SavedJobs alreadySaved= savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
+			SavedJobs alreadySaved = savedJobsService.findByJobPosting_JobIdAndJobSeekerId(jobId,jobSeekerId);
 			
-			if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
+			if(!loggedInjobSeekerId.equals(jobSeekerId)) {
 				return "redirect:/view/jobposts";
 			}
 	         if(submittedJobSeeker == null|| jobPosting == null || alreadySaved == null) {
@@ -336,8 +346,68 @@ public class JobApplicationController {
 	         }   
 	         
 			 savedJobsService.unSaveJobForJobSeeker(jobPosting,loggedinJobSeeker);
-			return "redirect:/view/jobposts/details/" +jobId;
+			 
+			 //redirecting conditonally
+			 if (fromApplications) {
+					redirectAttributes.addFlashAttribute("successMessage", "Job  has been Un-Saved!");
+		            return "redirect:/view/savedjobs/submittedby/jobseeker/" + jobSeekerId;
+		        } else {
+					redirectAttributes.addFlashAttribute("successMessage", "Job  has been Un-Saved!");
+		            return "redirect:/view/jobposts/details/" + jobId;
+		        }
 		}
 		
+		
+		@PostMapping("/application/{applicationId}/withdraw-by/jobseeker/{jobSeekerId}/to-jobpost/{jobId}/of/{employerId}")
+		public String withdrawApplicationOfJobPost(Model model,
+						@PathVariable("jobSeekerId") Long jobSeekerId,
+						@PathVariable("jobId") Long jobId,
+						@PathVariable("employerId") Long employerId,
+						@PathVariable("applicationId") Long applicationId,
+						@RequestParam(value = "fromApplications", required = false, defaultValue = "false")boolean fromApplications,
+						RedirectAttributes redirectAttributes){
+		     
+			Long loggedInjobSeekerId = (Long) model.getAttribute("jobSeekerId");
+
+			JobSeeker loggedinJobSeeker = jobSeekerService.findByJobSeekerId(loggedInjobSeekerId);
+			JobSeeker submittedJobSeeker = jobSeekerService.findByJobSeekerId(jobSeekerId);
+			JobPosting jobPosting = jobPostingService.getJobPostingById(jobId); 
+			JobApplication jobApplication = jobApplicationService.getJobApplicationByJobIdAndJobSekerId(jobId,jobSeekerId); 
+			Employer employer = employerService.findByEmployerId(employerId); 
+			Users user = userService.findByEmployer_employerId(employerId); 
+				
+			if(!loggedinJobSeeker.equals(submittedJobSeeker)) {
+				logger.warn("Not same jobSeeker so cannot apply");
+				return "redirect:/view/jobposts";
+			}
+			
+			try {
+	         if(employer == null ||jobPosting == null || user == null || jobApplication == null) {
+	 			logger.warn("Unable  to withdraw application to jobPost ");
+	            return "redirect:/view/jobposts";
+	         } 
+	        
+				jobApplicationService.withdrawApplicationByJobSeeker(jobId,employerId,jobSeekerId);
+				   // Send a notification to the employer
+		        String message = "JobSeeker"+ loggedinJobSeeker.getFullName() + " has withdrawn application for the job: " + jobPosting.getTitle();
+		        notificationService.createNotification(user, message);
+		        redirectAttributes.addFlashAttribute("successMessage", "Your application has been withdrawn successfully!");
+
+			} catch (Exception e) {
+		        redirectAttributes.addFlashAttribute("errorMessage", "Your application was not found to be withdrawn!");
+				e.printStackTrace();
+			}
+	          
+			//redirecting conditional
+			if(fromApplications) {
+				redirectAttributes.addFlashAttribute("successMessage", "Job application has been withdrawn!");
+
+				return "redirect:/view/application/submittedby/jobseeker/" + jobSeekerId ;
+			}else {
+				redirectAttributes.addFlashAttribute("successMessage", "Job application has been withdrawn!");
+
+				return "redirect:/view/jobposts/details/" + jobId;
+			}
+		}
 		
 }

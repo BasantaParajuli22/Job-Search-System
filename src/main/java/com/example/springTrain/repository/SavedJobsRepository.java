@@ -9,11 +9,11 @@ import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.SavedJobs;
 
 @Repository
-public interface SavedJobsRepository extends JpaRepository<SavedJobs,Integer> {
+public interface SavedJobsRepository extends JpaRepository<SavedJobs,Long> {
 
 	List<SavedJobs> findAllSavedJobsByJobSeeker(JobSeeker loggedinJobSeeker);
 
-	SavedJobs findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
+	SavedJobs findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Long jobId, Long jobSeekerId);
 
 
 }

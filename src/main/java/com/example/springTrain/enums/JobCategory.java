@@ -1,10 +1,9 @@
 package com.example.springTrain.enums;
 
 public enum JobCategory {
-	IT,
-    MARKETING,
-    SALES,
-    FINANCE,
+	IT_AND_TECHNOLOGY,
+	MARKETING_AND_SALES,
+	FINANCE_AND_ACCOUNTING,
     ENGINEERING,
-    CUSTOMERSERVICE
+    CUSTOMER_SERVICE
 }

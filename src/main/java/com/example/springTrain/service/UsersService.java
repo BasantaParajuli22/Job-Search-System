@@ -3,6 +3,7 @@ package com.example.springTrain.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
@@ -37,40 +38,37 @@ public class UsersService {
     //for storing data in User table first to generate id
     //and storing user_id in jobseeker and employer table for foreign key purposes
     //and storing data on jobseeker and employer table respectively
+    
+    @Transactional
     public void createJobSeeker( JobSeekerDTO jobSeekerDTO) {
     	
     	Users user = new Users();
     	JobSeeker jobSeeker = new JobSeeker();
   		user.setPassword(passwordEncoder.encode(jobSeekerDTO.getPassword())); //encoding password before saving
-    	user.setEmail(jobSeekerDTO.getEmail());
+    	user.setEmail(jobSeekerDTO.getEmail().toLowerCase());
   		user.setUsertype(jobSeekerDTO.getUsertype());
   		user.setUserStatus(UserStatus.UNBLOCKED);
 
-
   		// Save the user and associate it with the JobSeeker
   		jobSeeker.setUsers(user);
-  		jobSeeker.setNumber(jobSeekerDTO.getNumber());
  		jobSeeker.setFullName(jobSeekerDTO.getFullName());
- 		jobSeeker.setSkills(jobSeekerDTO.getSkills());
  		
  		usersRepository.save(user);
  		jobSeekerRepository.save(jobSeeker);
     }
-
+    
+    @Transactional
 	public void createEmployer(EmployerDTO employerDTO) {
 		Users user = new Users();
 		Employer employer = new Employer();
-		user.setEmail(employerDTO.getEmail());
+		user.setEmail(employerDTO.getEmail().toLowerCase());
   		user.setPassword(passwordEncoder.encode(employerDTO.getPassword())); 
   		user.setUsertype(employerDTO.getUsertype());
   		user.setUserStatus(UserStatus.UNBLOCKED);
   		
-        employer.setUsers(user);
-        employer.setNumber(employerDTO.getNumber());
-  		employer.setCompanyName(employerDTO.getCompanyName());
-  		employer.setCompanyDescription(employerDTO.getCompanyDescription());
-  		employer.setAddress(employerDTO.getAddress());
-		
+        employer.setUsers(user);    
+  		employer.setCompanyName(employerDTO.getCompanyName().toLowerCase());
+  		
    		usersRepository.save(user);
         employerRepository.save(employer);
 	}
@@ -83,11 +81,11 @@ public class UsersService {
 		return usersRepository.findByEmployer(employer);
 	}
 
-	public Users findByJobSeeker_jobSeekerId(Integer jobSeekerId) {
+	public Users findByJobSeeker_jobSeekerId(Long jobSeekerId) {
 		return usersRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
 	}
 
-	public Users findByEmployer_employerId(Integer employerId) {
+	public Users findByEmployer_employerId(Long employerId) {
 		return usersRepository.findByEmployer_EmployerId(employerId);
 	}
 
@@ -95,11 +93,11 @@ public class UsersService {
 		return usersRepository.findByEmail(userEmail);
 	}
 
-	public Users findByEmployer_EmployerId(Integer employerId) {
+	public Users findByEmployer_EmployerId(Long employerId) {
 		return usersRepository.findByEmployer_EmployerId(employerId);
 	}
 
-	public Users findByUserId(Integer userId) {
+	public Users findByUserId(Long userId) {
 		return usersRepository.findByUserId(userId);
 		
 	}

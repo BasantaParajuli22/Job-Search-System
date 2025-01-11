@@ -7,13 +7,13 @@ import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.Users;
 
 @Repository
-public interface EmployerRepository extends JpaRepository<Employer, Integer>{
+public interface EmployerRepository extends JpaRepository<Employer, Long>{
 	
-	Employer findByEmployerId(Integer employerId);
+	Employer findByEmployerId(Long employerId);
 	Employer findByCompanyName(String companyName);
 	Employer findByUsers(Users users);
-	Employer findByJobPosting_JobId(Integer jobId);
+	Employer findByJobPosting_JobId(Long jobId);
 	
-	Employer findByEmployerIdAndJobPosting_JobId(Integer employer, Integer jobId);
+	Employer findByEmployerIdAndJobPosting_JobId(Long employer, Long jobId);
 	
 }

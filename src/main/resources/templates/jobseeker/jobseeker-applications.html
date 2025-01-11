@@ -8,6 +8,17 @@
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
+	
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+	    <p th:text="${errorMessage}"></p>
+	</div>
+
+	<!-- Display Success Message -->
+	<div th:if="${successMessage}" class="alert alert-success">
+	    <p th:text="${successMessage}"></p>
+	</div>
+
 	<div th:if="${#lists.isEmpty(allJobApplicants) and #lists.isEmpty(savedPosts)}">
 		<h2>No applications found</h2>
 	</div>
@@ -22,12 +33,10 @@
                     <tr>
                         <th>Job Title</th>
 						<th>View option </th>
-						<th>View option </th>
                         <th>Applied At</th>
-						<th>Deadline </th>
                         <th>Days Left</th> <!-- Days until the deadline -->
                         <th>Status</th>
-						<th>Contact</th>
+						<th>Withdraw</th>
 
                     </tr>
                 </thead>
@@ -38,29 +47,35 @@
 								th:text="${jobApplication.jobPosting.title}"></a>					
 						</td>
 
-						<td th:if="${jobApplication.fileName != null}">
-							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.fileName})}" target="_blank">
+						<td th:if="${jobApplication.filePath != null}">
+							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.filePath})}" target="_blank">
 							View File </a>
 						</td>
-						<td th:if="${jobApplication.imageName != null}">
-							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" target="_blank">
-								<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.imageName})}" 
+						<!-- 
+						<td th:if="${jobApplication.imagePath != null}">
+							<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.imagePath})}" target="_blank">
+								<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.imagePath})}" 
 										alt="Job Application Image" 
 										style="width: 90px; height: auto;" />
 							</a>
 						</td>
-
+						-->
 						<td th:text="${jobApplication.appliedAt}">JobPost appliedAt</td>
-						<td th:text="${jobApplication.jobPosting.applicationDeadline}">Deadline</td>
-                        <td th:text="${applicationDeadline[iterStat.index]}">Days Left</td>
+ 						<td th:text="${applicationDeadline[iterStat.index]}" 
+							th:if="${not #lists.isEmpty(applicationDeadline)}">Days Left</td>
 						
 						<td th:text="${jobApplication.applicationStatus}"></td>
-						
-							<td th:if="${jobApplication.applicationStatus == 'Accepted'}">
-						    	<a th:href="@{'mailto:' + ${jobApplication.jobPosting.contactEmail}}"
-						       		th:text="'Send email'"></a>
-							</td>
-						
+						<!--- withdraw applications by jobseeker-->
+						<td> 
+							<form th:if="${jobApplication.jobSeeker.jobSeekerId != null}"
+								th:action="@{/application/{applicationId}/withdraw-by/jobseeker/{jobSeekerId}/to-jobpost/{jobId}/of/{employerId}
+								(applicationId =${jobApplication.applicationId},jobSeekerId=${jobApplication.jobSeeker.jobSeekerId},jobId=${jobApplication.jobPosting.jobId},employerId=${jobApplication.jobPosting.employer.employerId})}" 
+									method="post"  class="form1">
+									<input type="hidden" name="fromApplications" value="true">
+								<button type="submit" class="button-green" 
+									onclick="return confirmWithdraw()">Withdraw</button>
+							</form>
+						</td>
                     </tr>
                 </tbody>
             </table>
@@ -79,6 +94,7 @@
                         <th>Type</th>
                         <th>Application Deadline</th>
 						<th>Days left</th>
+						<th>Options</th>
 
                     </tr>
                 </thead>
@@ -94,13 +110,28 @@
                         <td th:text="${savedPost.jobPosting.cityLocation}">Location</td>
                         <td th:text="${savedPost.jobPosting.jobType}">Job Type</td>
 						<td th:if="${savedDeadline != null}" th:text="${savedPost.jobPosting.applicationDeadline}">Deadline</td>
-						<td  th:if="${savedDeadline != null}"  th:text="${savedDeadline[iterStat.index]}">days left</td>
-                    </tr>
+						<td  th:if="${savedDeadline != null}" th:text="${savedDeadline[iterStat.index]}">days left</td>
+						<td><!-- UnSave job Button -->
+							<div th:if="${savedPost != null and savedPost.jobSeeker.jobSeekerId != null}">
+								<div>
+								<form th:action="@{/unsaveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${savedPost.jobSeeker.jobSeekerId},jobId=${savedPost.jobPosting.jobId})}" method="post" class="form2">
+									<input type="hidden" name="fromApplications" value="true">
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+									<button type="submit" class="button-green">UnSave job</button>
+								</form>
+								</div>
+							</div>
+						</td>
+					</tr>
                 </tbody>
             </table>
         </div>       
     </main>
 
-
+	<script>
+	    function confirmWithdraw() {
+	        return confirm("Are you sure you want to withdraw your application?");
+	    }
+	</script>
 </body>
 </html>

@@ -33,7 +33,7 @@ public class JobPosting {
 	//When you create a new JobPosting, the jobId will now be null instead of 0.
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer jobId;
+	private Long jobId;
 	
 	@ManyToOne
     @JoinColumn(name = "employerId", referencedColumnName = "employerId", nullable = false)
@@ -106,11 +106,11 @@ public class JobPosting {
 	}
 
 	
-	public Integer getJobId() {
+	public Long getJobId() {
 		return jobId;
 	}
 
-	public void setJobId(Integer jobId) {
+	public void setJobId(Long jobId) {
 		this.jobId = jobId;
 	}
 

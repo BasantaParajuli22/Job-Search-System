@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Vacancy</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/job-listing.css}">
+	<script th:src="@{/js/navbar.js}" defer></script>
+
 </head>
 <body>
 	<!-- Navigation Bar -->
@@ -56,7 +58,7 @@
 		</div>
 
 		
-		<div sec:authorize="hasRole('ROLE_JOBSEEKER')" >
+		<div sec:authorize="hasRole('ROLE_JOBSEEKER')">
 		<!-- if appliedjobPost is found that means its already applied then cannot apply-->
 			<div th:if="${appliedjobPost != null}" >
 				<form class="form2">
@@ -74,13 +76,23 @@
 			    	<button type="submit" class="button-green">Apply</button>
 				</form>
 			</div>
-			
+			<div th:if="${available == true && canApply == true && appliedjobPost != null }">
+							
+				<form th:if="${jobSeeker != null}"
+						th:action="@{/application/{applicationId}/withdraw-by/jobseeker/{jobSeekerId}/to-jobpost/{jobId}/of/{employerId}
+						(applicationId =${appliedjobPost.applicationId},jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
+						method="post"  class="form1">
+
+					<button type="submit" class="button-green"
+					onclick="return confirmWithdraw()" >Withdraw</button>
+				</form>
+			</div>
 			
 			<!-- Save Job Button -->
 			<div th:if="${savedjobPost == null and jobSeeker != null}">		
 				<div>
 		    		<form th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post" class="form1">
-		        		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		        		<button type="submit" class="buttonSmall">Save job</button>
 		    		</form>
 				</div>
@@ -95,18 +107,11 @@
 				</div>
 			</div>
 		</div>
-<!-- 
-        <div class="related-jobs">
-            <h3>Related Jobs</h3>
-            <div class="related-job-item" th:each="relatedJob : ${relatedJobs}">
-                <a th:href="@{/job/{id}(id=${relatedJob.id})}">
-                    <span th:text="${relatedJob.company}"></span> - <span th:text="${relatedJob.jobType}"></span> <br>
-                    <span>Qualification: <span th:text="${relatedJob.qualification}">SLC (10th)</span></span>
-                </a>
-                <span class="status" th:text="${relatedJob.status}">No more accepting applications</span>
-            </div>
-        </div>
--->
     </div>
+	<script>
+	    function confirmWithdraw() {
+	        return confirm("Are you sure you want to withdraw your application?");
+	    }
+	</script>
 </body>
 </html>

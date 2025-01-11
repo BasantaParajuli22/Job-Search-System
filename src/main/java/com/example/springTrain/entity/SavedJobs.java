@@ -18,7 +18,7 @@ public class SavedJobs {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer savedId;
+	private Long savedId;
 	
 	@ManyToOne
 	@JoinColumn(name = "jobSeekerId", referencedColumnName ="jobSeekerId",nullable = false)
@@ -31,11 +31,11 @@ public class SavedJobs {
 	@CreationTimestamp
 	private LocalDate savedAt;
 
-	public Integer getSavedId() {
+	public Long getSavedId() {
 		return savedId;
 	}
 
-	public void setSavedId(Integer savedId) {
+	public void setSavedId(Long savedId) {
 		this.savedId = savedId;
 	}
 

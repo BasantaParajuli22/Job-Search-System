@@ -5,6 +5,7 @@
     <title>Job Search System</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/home.css}">
+	<script th:src="@{/js/navbar.js}" defer></script>
 </head>
 <div>
 	<!--<div class="backImage"><img src="photo/freeimageai.jpg" ></div>-->
@@ -19,22 +20,17 @@
 	    <p>Your one-stop solution to finding the perfect job or the ideal candidate.</p>
 
 	    <!-- Search Form -->
-		<!-- -->
 	    <form th:action="@{/search}" method="get" class="search-form">
 	        <label for="keyword">Search for jobs:</label>
-	        <input type="text" id="keyword" name="keyword" placeholder="Enter job title, skills, or company name">
+	        <input type="text" id="keyword" name="keyword" placeholder="Enter job-title or company name">
 	        <button type="submit" class="button-green">Search</button>
 	    </form>
 		
-	    <!-- Search Results (if any) -->
-	    <div th:if="${keyword}">
-	        <h2 th:text="${keyword}"></h2>
-	    </div>
 	</div>
 
 
 	<div class="stats-box">
-		<div th:if="${jobSeekerCount}" th:text=" 'Total jobSeeker: ' + ${jobSeekerCount}" class="stat-item"></div>
+	<!-- <div th:if="${jobSeekerCount}" th:text=" 'Total jobSeeker: ' + ${jobSeekerCount}" class="stat-item"></div> -->
 		<div th:if="${employerCount}" th:text="  'Total employer: ' +  ${employerCount}" class="stat-item"></div>
 		<div th:if="${jobPostingCount}" th:text="'Total jobPosts created: ' + ${jobPostingCount}" class="stat-item"></div>
 

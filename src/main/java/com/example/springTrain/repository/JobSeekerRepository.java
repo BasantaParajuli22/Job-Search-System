@@ -8,9 +8,9 @@ import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
 
 @Repository
-public interface JobSeekerRepository extends JpaRepository<JobSeeker, Integer>{
+public interface JobSeekerRepository extends JpaRepository<JobSeeker, Long>{
 	
-	JobSeeker findByJobSeekerId(Integer jobSeekerId);
+	JobSeeker findByJobSeekerId(Long jobSeekerId);
 	JobSeeker findByUsers(Users user);
 	JobSeeker findByFullName(String name);
 	

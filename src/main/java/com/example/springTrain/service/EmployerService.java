@@ -4,25 +4,26 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springTrain.dto.ProfileDTO;
 import com.example.springTrain.entity.Employer;
-import com.example.springTrain.entity.JobPosting;
-import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.Users;
 import com.example.springTrain.repository.EmployerRepository;
 
 
 @Service
 public class EmployerService {
+			
+	private final EmployerRepository employerRepository;
+	private final FileStorageService fileStorageService;
 	
-    //private static final Logger logger = LoggerFactory.getLogger(Employer.class);
-		
-	private EmployerRepository employerRepository;
-
 	@Autowired
-	public EmployerService(EmployerRepository employerRepository) {
+	public EmployerService(EmployerRepository employerRepository,
+			FileStorageService fileStorageService) {
 		this.employerRepository = employerRepository;
+		this.fileStorageService = fileStorageService;
 	}
 		
 	public Employer findByUser(Users user) {
@@ -32,7 +33,7 @@ public class EmployerService {
 		return employerRepository.findByCompanyName(companyName);
 	}
 
-	public Employer findByEmployerId(int employerId) {
+	public Employer findByEmployerId(Long employerId) {
 		return employerRepository.findByEmployerId(employerId);
 	}
 
@@ -46,30 +47,44 @@ public class EmployerService {
 		return employerRepository.count();
 	}
 
-	public Employer findByJobPosting_JobId(Integer jobId) {
+	public Employer findByJobPosting_JobId(Long jobId) {
 		return employerRepository.findByJobPosting_JobId(jobId);
 
 	}
 
-	public Employer findByEmployerIdAndJobPosting_JobId( Integer employer, Integer jobId) {
+	public Employer findByEmployerIdAndJobPosting_JobId( Long employer, Long jobId) {
 		return employerRepository.findByEmployerIdAndJobPosting_JobId(employer,jobId);
 
 	}
 
-	public Employer findByEmployerIdAndJobId(Integer loggedInemployerId, Integer jobId) {
+	public Employer findByEmployerIdAndJobId(Long loggedInemployerId, Long jobId) {
 		return employerRepository.findByEmployerIdAndJobPosting_JobId(loggedInemployerId,jobId);
 
 	}
 
-	public Employer getByEmployerIdAndJobId(Integer loggedInEmployerId, Integer jobId) {
+	public Employer getByEmployerIdAndJobId(Long loggedInEmployerId, Long jobId) {
 		return employerRepository.findByEmployerIdAndJobPosting_JobId(loggedInEmployerId,jobId);
 	}
 
+	@Transactional
 	public void updateEmployer(ProfileDTO profileDTO, Employer employer) {
-		employer.setCompanyName(profileDTO.getCompanyName());
-  		employer.setCompanyDescription(profileDTO.getCompanyDescription());
-  		employer.setAddress(profileDTO.getAddress());
+		
+		employer.setCompanyName(profileDTO.getCompanyName().toLowerCase());
+  		employer.setCompanyDescription(profileDTO.getDescription());
+  		employer.setAddress(profileDTO.getAddress());  		
+  		employer.setWebsite(profileDTO.getWebsite());
+  		employer.setNumber(profileDTO.getNumber());
+  		
     	employerRepository.save(employer); 
+	}
+
+	@Transactional
+	public void updateEmployerProfilePicture(Employer employer, MultipartFile companyLogo) {
+		String filePath = fileStorageService.saveFile(companyLogo);
+		
+		employer.setCompanyLogoPath(filePath);
+		employerRepository.save(employer); 
+		
 	}
 	
 }

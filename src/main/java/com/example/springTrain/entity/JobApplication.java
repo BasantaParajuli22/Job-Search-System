@@ -19,7 +19,7 @@ public class JobApplication{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer applicationId;
+	private Long applicationId;
 	
 	@ManyToOne
     @JoinColumn(name = "jobSeekerId", referencedColumnName="jobSeekerId", nullable = false)
@@ -41,8 +41,8 @@ public class JobApplication{
 
 	
 	//details submitted by jobseeker
-	private String fileName;
-	private String imageName;
+	private String filePath;
+	private String imagePath;
 	
 	@Column(length = 50)
 	private String fullName;
@@ -54,14 +54,27 @@ public class JobApplication{
 	private String number;
 	
 	
+	public String getFilePath() {
+		return filePath;
+	}
 
-	
-	
-	public Integer getApplicationId() {
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public Long getApplicationId() {
 		return applicationId;
 	}
 
-	public void setApplicationId(Integer applicationId) {
+	public void setApplicationId(Long applicationId) {
 		this.applicationId = applicationId;
 	}
 
@@ -103,22 +116,6 @@ public class JobApplication{
 
 	public void setAppliedAt(LocalDate appliedAt) {
 		this.appliedAt = appliedAt;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getImageName() {
-		return imageName;
-	}
-
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
 	}
 
 	public String getEmail() {

@@ -43,7 +43,7 @@ public class GlobalControllerAdvice {
 	    		 if( jobSeeker != null) {
 	    		  	long notificationCount = notificationService.countUnreadNotificationsOfjobSeeker(jobSeeker);
 	    		    model.addAttribute("notificationCount",notificationCount);
-	    		    model.addAttribute("jobSeeker", jobSeeker); 	
+	    		    model.addAttribute("jobSeekerId", jobSeeker.getJobSeekerId()); 	
 	    		}
 	    	}
 	    	
@@ -53,7 +53,7 @@ public class GlobalControllerAdvice {
 	    		if(employer != null) {	    		    	
 	    		    long notificationCount = notificationService.countUnreadNotificationsOfEmployer(employer);
 	    		    model.addAttribute("notificationCount",notificationCount);
-	    		    model.addAttribute("employer", employer);
+	    		    model.addAttribute("employerId", employer.getEmployerId());
 	    		    	
 	    		}
 	    	}

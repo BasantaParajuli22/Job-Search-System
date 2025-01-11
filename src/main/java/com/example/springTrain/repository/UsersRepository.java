@@ -7,12 +7,12 @@ import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.Users;
 
 @Repository
-public interface UsersRepository extends JpaRepository<Users, Integer> {
+public interface UsersRepository extends JpaRepository<Users, Long> {
 	
-	Users findByUserId(Integer userId);
+	Users findByUserId(Long userId);
 	Users findByEmail(String email);
 	Users findByEmployer(Employer employer);
 	
-	Users findByJobSeeker_JobSeekerId(Integer jobSeekerId);
-	Users findByEmployer_EmployerId(Integer employerId);
+	Users findByJobSeeker_JobSeekerId(Long jobSeekerId);
+	Users findByEmployer_EmployerId(Long employerId);
 }

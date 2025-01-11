@@ -12,13 +12,13 @@ import com.example.springTrain.entity.NotificationMessage;
 import com.example.springTrain.entity.Users;
 
 @Repository
-public interface NotificationRepository extends JpaRepository<NotificationMessage,Integer> {
+public interface NotificationRepository extends JpaRepository<NotificationMessage,Long> {
 
-	//List<NotificationMessage> findAllByUsers_UserIdAndStatus(Integer id, String string);
-	//List<NotificationMessage> findAllByUsers_UserId(Integer userId);
-	List<NotificationMessage> findAllByUsers_UserId(Integer userId,Sort sort);
+	//List<NotificationMessage> findAllByUsers_UserIdAndStatus(Long id, String string);
+	//List<NotificationMessage> findAllByUsers_UserId(Long userId);
+	List<NotificationMessage> findAllByUsers_UserId(Long userId,Sort sort);
 	
-	NotificationMessage findByNotificationId(Integer notificationId);
+	NotificationMessage findByNotificationId(Long notificationId);
 
 	//count notification
 	long countByUsers_JobSeekerAndStatus(JobSeeker jobSeeker, String string);

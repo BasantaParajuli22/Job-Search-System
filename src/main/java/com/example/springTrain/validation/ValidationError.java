@@ -2,15 +2,15 @@ package com.example.springTrain.validation;
 
 public class ValidationError {
 
-		private String username;
+		private String CompanyName;
 		private String email;
 		private String password;		
 
-		public String getUsername() {
-			return username;
+		public String getCompanyName() {
+			return CompanyName;
 		}
-		public void setUsername(String username) {
-			this.username = username;
+		public void setCompanyName(String companyName) {
+			CompanyName = companyName;
 		}
 		public String getPassword() {
 			return password;
@@ -26,13 +26,13 @@ public class ValidationError {
 		}
 		public void clear() {
 			this.email = null;
-			this.username = null;
+			this.CompanyName = null;
 			this.password = null;
 		}
 		//if email has   no value   inserted it will be null
 		// if email not equals to null ==hasErrors
 		public boolean hasErrors() {
-			return email != null || username != null || password != null ;
+			return email != null || CompanyName != null || password != null ;
 		}
-
+		
 	}	

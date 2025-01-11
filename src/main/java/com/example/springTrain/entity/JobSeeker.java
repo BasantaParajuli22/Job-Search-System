@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.example.springTrain.enums.Skills;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,22 +25,24 @@ public class JobSeeker {
 		
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer jobSeekerId;
+	private Long jobSeekerId;
 
-	@Column(length = 50)
+	@Column(length = 100, nullable = false)
 	private String fullName;
 	
 	@Column(length = 20)
 	private String number;	
 	
 	@Column(length = 250)
-	private String skills;
+	private List<Skills> skills;
 	
-	@Column(length = 250)
+	@Column(length = 1000)
 	private String description;
-	
-//	private String resume;
 
+	private String resumePath;
+	
+	private String profilePicturePath;
+	
 	@CreationTimestamp
 	private LocalDate createdAt;
 
@@ -56,24 +60,22 @@ public class JobSeeker {
 		
 	@OneToMany(mappedBy ="jobSeeker", cascade = CascadeType.ALL)
 	private List<SavedJobs> savedJobs;
-		
-	
-	public Integer getJobSeekerId() {
+
+	public Long getJobSeekerId() {
 		return jobSeekerId;
 	}
 
-	public void setJobSeekerId(Integer jobSeekerId) {
+	public void setJobSeekerId(Long jobSeekerId) {
 		this.jobSeekerId = jobSeekerId;
 	}
 
-	public Users getUsers() {
-		return users;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setUsers(Users users) {
-		this.users = users;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
-
 
 	public String getNumber() {
 		return number;
@@ -83,12 +85,28 @@ public class JobSeeker {
 		this.number = number;
 	}
 
-	public String getSkills() {
+	public List<Skills> getSkills() {
 		return skills;
 	}
-
-	public void setSkills(String skills) {
+	
+	public void setSkills(List<Skills> skills) {
 		this.skills = skills;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getProfilePicturePath() {
+		return profilePicturePath;
+	}
+
+	public void setProfilePicturePath(String profilePicturePath) {
+		this.profilePicturePath = profilePicturePath;
 	}
 
 	public LocalDate getCreatedAt() {
@@ -97,6 +115,14 @@ public class JobSeeker {
 
 	public void setCreatedAt(LocalDate createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	public Users getUsers() {
+		return users;
+	}
+
+	public void setUsers(Users users) {
+		this.users = users;
 	}
 
 	public List<JobApplication> getJobApplication() {
@@ -115,11 +141,14 @@ public class JobSeeker {
 		this.savedJobs = savedJobs;
 	}
 
-	public String getFullName() {
-		return fullName;
+	public String getResumePath() {
+		return resumePath;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setResumePath(String resumePath) {
+		this.resumePath = resumePath;
 	}
+		
+	
+	
 }	

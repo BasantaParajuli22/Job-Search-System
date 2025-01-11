@@ -21,23 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
             isValid = false;
         }
 
-        // Validate Number
-        const number = document.getElementById('number').value.trim();
-        if (number === '') {
-            showError('numberError', 'Contact Number is required.');
-            isValid = false;
-        } else if (!validateContactNumber(number)) {
-            showError('numberError', 'Contact Number must be 10 to 15 digits.');
-            isValid = false;
-        }
-
-        // Validate Skills
-        const skills = document.getElementById('skills').value.trim();
-        if (skills === '') {
-            showError('skillsError', 'Skills are required.');
-            isValid = false;
-        }
-
         // Validate Password (only in registration mode)
         const password = document.getElementById('password');
         if (password && password.value.trim() === '') {
@@ -71,11 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
-    }
-
-    function validateContactNumber(number) {
-        const numberRegex = /^\+?[0-9]{10,15}$/; // Optional '+' followed by 10 to 15 digits
-        return numberRegex.test(number);
     }
 
     function showError(id, message) {

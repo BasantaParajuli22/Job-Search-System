@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.springTrain.entity.JobApplication;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.entity.JobSeeker;
 import com.example.springTrain.entity.SavedJobs;
@@ -38,7 +39,7 @@ public class SavedJobsService  {
 		savedJobsRepository.delete(savedJob);
 	}
 	
-	public SavedJobs findByJobPosting_JobIdAndJobSeekerId(Integer jobId, Integer jobSeekerId) {
+	public SavedJobs findByJobPosting_JobIdAndJobSeekerId(Long jobId, Long jobSeekerId) {
 		return savedJobsRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
 	}
 
@@ -48,30 +49,40 @@ public class SavedJobsService  {
 	}
 	
 	//return a list of jobApplication deadlines in days
-		public List<String> getSavedJobsDeadlines(List<SavedJobs> savedApplicants) {
-			
-			List<String> dates = new ArrayList<>();
-			
-			for(SavedJobs job: savedApplicants){
-				LocalDate deadline=	job.getJobPosting().getApplicationDeadline();
-				if(deadline == null) {
-					String message ="no deadline found";
-					dates.add(message);	
-				}else if(deadline.isBefore(LocalDate.now() )) {
-					String message ="-----Time is up";
-					dates.add(message);				
-				}
-				else if(deadline.isAfter(LocalDate.now() )){
-					Long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), deadline);
-					String totaldays = "-----" + daysLeft +" days left";
-					dates.add(totaldays);
-				}
-			}		
-			return dates; 
-		}
+	public List<String> getSavedJobsDeadlines(List<SavedJobs> allSavedJobs) {
+        List<String> dates = new ArrayList<>();
+        
+        for (SavedJobs job : allSavedJobs) {
+            
+            if(job == null) {  
+                 dates.add("No Deadline Found");
+                 continue;
+            }
+            if(job.getJobPosting() == null) {    
+                dates.add("No Deadline Found");
+                continue;
+            }
+            
+             LocalDate deadline = job.getJobPosting().getApplicationDeadline();
+              
+           if (deadline == null) {
+                dates.add("No Deadline Set");
+                
+            } else if (deadline.isBefore(LocalDate.now())) {    
+                dates.add("Time is up");
+                
+            } else {
+                 
+                Long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), deadline);
+                String totaldays = String.format("%d days", daysLeft); // Use String.format
+                dates.add(totaldays);
+            }
+        }
+        return dates;
+    }
 
 
-		public SavedJobs getJobPostingByJobIdAndJobSekerId(Integer jobId, Integer jobSeekerId) {
+		public SavedJobs getJobPostingByJobIdAndJobSekerId(Long jobId, Long jobSeekerId) {
 			return savedJobsRepository.findByJobPosting_JobIdAndJobSeeker_JobSeekerId(jobId,jobSeekerId);
 
 		}

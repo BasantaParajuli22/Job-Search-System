@@ -8,18 +8,18 @@ import org.springframework.stereotype.Repository;
 import com.example.springTrain.entity.JobApplication;
 
 @Repository
-public interface JobApplicationRepository extends JpaRepository<JobApplication,Integer>{
+public interface JobApplicationRepository extends JpaRepository<JobApplication,Long>{
 
-	JobApplication findByApplicationId(Integer applicationId);
-	//JobApplication findByJobSeeker_JobSeekerIdAndJobPosting_JobId(Integer jobSeekerId,Integer jobId);
-	JobApplication findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Integer jobId, Integer jobSeekerId);
+	JobApplication findByApplicationId(Long applicationId);
+	//JobApplication findByJobSeeker_JobSeekerIdAndJobPosting_JobId(Long jobSeekerId,Long jobId);
+	JobApplication findByJobPosting_JobIdAndJobSeeker_JobSeekerId(Long jobId, Long jobSeekerId);
 
-	List<JobApplication> findByEmployer_employerId(Integer employerId);
-	List<JobApplication> findByJobSeeker_JobSeekerId(Integer jobSeekerId);
+	List<JobApplication> findByEmployer_employerId(Long employerId);
+	List<JobApplication> findByJobSeeker_JobSeekerId(Long jobSeekerId);
 	
 	
-	Integer countJobApplicationByJobPosting_JobId(Integer jobId);
-	List<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobId(Integer employerId, Integer jobId);
+	Long countJobApplicationByJobPosting_JobId(Long jobId);
+	List<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobId(Long employerId, Long jobId);
 
 }
 

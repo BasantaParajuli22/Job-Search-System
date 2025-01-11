@@ -16,6 +16,7 @@ import com.example.springTrain.enums.ExperienceLevel;
 import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.enums.JobType;
 import com.example.springTrain.service.JobPostingService;
+import com.example.springTrain.util.EnumConverter;
 
 @Controller
 public class SearchController {
@@ -43,13 +44,16 @@ public class SearchController {
 	
 	//takes categoryName to display categoryName
 	@GetMapping("/search/byjobcategory/{jobCategory}")
-	 public String searchByCategoryId(@PathVariable("jobCategory") JobCategory jobCategory,
+	 public String searchByCategoryId(@PathVariable("jobCategory") String jobCategory,
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
 	         @RequestParam(name ="size", defaultValue = "9") int size, 
 			 Model model) { 
 
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(jobCategory,page, size);
-        int totalPosts = jobPostingService.countJobPostingOfSpecificJobCategoryAndAvailable(jobCategory);
+		//converting from string to enum 
+		JobCategory category = EnumConverter.fromSentenceCase(jobCategory, JobCategory.class);
+		 
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobCategory(category,page, size);
+        Long totalPosts = jobPostingService.countJobPostingOfSpecificJobCategoryAndAvailable(category);
        
         model.addAttribute("jobPosts", jobPostingPage);        
         model.addAttribute("totalPosts",totalPosts);//to display total posts counts
@@ -60,12 +64,13 @@ public class SearchController {
 	
 	//search all jobPostings by jobtype
 	@GetMapping("/search/byjobtype/{jobType}")
-	 public String searchByJobType(@PathVariable("jobType") JobType jobType, 
+	 public String searchByJobType(@PathVariable("jobType") String jobType, 
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
 	         @RequestParam(name ="size", defaultValue = "9") int size, 
 			 Model model) { 
 	    
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(jobType,page, size);
+		JobType enumValue = EnumConverter.fromSentenceCase(jobType, JobType.class);
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByJobType(enumValue,page, size);
         
         model.addAttribute("jobPosts", jobPostingPage);
 	    model.addAttribute("filterName",jobType);
@@ -74,12 +79,13 @@ public class SearchController {
 	
 	//search all jobPostings by experiencelevel
 	@GetMapping("/search/byexperiencelevel/{expLevel}")
-	 public String searchByExperiencelevel(@PathVariable("expLevel") ExperienceLevel expLevel,
+	 public String searchByExperiencelevel(@PathVariable("expLevel") String expLevel,
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
 	            @RequestParam(name ="size", defaultValue = "9") int size, 
 	            Model model) { 
 		
-        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByExpLevel(expLevel,page, size);
+		ExperienceLevel enumValue = EnumConverter.fromSentenceCase(expLevel, ExperienceLevel.class);
+        Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByExpLevel(enumValue,page, size);
         
         model.addAttribute("jobPosts", jobPostingPage);   
 	    model.addAttribute("filterName",expLevel);
@@ -87,12 +93,12 @@ public class SearchController {
 	}
 	
 	@GetMapping("/search/bylocation/{location}")
-	 public String searchByLocation(@PathVariable("location") CityLocation location,
+	 public String searchByLocation(@PathVariable("location") String location,
 			 @RequestParam(name ="page", defaultValue = "0") int page, 
 	            @RequestParam(name ="size", defaultValue = "9") int size, 
 	            Model model) { 
-		
-	    Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCityLocation(location,page, size);
+		CityLocation enumValue = EnumConverter.fromSentenceCase(location, CityLocation.class);
+	    Page<JobPosting> jobPostingPage = jobPostingService.getPaginatedJobPostingByCityLocation(enumValue,page, size);
        
 	    model.addAttribute("jobPosts", jobPostingPage);
 	    model.addAttribute("filterName",location);

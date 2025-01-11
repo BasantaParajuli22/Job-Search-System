@@ -20,7 +20,7 @@ public class NotificationMessage{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer notificationId;
+	private Long notificationId;
 	
 	@ManyToOne
 	@JsonIgnore 
@@ -34,10 +34,10 @@ public class NotificationMessage{
 	private Instant messageAt;
 	
 	
-	public Integer getNotificationId() {
+	public Long getNotificationId() {
 		return notificationId;
 	}
-	public void setNotificationId(Integer notificationId) {
+	public void setNotificationId(Long notificationId) {
 		this.notificationId = notificationId;
 	}
 	public String getMessage() {

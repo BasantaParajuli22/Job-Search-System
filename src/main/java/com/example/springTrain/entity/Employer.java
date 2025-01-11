@@ -22,23 +22,28 @@ public class Employer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer employerId;
+	private Long employerId;
 	
-	@Column(length = 50)
+	@Column(length = 100, nullable = false)
 	private String companyName;
 	
-	@Column(length = 260)
+	@Column(length = 250)
 	private String address;
 	
-	@Column(length = 1020)
+	@Column(length = 1000)
 	private String companyDescription;
 	
 	@Column(length = 20)
 	private String number;
+
+	@Column(length = 100)
+	private String website;
+
+	private String companyLogoPath;
 	
 	@CreationTimestamp
 	private LocalDate createdAt;
-
+  
 	@OneToOne
     @JoinColumn(name = "userId", referencedColumnName="userId", nullable = false)
 	private Users users;
@@ -46,13 +51,61 @@ public class Employer {
 	// An employer can have multiple jobs //its reference only
 	@OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
 	private List<JobPosting> jobPosting;
-	
-	public Integer getEmployerId() {
+
+	public Long getEmployerId() {
 		return employerId;
 	}
 
-	public void setEmployerId(Integer employerId) {
+	public void setEmployerId(Long employerId) {
 		this.employerId = employerId;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCompanyDescription() {
+		return companyDescription;
+	}
+
+	public void setCompanyDescription(String companyDescription) {
+		this.companyDescription = companyDescription;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public LocalDate getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDate createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 
 	public Users getUsers() {
@@ -71,46 +124,14 @@ public class Employer {
 		this.jobPosting = jobPosting;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public String getCompanyLogoPath() {
+		return companyLogoPath;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompanyLogoPath(String companyLogoPath) {
+		this.companyLogoPath = companyLogoPath;
 	}
-
-	public String getCompanyDescription() {
-		return companyDescription;
-	}
-
-	public void setCompanyDescription(String companyDescription) {
-		this.companyDescription = companyDescription;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public LocalDate getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(LocalDate createdAt) {
-		this.createdAt = createdAt;
-	}
-
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
+	
 	
 	
 	

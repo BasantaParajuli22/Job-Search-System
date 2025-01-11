@@ -34,7 +34,7 @@ public class JobPostingService {
 		return jobPostingRepository.count();
 	}
 
-	public JobPosting getByJobId(Integer jobId) {
+	public JobPosting getByJobId(Long jobId) {
 		return jobPostingRepository.findByJobId(jobId);
 	}
 	
@@ -65,21 +65,21 @@ public class JobPostingService {
 	public JobCategory[] getAllCategories() {
 		 return JobCategory.values(); 
 	}
-    public JobPosting getJobPostingById(Integer jobId) {
+    public JobPosting getJobPostingById(Long jobId) {
         return jobPostingRepository.findByJobId(jobId);
     }
-	public JobPosting getJobPostingByIdAndJobSekerId(Integer jobId, Integer jobSeekerId) {
+	public JobPosting getJobPostingByIdAndJobSekerId(Long jobId, Long jobSeekerId) {
 		return jobPostingRepository.findByJobIdAndJobApplication_JobSeeker_JobSeekerId(jobId,jobSeekerId);
 	}    
 	public List<JobPosting> findByEmployerCompanyName(String companyName) {
 		return jobPostingRepository.findByEmployer_CompanyName(companyName);
 
 	}
-    public List<JobPosting> getJobPostingByEmployerId(Integer  employerId) {
+    public List<JobPosting> getJobPostingByEmployerId(Long  employerId) {
     	return jobPostingRepository.findByEmployer_EmployerId(employerId);
     }
     
-    public JobPosting getJobPostingByEmployerIdAndJobId(Integer employerId, Integer jobId) {
+    public JobPosting getJobPostingByEmployerIdAndJobId(Long employerId, Long jobId) {
     	return jobPostingRepository.findByEmployer_EmployerIdAndJobId(employerId,jobId);
     }
 
@@ -95,12 +95,12 @@ public class JobPostingService {
         return jobPostingRepository.save(jobPosting);
     }
 
-    public JobPosting updateJobPosting(Integer jobId, JobPosting jobPosting) {
+    public JobPosting updateJobPosting(Long jobId, JobPosting jobPosting) {
         jobPosting.setJobId(jobId);
         return jobPostingRepository.save(jobPosting);
     }
     
-    public void deleteJobPostingById(Integer id) {
+    public void deleteJobPostingById(Long id) {
         jobPostingRepository.deleteById(id);
     }
     
@@ -129,7 +129,7 @@ public class JobPostingService {
 	}
 	
     //finding specific list of JobPosting of companyName
-	public List<JobPosting> findByEmployerId(Integer companyName) {
+	public List<JobPosting> findByEmployerId(Long companyName) {
         return jobPostingRepository.findByEmployer_EmployerId(companyName);
 	}
 	
@@ -198,21 +198,21 @@ public class JobPostingService {
     	return jobPostingRepository.findByTitleContainingIgnoreCaseOrEmployer_CompanyNameContainingIgnoreCaseAndAvailable(key, key,true, pageable);
 	}
 	
-	public Integer countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {
+	public Long countJobPostingOfSpecificJobCategory(JobCategory jobCategory) {
 		return jobPostingRepository.countJobPostingByJobCategory(jobCategory);
 	}
 	
-	public int countJobPostingOfSpecificJobCategoryAndAvailable(JobCategory jobCategory) {
+	public Long countJobPostingOfSpecificJobCategoryAndAvailable(JobCategory jobCategory) {
 		return jobPostingRepository.countJobPostingByJobCategoryAndAvailable(jobCategory,true);
 	}
 	
 	//to count jobPostings
-	public List<Integer> countJobPostingByJobCategory() {
+	public List<Long> countJobPostingByJobCategory() {
 		JobCategory[] types = JobCategory.values(); 
-		ArrayList<Integer> countList = new ArrayList<>();
+		ArrayList<Long> countList = new ArrayList<>();
 
 		for (JobCategory ty : types) {
-			int count =  jobPostingRepository.countJobPostingByJobCategoryAndAvailable(ty,true);
+			Long count =  jobPostingRepository.countJobPostingByJobCategoryAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
@@ -220,35 +220,35 @@ public class JobPostingService {
 
 
 
-	public List<Integer> countJobPostingOfJobType() {
+	public List<Long> countJobPostingOfJobType() {
 		JobType[] types = JobType.values(); 
-		ArrayList<Integer> countList = new ArrayList<>();
+		ArrayList<Long> countList = new ArrayList<>();
 		
 		for (JobType ty : types) {
-			int count =  jobPostingRepository.countJobPostingByJobTypeAndAvailable(ty,true);
+			Long count =  jobPostingRepository.countJobPostingByJobTypeAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
 
 	}
 
-	public List<Integer> countJobPostingOfExpType() {
+	public List<Long> countJobPostingOfExpType() {
 		ExperienceLevel[] types = ExperienceLevel.values(); 
-		ArrayList<Integer> countList = new ArrayList<>();
+		ArrayList<Long> countList = new ArrayList<>();
 		
 		for (ExperienceLevel ty : types) {
-			int count =  jobPostingRepository.countJobPostingByExperienceLevelAndAvailable(ty,true);
+			Long count =  jobPostingRepository.countJobPostingByExperienceLevelAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;
 	}
 
-	public List<Integer> countJobPostingOfCityLocation() {
+	public List<Long> countJobPostingOfCityLocation() {
 		CityLocation[] types = CityLocation.values(); 
-		ArrayList<Integer> countList = new ArrayList<>();
+		ArrayList<Long> countList = new ArrayList<>();
 		
 		for (CityLocation ty : types) {
-			int count =  jobPostingRepository.countJobPostingByCityLocationAndAvailable(ty,true);
+			Long count =  jobPostingRepository.countJobPostingByCityLocationAndAvailable(ty,true);
 			countList.add(count);
 		}
 		return countList;

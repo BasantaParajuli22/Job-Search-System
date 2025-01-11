@@ -6,16 +6,23 @@
     <title>Job Postings</title>
     <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
     <link rel="stylesheet" th:href="@{/css/post-style.css}">
+	<script th:src="@{/js/navbar.js}" defer></script>
+
 </head>
 <body>
     <!-- Navigation Bar -->
     <header th:replace="~{fragments/nav :: nav}"></header>
 
     <div class="main-container">
-
+		<h1>Job Posts</h1>
 		<!-- Display Error Message -->
 		<div th:if="${errorMessage}" class="alert alert-danger">
 		    <p th:text="${errorMessage}"></p>
+		</div>
+
+		<!-- Display Success Message -->
+		<div th:if="${successMessage}" class="alert alert-success">
+		    <p th:text="${successMessage}"></p>
 		</div>
 		
         <!-- Display message from SearchController -->
@@ -30,7 +37,7 @@
 
         <!-- Job Posts Section -->
         <div class="job-posts">
-            <h1>Job Posts</h1>
+           
             <div th:if="${jobPosts.isEmpty()}">
                 <p>No job posts available.</p>
             </div>
@@ -82,7 +89,8 @@
                                 <div th:if="${loggedInEmployer != null and loggedInEmployer.employerId == jobPost.employer.employerId}">
                                     <form th:action="@{/jobposts/{jobId}/delete/byemployer(jobId=${jobPost.jobId})}" method="post">
                                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                        <button type="submit" class="btn-danger">Delete</button>
+                                        <button type="submit" class="btn-danger"
+										 onclick="return confirmDelete()">Delete</button>
                                     </form>
                                 </div>
                             </div>
@@ -106,5 +114,11 @@
         </div>
 
     </div>
+	
+	<script>
+	    function confirmDelete() {
+	        return confirm("Are you sure you want to delete your Job Post permanently?");
+	    }
+	</script>
 </body>
 </html>
