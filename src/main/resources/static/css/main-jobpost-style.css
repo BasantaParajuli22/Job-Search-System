@@ -1,0 +1,89 @@
+
+.job-post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+.job-post {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+.logo-wrapper {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 5px;
+    flex-shrink: 0;
+	display: block;
+	margin: 0;
+}
+.profile-picture {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.job-info{
+	flex: 1;
+	display:flex;
+	flex-direction: column;
+}
+
+.job-details {
+  	margin-top: 10px;
+    font-size: 0.9em;
+    line-height: 1.4em;
+}
+ .job-details strong{
+	font-weight: bold;
+ }
+
+.job-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+     overflow-x: auto; 
+}
+
+.job-actions .button-container {
+  white-space: nowrap;
+    display: inline-block; 
+
+}
+
+.job-actions .button-container > * {
+	display: inline-block;
+    margin-right: 5px;
+}
+.job-posts {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+/*Styling for the links inside the job header */
+.job-header a{
+	color: #007BFF; 
+    text-decoration: none;  
+}
+
+.job-header a:hover {
+    color: #0056b3;
+    text-decoration: none; 
+}
+
+
+.title-link {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.company-link {
+    font-size: 0.9em;
+    font-style: italic;
+}

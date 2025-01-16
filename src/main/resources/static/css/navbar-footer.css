@@ -16,24 +16,29 @@ body {
     min-height: 100vh;
 }
 
-/* General Container Styles */
-.container {
-    width: 90%; /* Adjust as needed */
-    max-width: 1200px; /* Optional max width */
-    margin: 20px auto; /* Center the container */
-    padding: 20px; /* Padding inside containers */
+/* Specific container styles */
+.main-container, .form-container, .job-container, .container {
+    width: 95%; 
+    max-width: 1500px;
+    margin: 0px auto;
+    padding: 20px;
     background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Specific container styles */
-.main-container {
-    /* Add specific styles for main-container */
+.container {
+    width: 90%; 
+    max-width: 1200px;  
 }
+.form-container {
+    width: 50%;
+}
+
 .job-container {
-     /* Add specific styles for job-container */
+    width: 80%;
 }
+
 
 /* Navigation Bar */
 #uniqueNavbar {
@@ -67,19 +72,18 @@ body {
     margin-left: auto;
 }
 
-
 /* Ensure dropdown content is hidden by default */
 ul.dropdown-content {
-    display: none; /* Hide by default */
+    display: none; 
     position: absolute;
     background-color:  #007BFF;
     min-width: 160px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    z-index: 10;
 }
 
 ul.dropdown-content li {
-    list-style: none; /* Optional: remove bullet points */
+    list-style: none; 
 }
 
 ul.dropdown-content li a {
@@ -121,7 +125,7 @@ footer .footer-content a:hover {
 
 
 .unordered-list li {
- margin-left: 20px; /* Adjust as needed */
+ margin-left: 20px;
  }
 
 /* Success and Error Messages */
@@ -190,7 +194,7 @@ footer .footer-content a:hover {
 }
 
 .form2 button {
-	background-color: #28a745; /* Green color */
+	background-color: #28a745; 
     color: white;
     border: none;
     border-radius: 4px;
@@ -218,7 +222,7 @@ footer .footer-content a:hover {
 /* Button Styles */
 .button-green {
     padding: 8px 16px;
-    background-color: #28a745; /* Green color */
+    background-color: #28a745; 
     color: white;
     border: none;
     border-radius: 4px;
@@ -229,7 +233,7 @@ footer .footer-content a:hover {
 }
 
 .button-green:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #218838; 
 }
 
 /* Buttons Styling */
@@ -248,6 +252,68 @@ button.btn-danger:hover {
     background-color: #a71d2a;
 }
 
+.truncate-text {
+  width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pagination Styles */
+.pagination-controls{
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	gap: 10px;
+	margin: 20px 0;
+}
+
+.pagination-controls a:hover{
+	background-color: #f0f0f0;
+	text-decoration: none;
+}
+
+.pagination-controls a, .pagination-controls span {
+    padding: 8px 12px;
+    margin: 4px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+/* Status Filter Links Styles */
+.status-filter-links {
+    display: flex;
+    gap: 10px;
+    margin: 5px ;
+}
+
+.status-filter-links a {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 5px;
+}
+
+.status-filter-links a:hover {
+    background-color: #f0f0f0;
+    text-decoration: none;
+}
+
+/* Links in Tables */
+a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 
 /* Make the navigation links (except Login/Logout) align to the left */
 @media (max-width: 768px) {

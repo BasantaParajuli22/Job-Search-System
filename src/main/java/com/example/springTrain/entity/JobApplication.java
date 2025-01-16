@@ -3,6 +3,7 @@ package com.example.springTrain.entity;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +39,9 @@ public class JobApplication{
 	
 	@CreationTimestamp
 	private LocalDate appliedAt;
+	
+	@UpdateTimestamp
+	private LocalDate updatedAt;
 
 	
 	//details submitted by jobseeker
@@ -141,6 +145,14 @@ public class JobApplication{
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public LocalDate getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDate updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }

@@ -1,0 +1,97 @@
+/* General Styles */
+.list-body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding-bottom: 12px;
+}
+
+.list-heading, .profile-heading {
+    color: #333;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+.profile-heading {
+	font-size: 24px;
+}
+
+.list-paragraph, .profile-paragraph {
+    margin: 8px 0;
+}
+
+.list-link, .profile-link {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.list-link:hover, .profile-link:hover {
+    text-decoration: underline;
+}
+
+/* Lists Styling */
+.list-ul {
+    list-style: none;
+    padding: 0;
+}
+
+.list-li {
+    background-color: #fff;
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.list-li:hover {
+    transform: translateY(-3px);
+}
+
+/* Individual profile styling */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific Styles */
+.list-strong, .profile-strong {
+    font-weight: bold;
+}
+
+.list-hr {
+    border: 1px solid #f2f2f2;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .list-heading {
+        font-size: 28px;
+    }
+        .profile-container {
+        width: 80%;
+    }
+}
+
+@media (max-width: 480px) {
+    .list-heading {
+        font-size: 24px;
+    }
+
+    .profile-container {
+        width: 95%;
+    }
+}

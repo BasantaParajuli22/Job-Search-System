@@ -3,36 +3,45 @@
 <head>
     <title>Employers List</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/post-style.css}">
+	<link rel="stylesheet" th:href="@{/css/list-style.css}">
 </head>
-<body>
+<body class="list-body">
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
+	<h2>Dashboard</h2>
+	<div class="status-filter-links">
+		<a th:href="@{/admin/view/dashboard}" >Dashboard</a>	
+		<a th:href="@{/view/employers}" >View all employers</a>	
+		<a th:href="@{/view/jobseekers}" >View all jobSeekers</a>
+	</div>
+	
 	<div th:if="${employers != null}">
-	    <h1>All Employers</h1>
+	    <h2 class="list-heading">All Employers</h2>
 	    <div th:if="${employers.isEmpty()}">
-	        <p>No employers found.</p>
+	        <p class="list-paragraph">No employers found.</p>
 	    </div>
 		<div>
-	    	<ul th:each="employer : ${employers}">
-	        	<p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
-				<p><strong>Company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
-				<p><strong>Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
-				<p><strong>Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
-				<p><a th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}">Visit profile</a></p>
-				<hr>
+	    	<ul class="list-ul" th:each="employer : ${employers}">
+	        	<li class="list-li">
+	        	<p class="list-paragraph"><strong class="list-strong">Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
+				<p class="list-paragraph"><strong class="list-strong">Company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
+				<p class="list-paragraph"><strong class="list-strong">Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
+				<p class="list-paragraph"><strong class="list-strong">Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
+				<p class="list-paragraph"><a class="list-link" th:href="@{/view/employers/profile/{employerId}(employerId=${employer.employerId})}">Visit profile</a></p>
+				<hr class="list-hr">
+                </li>
 	    	</ul>
 		</div>
 	</div>
 
-	<div th:if="${employer != null}">
-	    <h1>Employer Profile</h1>
-	    <p><strong>Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
-		<p><strong>company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
-		<p><strong>Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
-		<p><strong>Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
-		<p><a th:href="@{/view/employers}">Back to EmployersList</a></p>
+	<div th:if="${employer != null}" class="profile-container">
+	    <h1 class="profile-heading">Employer Profile</h1>
+	    <p class="profile-paragraph"><strong class="profile-strong">Company Name:</strong> <span th:text="${employer.companyName}">Company Name</span></p>
+		<p class="profile-paragraph"><strong class="profile-strong">company Description:</strong> <span th:text="${employer.companyDescription}">Company Description</span></p>
+		<p class="profile-paragraph"><strong class="profile-strong">Contact Number Description:</strong> <span th:text="${employer.number}">contactNumber</span></p>
+		<p class="profile-paragraph"><strong class="profile-strong">Company email:</strong> <span th:text="${employer.users.email}">Company email</span></p>
+		<p class="profile-paragraph"><a class="profile-link" th:href="@{/view/employers}">Back to EmployersList</a></p>
 
 	</div>
 

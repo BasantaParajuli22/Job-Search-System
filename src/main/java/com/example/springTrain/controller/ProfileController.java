@@ -100,6 +100,8 @@ public class ProfileController{
        profileDTO.setSkills(submittedJobSeeker.getSkills());
        profileDTO.setNumber(submittedJobSeeker.getNumber());
        profileDTO.setDescription(submittedJobSeeker.getDescription());
+       profileDTO.setAddress(submittedJobSeeker. getAddress());
+
 
        model.addAttribute("profileDTO", profileDTO);
        model.addAttribute("userType", "jobseeker");
@@ -151,6 +153,7 @@ public class ProfileController{
     	Boolean validImageType = fileStorageService.checkImageType(imageFile);
    	    if(!validImageType) {
    	        redirectAttributes.addFlashAttribute("errorMessage", "Image File type needs to be in .png .jpg .jpeg .webp format");
+   	       	return "redirect:/jobseekers/profile";
    	    }
         jobSeekerService.updateJobSeekerProfilePicture(jobSeeker,imageFile);      
         redirectAttributes.addFlashAttribute("successMessage", "Your Profile Picture has been edited successfully!");
@@ -175,6 +178,7 @@ public class ProfileController{
     	Boolean validImageType = fileStorageService.checkFileType(file);
    	    if(!validImageType) {
    	        redirectAttributes.addFlashAttribute("errorMessage", "File type needs to be in .pdf format");
+   	        return "redirect:/jobseekers/profile";
    	    }
         jobSeekerService.updateJobSeekerProfileResume(jobSeeker,file);      
         redirectAttributes.addFlashAttribute("successMessage", "Your Resume has been edited successfully!");
@@ -276,6 +280,8 @@ public class ProfileController{
     	Boolean validImageType = fileStorageService.checkImageType(companyLogo);
    	    if(!validImageType) {
    	        redirectAttributes.addFlashAttribute("errorMessage", "Image File type needs to be in .png .jpg .jpeg .webp format");
+   	    	return "redirect:/employers/profile";
+
    	    }
    		employerService.updateEmployerProfilePicture(employer,companyLogo);   
         redirectAttributes.addFlashAttribute("successMessage", "Your Company Logo has been edited successfully!");

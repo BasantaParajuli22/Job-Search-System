@@ -9,8 +9,13 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.example.springTrain.enums.Skills;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,6 +38,9 @@ public class JobSeeker {
 	@Column(length = 20)
 	private String number;	
 	
+	@ElementCollection(targetClass = Skills.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "jobseeker_skills", joinColumns = @JoinColumn(name = "jobSeekerId"))
+    @Enumerated(EnumType.STRING)
 	@Column(length = 250)
 	private List<Skills> skills;
 	
@@ -43,6 +51,9 @@ public class JobSeeker {
 	
 	private String profilePicturePath;
 	
+	@Column(length = 100)
+	private String address;
+	 
 	@CreationTimestamp
 	private LocalDate createdAt;
 
@@ -147,6 +158,14 @@ public class JobSeeker {
 
 	public void setResumePath(String resumePath) {
 		this.resumePath = resumePath;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 		
 	

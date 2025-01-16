@@ -11,124 +11,153 @@
     <!-- Navigation Bar -->
     <header th:replace="~{fragments/nav :: nav}"></header>
 
+		<!-- Display Error Message -->
+		<div th:if="${errorMessage}" class="alert alert-danger">
+		    <p th:text="${errorMessage}"></p>
+		</div>
+
+		<!-- Display Success Message -->
+		<div th:if="${successMessage}" class="alert alert-success">
+		    <p th:text="${successMessage}"></p>
+		</div>
+
     <main class="main-content">
         <div class="profile-container">
-            <h1>Job Seeker Profile</h1>
+            <h2>Job Seeker Profile</h2>
 
-            <section class="profile-section">
-                <h2>Personal Information</h2>
-                <div class="info-grid">
-                    <div>
-                        <label><strong>Full Name:</strong></label>
-                        <span th:text="${jobSeeker.fullName}"></span>
-                    </div>
-                    <div>
-                        <label><strong>Contact Number:</strong></label>
-                        <span th:text="${jobSeeker.number}"></span>
-                    </div>
-                    <div>
-                        <label><strong>Created At:</strong></label>
-                        <span th:text="${#temporals.format(jobSeeker.createdAt, 'dd-MMM-yyyy')}"></span>
-                    </div>
+           <!-- Profile Picture Section Starts -->
+            <div class="profile-box-container">
+				<!-- Profile Image Container -->
+                <div class="profile-image-container" th:if="${not #strings.isEmpty(jobSeeker.profilePicturePath)}">
+                    <img th:src="@{/view/application/file/{fileName}(fileName=${jobSeeker.profilePicturePath})}"
+                            alt="Profile Picture" class="profile-picture"/>
+
                 </div>
-            </section>
-
-            <section class="profile-section">
-                <h2>Skills & Summary</h2>
-                <div>
-                    <label><strong>Skills:</strong></label>
-                    <div class="skills-tags" th:if="${jobSeeker.skills}">
-                        <span class="skill-tag" th:each="skill : ${jobSeeker.skills.split(', ')}" th:text="${skill}"></span>
-                    </div>
-                    <p th:if="${#strings.isEmpty(jobSeeker.skills)}">No skills listed.</p>
+				<div class="profile-image-container" th:if="${#strings.isEmpty(jobSeeker.profilePicturePath)}">
+									<img th:src="@{/images/default-jobseeker-profile.png}"
+									 alt="Default Profile" class="profile-picture"/>
+				</div>
+				
+                <!-- Profile Picture Form Starts -->
+                <div class="profile-form-container">
+                    <form method="post"
+                        th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
+                        th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-picture(jobSeekerId=${jobSeeker.jobSeekerId})}"
+                        enctype="multipart/form-data">
+                        <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp"  onchange="validateFileSize(this)"/>
+                        <button type="submit" 
+						 	th:text="${#strings.isEmpty(jobSeeker.profilePicturePath)} ? 'Add Picture' : 'Change Picture'" 
+						 	onclick="return confirmChange()"></button>
+                    </form>
                 </div>
-                <div>
-                    <label><strong>Description:</strong></label>
-                    <p th:text="${jobSeeker.description}"></p>
-                </div>
-            </section>
+				<!-- Profile Picture Form Ends -->
 
-            <section class="profile-section">
-                <h2>Documents</h2>
-                <div class="documents-grid">
+            </div>
+             <!-- Profile Picture Section Ends -->
+			 
+			<div class = "content-container">
+				<section class="profile-section">
+					<h2>Personal Information</h2>
+					<div class="info-grid">
+						<div>
+							<label><strong>Full Name:</strong></label>
+							<span th:text="${jobSeeker.fullName}"></span>
+						</div>
+						<div>
+							<label><strong>Contact Number:</strong></label>
+							<span th:text="${jobSeeker.number}"></span>
+							<span th:if="${#strings.isEmpty(jobSeeker.number)}">Not provided.</span>
+						</div>
+						<div>
+							<label><strong>Created At:</strong></label>
+							<span th:text="${#temporals.format(jobSeeker.createdAt, 'dd-MMM-yyyy')}"></span>
+						</div>
+					</div>
+				</section>
 
-                    <div class="profile-box" th:if="${not #strings.isEmpty(jobSeeker.profilePicturePath)}">
-                        <img th:src="@{/view/application/file/{fileName}(fileName=${jobSeeker.profilePicturePath})}"
-                             alt="Profile Picture" class="profile-picture"/>
-                        <p>Profile Picture</p>
-                        <form method="post"
-                              th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
-                              th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-picture(jobSeekerId=${jobSeeker.jobSeekerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp"  onchange="validateFileSize(this)"/>
-                            <button type="submit" onclick="return confirmChange()">Change Picture</button>
-                        </form>
-                    </div>
+				<section class="profile-section">
+					<h2>Skills & Summary</h2>
+					<div>
+						<label><strong>Skills:</strong></label>
+						<div class="skills-tags" th:if="${jobSeeker.skills}">
+							<span th:each="skill : ${jobSeeker.skills}"
+									th:text="${skill.toString()} + ' '" class="skill-tag">
+							</span>
+						</div>
+						<p th:if="${#strings.isEmpty(jobSeeker.skills)}">No skills listed.</p>
+					</div>
+					<div>
+						<label><strong>Description:</strong></label>
+						<p th:text="${jobSeeker.description}"></p>
+						<p th:if="${#strings.isEmpty(jobSeeker.description)}">Description not provided.</p>
 
-                    <div class="profile-box" th:if="${#strings.isEmpty(jobSeeker.profilePicturePath)}">
-                        <p>No profile picture</p>
-                        <form method="post"
-                              th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
-                              th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-picture(jobSeekerId=${jobSeeker.jobSeekerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp"  onchange="validateFileSize(this)"/>
-                            <button type="submit">Add Picture</button>
-                        </form>
-                    </div>
-                    
-                    <div class="profile-box" th:if="${not #strings.isEmpty(jobSeeker.resumePath)}">
-                        <a th:href="@{/view/application/file/{fileName}(fileName=${jobSeeker.resumePath})}" target="_blank" class="resume-link">View Resume</a>
-                        <p>Resume</p>
-                         <form method="post"
-                              th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
-                              th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-resume(jobSeekerId=${jobSeeker.jobSeekerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="resume" accept="application/pdf" onchange="validateFileSize(this)"/>
-                            <button type="submit" onclick="return confirmChangeResume()">Change Resume</button>
-                         </form>
-                    </div>
+					</div>
+				</section>
 
-                    <div class="profile-box" th:if="${#strings.isEmpty(jobSeeker.resumePath)}">
-                         <p>No resume uploaded</p>
-                         <form method="post"
-                              th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
-                              th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-resume(jobSeekerId=${jobSeeker.jobSeekerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="resume" accept="application/pdf" onchange="validateFileSize(this)"/>
-                             <button type="submit">Add Resume</button>
-                         </form>
-                    </div>
-                </div>
-            </section>
-           
-           <section class="profile-section" th:if="${loggedInJobSeeker != null }">
-                <h2>My Actions</h2>
-                <div class="link-group">
-                    <a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
-                    <a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
-                    <a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
-                </div>
-            </section>
+				<section class="profile-section">
+					<h2>Documents</h2>
+					<div class="documents-grid">
+
+
+						<!-- for uploadiing resume -->
+						<div class="profile-box" th:if="${not #strings.isEmpty(jobSeeker.resumePath)}">
+							<a th:href="@{/view/application/file/{fileName}(fileName=${jobSeeker.resumePath})}" target="_blank" class="resume-link">View CV/Resume</a>
+							<form method="post"
+								th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
+								th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-resume(jobSeekerId=${jobSeeker.jobSeekerId})}"
+								enctype="multipart/form-data">
+								<input type="file" name="resume" accept="application/pdf" onchange="validateFileSize(this)"/>
+								<button type="submit" onclick="return confirmChangeResume()">Change CV/Resume</button>
+							</form>
+						</div>
+
+						<div class="profile-box" th:if="${#strings.isEmpty(jobSeeker.resumePath)}">
+							<p>No resume uploaded</p>
+							<form method="post"
+								th:if="${loggedInJobSeeker != null and loggedInJobSeeker.jobSeekerId == jobSeeker.jobSeekerId }"
+								th:action="@{/jobseekers/profile/edit/{jobSeekerId}/profile-resume(jobSeekerId=${jobSeeker.jobSeekerId})}"
+								enctype="multipart/form-data">
+								<input type="file" name="resume" accept="application/pdf" onchange="validateFileSize(this)"/>
+								<button type="submit" onclick="return confirmAddResume()">Add CV/Resume</button>
+							</form>
+						</div>
+						
+					</div>
+				</section>
+
+				<section class="profile-section" th:if="${loggedInJobSeeker != null }">
+					<h2>My Actions</h2>
+					<div class="link-group">
+						<a th:href="@{/view/application/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Applications</a>
+						<a th:href="@{/view/savedjobs/submittedby/jobseeker/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">My Saved Jobs</a>
+						<a th:href="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Edit Profile</a>
+					</div>
+				</section>
+			</div>
         </div>
     </main>
-	
+
 	<script>
 		    function validateFileSize(input) {
 		        const file = input.files[0];
+
 		        if (file && file.size > 1 * 1024 * 1024) { // 1 MB limit
 		            alert("File size exceeds the maximum allowed size of 1 MB.");
 		            input.value = ""; // Clear the input
 		        }
 			}
-			
+
 			function confirmChange() {
 			        return confirm("Are you sure you want to change your profile picture? \n The current image will be removed!!");
 			    }
-				
+
 			function confirmChangeResume() {
 			        return confirm("Are you sure you want to change your profile resume? \n The current resume will be removed!!");
 			    }
-								
+			function confirmAddResume() {
+			        return confirm("Are you sure you want to change your profile resume? \n The current resume will be removed!!");
+			    }
+				
 		</script>
 
 </body>

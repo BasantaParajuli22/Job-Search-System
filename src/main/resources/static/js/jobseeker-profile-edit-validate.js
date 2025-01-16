@@ -18,15 +18,22 @@ document.addEventListener('DOMContentLoaded', function () {
         resetErrorMessages();
 
         // Validate full name
-        if (fullNameInput.value.trim() !== '') {
-            if (fullNameInput.value.length > 50) {
-                fullNameError.textContent = 'Full name must be less than 50 characters';
-                isValid = false;
-            } else if (!isValidName(fullNameInput.value)){
-                fullNameError.textContent = 'Full name must not contain number and special character'
-                isValid = false;
-            }
-        }
+		// Validate Full Name
+		   if (fullNameInput.value.trim() === '') {
+		        fullNameError.textContent = 'Full name cannot be empty';
+		       isValid = false;
+		   }  else if (fullNameInput.value.length > 50) {
+		       fullNameError.textContent = 'Full name must be less than 50 characters';
+		       isValid = false;
+		   }
+		   else if(!isValidName(fullNameInput.value)){
+		     fullNameError.textContent = 'Full name must not contain numbers and special characters'
+		     isValid = false;
+		   }
+		   else {
+			 fullNameError.textContent = '';
+		}
+
 
         // Validate skills
         if (skillsInput.value.trim() !== '') {

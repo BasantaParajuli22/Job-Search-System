@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -88,14 +89,33 @@ public class JobApplicationController {
 	    }
 	}
 	
+	//download file
+	 @GetMapping("/download/application/file/{fileName}")
+     @ResponseBody
+     public ResponseEntity<Resource> downloadUploadedFile(@PathVariable("fileName") String fileName) {
+        try {
+           Resource resource = fileStorageService.getFileAsResource(fileName);
+
+           return ResponseEntity.ok()
+                   .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                   .body(resource);
+
+        } catch (RuntimeException e) {
+           return ResponseEntity.notFound().build();
+        }
+    }
+	 
 	//viewing job applications and saved posts
 	//view all lists of my JobPosts Applicants of an employer by employer
 	//Employer login required
 	//same employer can only see JobPosts Applicants
+	//status all
 	@GetMapping("/view/applications/submittedto/employer/{employerId}/of/{jobId}")
 	public String listAllJobApplicants(Model model,
 			@PathVariable ("employerId") Long employerId,
-			@PathVariable("jobId")Long jobId) {
+			@PathVariable("jobId")Long jobId,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+	        @RequestParam(name = "size", defaultValue = "1") int size) {
 					
 		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
 		Employer companyName = employerService.findByEmployerId(loggedInEmployerId);
@@ -105,7 +125,7 @@ public class JobApplicationController {
 			return "redirect:/view/jobposts";
 		}
 		
-		List<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobId(companyName.getEmployerId(),jobId);
+		Page<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobIdInPages(companyName.getEmployerId(),jobId,page,size);
 		if(allJobApplications == null) {
         	logger.warn("Couldnot find the jobApplications");
 			return "redirect:/view/jobposts";
@@ -114,8 +134,42 @@ public class JobApplicationController {
 		
 		model.addAttribute("jobPost",jobPost);	        
 		model.addAttribute("allJobApplications",allJobApplications);	        
-		return "application-all";
+		return "employer/application-all";
 	}
+	
+	//status accepted rejected reviewed conditions
+	//view applications by employer
+	@GetMapping("/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}")
+	public String listAllJobApplicantsAcceptd(Model model,
+			@PathVariable ("employerId") Long employerId,
+			@PathVariable("jobId")Long jobId,
+			@PathVariable("status")String status,
+			@RequestParam(name = "page", defaultValue = "0") int page,
+	        @RequestParam(name = "size", defaultValue = "20") int size) {
+					
+		Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+		Employer companyName = employerService.findByEmployerId(loggedInEmployerId);
+		Employer submittedCompanyName = employerService.findByEmployerId(employerId);
+		if(!companyName.equals(submittedCompanyName)) {	
+        	logger.warn("Not a same employerId so cannot view jobApplicants ");
+			return "redirect:/view/jobposts";
+		}
+		
+		String applicationStatus = status;
+		Page<JobApplication> allJobApplications = jobApplicationService.findAllJobApplicationByEmployerIdAndJobIdAndStatusInPages(
+				companyName.getEmployerId(),jobId,applicationStatus,page,size);
+		if(allJobApplications == null) {
+        	logger.warn("Couldnot find the jobApplications");
+			return "redirect:/view/jobposts";
+		}
+		JobPosting jobPost = jobPostingService.getByJobId(jobId);
+		
+		model.addAttribute("jobPost",jobPost);	        
+		model.addAttribute("allJobApplications",allJobApplications);	        
+		return "employer/application-all";
+	}
+	
+	
 	
 	//view all lists of myJobPosts Applicants submitted by the jobseeker
 	//viewing all aplications jobSeeker applied to 
@@ -134,12 +188,9 @@ public class JobApplicationController {
 			return "redirect:/view/jobposts";
 		}
 		
-	
-		
 		if(allJobApplicants != null) {
 			//my applications deadline
-		    List<String> applicationDeadline = jobApplicationService.getApplicationDeadlines(allJobApplicants);
-		    
+		    List<String> applicationDeadline = jobApplicationService.getApplicationDeadlines(allJobApplicants);   
 		    model.addAttribute("applicationDeadline", applicationDeadline);
 		    model.addAttribute("allJobApplicants",allJobApplicants);	
 		}	
@@ -287,7 +338,7 @@ public class JobApplicationController {
         notificationService.createNotification(jobSeekerUser, message); 
 		jobApplicationService.updateStatus(applicationId,applicationStatus);
 		
-		redirectAttributes.addFlashAttribute("successMessage", "Your application has been submitted successfully!");
+		redirectAttributes.addFlashAttribute("successMessage", "Application Status has been changed successfully!");
 	    // Redirect back to the list of job applications of the specific employerId
 	    return "redirect:/view/applications/submittedto/employer/" + employerId +"/of/" + jobApplication.getJobPosting().getJobId();
 	
@@ -389,7 +440,7 @@ public class JobApplicationController {
 	        
 				jobApplicationService.withdrawApplicationByJobSeeker(jobId,employerId,jobSeekerId);
 				   // Send a notification to the employer
-		        String message = "JobSeeker"+ loggedinJobSeeker.getFullName() + " has withdrawn application for the job: " + jobPosting.getTitle();
+		        String message = "JobSeeker "+ loggedinJobSeeker.getFullName() + " has withdrawn application for the job: " + jobPosting.getTitle();
 		        notificationService.createNotification(user, message);
 		        redirectAttributes.addFlashAttribute("successMessage", "Your application has been withdrawn successfully!");
 

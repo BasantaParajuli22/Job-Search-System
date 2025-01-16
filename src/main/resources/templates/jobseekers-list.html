@@ -3,40 +3,46 @@
 <head>
     <title>Job Seekers List</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/style.css}">
+	<link rel="stylesheet" th:href="@{/css/list-style.css}">
 </head>
-<body>
+<body class="list-body">
 	<!-- Navigation Bar -->
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
-    <h1>Job Seekers</h1>
+	<h2>Dashboard</h2>
+	<div class="status-filter-links">
+		<a th:href="@{/admin/view/dashboard}" >Dashboard</a>	
+		<a th:href="@{/view/employers}" >View all employers</a>	
+		<a th:href="@{/view/jobseekers}" >View all jobSeekers</a>
+	</div>
+	
+    <h2 class="list-heading">Job Seekers</h2>
 	<div th:if="${jobSeekers != null}">
-	     <p>All JobSeekers.</p>
     	<div th:if="${jobSeekers.isEmpty()}">
-        	<p>No job seekers found.</p>
+        	<p class="list-paragraph">No job seekers found.</p>
     	</div>
     	<div th:unless="${jobSeekers.isEmpty()}">
-        	<ul>
-           	 	<li th:each="jobSeeker : ${jobSeekers}">
+        	<ul class="list-ul">
+           	 	<li class="list-li" th:each="jobSeeker : ${jobSeekers}">
                 	<!-- Displaying only necessary details -->
-                	<p><strong>Username:</strong> <span th:text="${jobSeeker.fullName}">Username</span></p>
-                	<p><strong>Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
-					<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
-					<p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
-					<p><a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Visit profile</a></p>
-					<hr>
+                	<p class="list-paragraph"><strong class="list-strong">Username:</strong> <span th:text="${jobSeeker.fullName}">Username</span></p>
+                	<p class="list-paragraph"><strong class="list-strong">Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
+					<p class="list-paragraph"><strong class="list-strong">Number:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
+					<p class="list-paragraph"><strong class="list-strong">Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
+					<p class="list-paragraph"><a class="list-link" th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobSeeker.jobSeekerId})}">Visit profile</a></p>
+					<hr class="list-hr">
             	</li>
         	</ul>
     	</div>
 	</div>
 	<!-- Display specific job seeker's profile if jobSeeker is available -->
 	<!---->
-	<div th:if="${jobSeeker != null}">
-	    <h2>Profile of <span th:text="${jobSeeker.fullName}">Username</span></h2>
-	    <p><strong>Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
-		<p><strong>Email:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
-	    <p><strong>Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
-	    <p><a th:href="@{/view/jobseekers}">Back to Job Seekers List</a></p>
+	<div th:if="${jobSeeker != null}" class="profile-container">
+	    <h2 class="profile-heading">Profile of <span th:text="${jobSeeker.fullName}">Username</span></h2>
+	    <p class="profile-paragraph"><strong class="profile-strong">Email:</strong> <span th:text="${jobSeeker.users.email}">Email</span></p>
+		<p class="profile-paragraph"><strong class="profile-strong">Number:</strong> <span th:text="${jobSeeker.number}">Number</span></p>
+	    <p class="profile-paragraph"><strong class="profile-strong">Skills:</strong> <span th:text="${jobSeeker.skills}">Skills</span></p>
+	    <p class="profile-paragraph"><a class="profile-link" th:href="@{/view/jobseekers}">Back to Job Seekers List</a></p>
 	</div>
 </body>
 </html>

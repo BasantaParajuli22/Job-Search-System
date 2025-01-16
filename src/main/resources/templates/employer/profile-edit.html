@@ -20,7 +20,7 @@
     </div>
 
 <div class="profile-form-container">
-    <h1 id="employer-profile-edit-heading">Edit Company Profile</h1>
+    <h2 id="employer-profile-edit-heading">Edit Company Profile</h2>
     
 	<form id="employer-profile-form" th:action="@{/employers/profile/edit/{employerId}(employerId=${profileDTO.userId})}"
 		 method="post" th:object="${profileDTO}">

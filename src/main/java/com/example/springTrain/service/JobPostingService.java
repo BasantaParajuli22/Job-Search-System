@@ -172,22 +172,22 @@ public class JobPostingService {
 	
 	//to find jobPosting in pages 
 	public Page<JobPosting> getPaginatedJobPostingByJobCategory(JobCategory jobCategory,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
+		 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
 		return jobPostingRepository.findAllJobPostingByJobCategoryAndAvailable(jobCategory,true,pageable);
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByJobType(JobType jobType,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
+		 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
 		return jobPostingRepository.findAllJobPostingByJobTypeAndAvailable(jobType,true,pageable);	
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByCityLocation(CityLocation location,int page,int size) {
-		Pageable pageable = PageRequest.of(page, size);		
+		 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));		
 		return jobPostingRepository.findAllJobPostingByCityLocationAndAvailable(location,true,pageable);	
 	}
 	
 	public Page<JobPosting> getPaginatedJobPostingByExpLevel(ExperienceLevel expLevel, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);		
+		 Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
 		return jobPostingRepository.findAllJobPostingByExperienceLevelAndAvailable(expLevel,true,pageable);	
 	}
 	

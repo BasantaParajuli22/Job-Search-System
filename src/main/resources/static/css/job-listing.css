@@ -1,100 +1,124 @@
-/* Container for the job post */
-.job-container {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 800px;
-}
-
-/* Header section */
 .job-header {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
 }
 
 .job-header h1 {
-    font-size: 1.8rem;
-    margin: 10px 0;
+    font-size: 2em;
+    margin-bottom: 10px;
+	flex-basis: 100%;
 }
 
-.deadline {
-    color: #888;
-    margin-left: auto;
-}
-.deadline1 {
-    color: rgb(255, 0, 0);
-    margin-left: auto;
-}
-
-/* Job information */
-.job-info {
-    margin: 20px 0;
-    line-height: 1.8;
-}
-
-.job-info strong {
-    color: #555;
-}
-
-.job-info a {
-    color: #007bff;
+.job-header a{
+	color: #007BFF;
     text-decoration: none;
 }
 
-.job-info a:hover {
-    text-decoration: underline;
+.job-header a:hover {
+    color: #0056b3;
+    text-decoration: none;
 }
 
-.truncate-text span {
-    display: inline-block;
-    max-width: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+.deadline, .deadline1{
+	font-style: italic;
+	color: #666;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	flex-basis: auto;
+    text-align: right;
 }
 
-input[type="file"] {
-    margin-bottom: 10px;
+.job-info {
+	margin-bottom: 20px;
+	border-bottom: 2px solid #eee;
+}
+
+.job-info-head{
+	border-bottom: 2px solid #eee;
+
+}
+.job-info a{
+    text-decoration: none;
 }
 
 
-
-
-#cv {
-    display: inline-block;
-    padding: 5px 10px;
-    font-size: 14px;
-    color: #333;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#cv:hover {
-    background-color: #e6e6e6;
-    border-color: #999;
-}
-
-#cv:focus {
-    outline: none;
-    box-shadow: 0 0 3px #007bff;
-    border-color: #007bff;
-}
-
-/* Media Queries for Responsive Design */
 @media (max-width: 768px) {
-    .job-header {
+	.job-container {
+        width: 95%;
+        padding: 15px;
+    }
+
+	.job-header h1{
+		font-size: 1.5em;
+	}
+
+	.deadline, .deadline1{
+		text-align: left;
+		flex-basis: 100%;
+		margin-bottom: 5px;
+        margin-left: 0;
+	}
+
+}
+
+/* Modified CSS for Button Containers */
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: flex-start;
+
+}
+
+.button-container form {
+    margin: 0;
+    display: inline-block;
+}
+
+/* Basic Styling for Buttons (adjust to match your design) */
+.button-green, .buttonSmall {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+.button-green {
+    background-color: #4CAF50;
+}
+
+.buttonSmall {
+    background-color: #007BFF;
+}
+
+.button-green:hover, .buttonSmall:hover {
+    opacity: 0.8;
+}
+
+
+/* Responsive Behavior: Make buttons stack vertically on smaller screens if needed */
+@media (max-width: 500px) {
+    .button-container {
         flex-direction: column;
         align-items: flex-start;
     }
-
-    .urgent-badge, .deadline {
-        margin-left: 0;
-        margin-top: 10px;
+    .button-container form {
+        display: block;
+    }
+     .button-container button{
+        width: 100%;
+        margin-bottom: 5px;
     }
 }

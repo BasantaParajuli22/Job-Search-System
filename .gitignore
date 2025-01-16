@@ -38,3 +38,6 @@ out/
 
 ### uploaded files ###
 /src/main/resources/static/uploads/
+
+!/src/main/resources/static/uploads/default-company-profile.png
+!/src/main/resources/static/uploads/default-jobseeker-profile.png

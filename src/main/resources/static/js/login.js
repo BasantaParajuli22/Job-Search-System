@@ -1,22 +1,17 @@
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
-
-	//toggle password 
-	document.getElementById("togglePassword").addEventListener("click",function(){
-	    //if(passwordType.type === "password" ) console.log("itss password"); 
-	    const passwordType = document.getElementById("password");
-	    if(passwordType.type === "password" ){
-	        passwordType.type = "text"
-	        document.getElementById("togglePassword").textContent = "Hide";
-	        document.getElementById("togglePassword").style.display = "inline";
-	    }else{
-	        passwordType.type = "password";
-	        document.getElementById("togglePassword").textContent = "Show";
-	        document.getElementById("togglePassword").style.display = "inline";
-	    }
-
+    // Toggle password visibility
+	document.getElementById("togglePassword").addEventListener("click", function () {
+    const passwordType = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon"); // Get the i element
+        if (passwordType.type === "password") {
+            passwordType.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordType.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
 	});
 
     // Form validation on submit

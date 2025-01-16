@@ -56,10 +56,7 @@ public class JobPosting {
 	private String jobDescription;
 	
 	@Column(length = 250)
-	private String salaryRange;
-	
-	@Column(length = 250)
-	private String contactEmail;
+	private String salaryRange;	
 	
 	private boolean remote;
 	
@@ -177,14 +174,6 @@ public class JobPosting {
 
 	public void setApplicationDeadline(LocalDate applicationDeadline) {
 		this.applicationDeadline = applicationDeadline;
-	}
-
-	public String getContactEmail() {
-		return contactEmail;
-	}
-
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
 	}
 
 	public boolean isRemote() {

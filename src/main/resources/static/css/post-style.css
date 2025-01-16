@@ -1,18 +1,9 @@
 
-.main-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	margin:0px
-}
-
-
 /* Job Post Grid Layout */
 .job-post-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);  /* 3 columns per row */
-    gap: 20px;  /* Adjust gap between items */
+    gap: 20px;  
 }
 
 /* Job post item styles */
@@ -42,30 +33,6 @@
     gap: 10px;
     justify-content: flex-start;
     flex-wrap: wrap;
-}
-
-/* Button Styles */
-.buttonSmall {
-    padding: 8px 16px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.buttonSmall:hover {
-    background-color: #0056b3;
-}
-
-.truncate-text {
-  width: 300px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* Media Queries */

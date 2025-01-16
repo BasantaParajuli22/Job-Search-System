@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.springTrain.dto.EmployerDTO;
 import com.example.springTrain.dto.JobSeekerDTO;
@@ -52,7 +53,8 @@ public class UsersService {
   		// Save the user and associate it with the JobSeeker
   		jobSeeker.setUsers(user);
  		jobSeeker.setFullName(jobSeekerDTO.getFullName());
- 		
+ 		jobSeeker.setProfilePicturePath("default-jobseeker-profile.png");//setting from folder 
+ 		;
  		usersRepository.save(user);
  		jobSeekerRepository.save(jobSeeker);
     }
@@ -68,6 +70,7 @@ public class UsersService {
   		
         employer.setUsers(user);    
   		employer.setCompanyName(employerDTO.getCompanyName().toLowerCase());
+  		employer.setCompanyLogoPath("default-company-profile.png");//from folder
   		
    		usersRepository.save(user);
         employerRepository.save(employer);

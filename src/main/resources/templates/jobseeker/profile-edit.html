@@ -4,63 +4,90 @@
     <title>Edit Job Seeker Profile</title>
     <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
     <link rel="stylesheet" th:href="@{/css/profile-edit.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 </head>
 <body>
-	<!-- Navigation Bar -->
-	<header th:replace="~{fragments/nav :: nav}"></header>
+    <!-- Navigation Bar -->
+    <header th:replace="~{fragments/nav :: nav}"></header>
 
-	<!-- Display Error Message -->
-	<div th:if="${errorMessage}" class="alert alert-danger">
-    	<p th:text="${errorMessage}"></p>
-	</div>
+    <!-- Display Error Message -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
 
-	<!-- Display Success Message -->
-	<div th:if="${successMessage}" class="alert alert-success">
-    	<p th:text="${successMessage}"></p>
-	</div>
+    <!-- Display Success Message -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
 
 <div class="profile-form-container">
-    <h1 id="profile-edit-heading">Edit Your Profile</h1>
+    <h2 id="profile-edit-heading">Edit Your Profile</h2>
 
-	<form id="jobseeker-profile-form"
-	      th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}"
-	      method="post" th:object="${profileDTO}">
+    <form id="jobseeker-profile-form"
+          th:action="@{/jobseekers/profile/edit/{jobSeekerId}(jobSeekerId=${profileDTO.userId})}"
+          method="post" th:object="${profileDTO}">
 
-	    <label for="fullName" class="profile-label">Full Name:</label>
-	    <input type="text" id="fullName" th:field="*{fullName}" placeholder="Full Name"
-	           class="profile-input" maxlength="50">
-	    <span class="error-message" id="fullName-error"></span>
+        <label for="fullName" class="profile-label">Full Name:</label>
+        <input type="text" id="fullName" th:field="*{fullName}" placeholder="Full Name"
+               class="profile-input" maxlength="50">
+        <span class="error-message" id="fullName-error"></span>
 
-		<select id="skills" name="skills" class="profile-input" multiple>
+		 <label for="skills" class="profile-label">Skills:</label>
+		 
+		 <!-- can select multiple values from enum skills-->
+		 
+		 <!--- ${...}: Expression Evaluation: Anything inside ${} 
+			is treated as an expression that needs to be evaluated.-->
+		 <!-- So T(com.example.springTrain.enums.Skills) is saying:
+			 get the type object for enum with the name com.example.springTrain.enums.Skills-->
+			 
+		 <!-- pre selected skills be remained selected-->
+		  <select id="skills" name="skills" class="profile-input" multiple>
 		    <option th:each="skill : ${T(com.example.springTrain.enums.Skills).values()}"
 		            th:value="${skill}" th:text="${skill.toString()}"
 		            th:selected="${profileDTO.skills != null and profileDTO.skills.contains(skill)}"></option>
 		</select>
-		
-	    <label for="number" class="profile-label">Phone Number:</label>
-	    <input type="text" id="number" th:field="*{number}" placeholder="Phone Number"
-	           class="profile-input" maxlength="10">
-	    <span class="error-message" id="number-error"></span>
+		<span class="error-message" id="skills-error"></span>
 
-	     <label for="description" class="profile-label">Description:</label>
-		<textarea id="description"  th:field="*{description}" placeholder="Brief description about you..." class="profile-textarea"></textarea>
-		<span class="error-message" id="description-error"></span>
+        <label for="number" class="profile-label">Phone Number:</label>
+        <input type="text" id="number" th:field="*{number}" placeholder="Phone Number"
+               class="profile-input" maxlength="10">
+        <span class="error-message" id="number-error"></span>
 
-		<!-- 
-	    <label for="profilePicture" class="profile-label">Profile Picture:</label>
-	    <input type="file" id="profilePicture" name="profilePicture" class="profile-input" accept="image/*">
-	    
-		<span class="error-message" id="profilePicture-error"></span> <br/>
+         <label for="description" class="profile-label">Description:</label>
+        <textarea id="description"  th:field="*{description}" placeholder="Brief description about you..." class="profile-textarea"></textarea>
+        <span class="error-message" id="description-error"></span>
 
-	    <label for="resume" class="profile-label">Resume:</label>
-	    <input type="file" id="resume" name="resume" class="profile-input" accept=".pdf,.doc,.docx">
-	    <span class="error-message" id="resume-error"></span><br/>
-		-->
-		
-		<button type="submit" id="save-changes-btn">Save Changes</button>
-	</form>
+        <!--
+        <label for="profilePicture" class="profile-label">Profile Picture:</label>
+        <input type="file" id="profilePicture" name="profilePicture" class="profile-input" accept="image/*">
+
+        <span class="error-message" id="profilePicture-error"></span> <br/>
+
+        <label for="resume" class="profile-label">Resume:</label>
+        <input type="file" id="resume" name="resume" class="profile-input" accept=".pdf,.doc,.docx">
+        <span class="error-message" id="resume-error"></span><br/>
+        -->
+
+        <button type="submit" id="save-changes-btn">Save Changes</button>
+    </form>
 </div>
 
 <script th:src="@{/js/jobseeker-profile-edit-validate.js}"></script>
+
+<!-- jQuery: select2 relies on jQuery, so you must include it.
+	select2 JS: This loads the main JavaScript library for select2. -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<!--- for displying placeholder and show remove all cross button-->
+<script>
+$(document).ready(function() {
+    $('#skills').select2({
+		placeholder: 'Select Skills',
+    	allowClear: true,
+		});
+});
+</script>
 </body>
 </html>

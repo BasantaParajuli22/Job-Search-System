@@ -27,15 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.querySelector("#jobDescription + .error-message").textContent = "Job Description is required.";
         }
 
-		// Validate Contact Email
-		       const contactEmail = document.getElementById("contactEmail").value.trim();
-		       if (!contactEmail) {
-		           isValid = false;
-		           document.querySelector("#contactEmail + .error-message").textContent = "Contact Email is required.";
-		       } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(contactEmail)) {
-		           isValid = false;
-		           document.querySelector("#contactEmail + .error-message").textContent = "Please enter a valid email address.";
-		       }
 			   
         // Validate Application Deadline
         const applicationDeadline = document.getElementById("applicationDeadline").value;

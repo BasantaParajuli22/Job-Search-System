@@ -11,30 +11,41 @@
 	<header th:replace="~{fragments/nav :: nav}"></header>
 
 		
-    <h1>Dashboard</h1>
+    <h2>Dashboard</h2>
 
+	
+	<div class="status-filter-links">
+		<a th:href="@{/admin/view/dashboard}" >Dashboard</a>	
+		<a th:href="@{/view/employers}" >View all employers</a>	
+		<a th:href="@{/view/jobseekers}" >View all jobSeekers</a>
+	</div>
     <!-- Job Postings Section -->
     <table border="1" th:if="${jobPosts != null}">
-    <h2>All Job Posts</h2>
+    <h3>All Job Posts</h3>
         <thead>
             <tr>
                 <th>Job ID</th>
                 <th>Job Title</th>
                 <th>Employer</th>
-                <th>Location</th>
-                <th>Salary</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="jobPost : ${jobPosts}">
                 <td th:text="${jobPost.jobId}"></td>
-				<td ><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
-						th:text="${jobPost.title}">Job Title</a></td>
-				<td><a th:href="@{/view/employers/profile/{employerId}(employerId=${jobPost.employer.employerId})}" 
-						th:text="${jobPost.employer.companyName}">Company Name</a>
-				</td>
-                <td th:text="${jobPost.cityLocation}"></td>
-                <td th:text="${jobPost.salaryRange}"></td>
+				
+				<td >
+					<div class="truncate-text">
+						<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
+							th:text="${jobPost.title}">Job Title</a></td>						
+					</div>
+				<td>
+					<div class="truncate-text">
+						<a th:href="@{/view/employers/profile/{employerId}(employerId=${jobPost.employer.employerId})}" 
+							th:text="${jobPost.employer.companyName}">Company Name</a>
+					</div>
+				</td>  
+											
 				<td>
 					<form th:action="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" method="get" style="display:inline;">
 						<button type="submit" class="button-green">View</button>
@@ -52,11 +63,7 @@
         </tbody>
     </table>
 
-    <!-- Employers Section -->
-    <h2>Employers and their jobPosts</h2>
-	<a th:href="@{/view/employers}" style="display:inline;">
-			<button type="submit" class="button-green">View all employers</button>
-	</a>
+	<h3>Employers and their jobPosts</h3>
 	
     <table border="1" th:if="${employers != null}">
         <thead>
@@ -90,10 +97,8 @@
     </table>
 
     <!-- Job Seekers Section -->
-    <h2>Job Seekers</h2>
-		<a th:href="@{/view/jobseekers}" style="display:inline;">
-			<button type="submit" class="button-green">View all jobSeekers</button>
-		</a>
+    <h3>Job Seekers</h3>
+		
     <table border="1" th:if="${jobseekers != null}">
         <thead>
             <tr>

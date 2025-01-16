@@ -9,19 +9,17 @@ public class ProfileDTO {
     // Common fields for JobSeeker and Employer
 	private Long userId;
     private String number;
+    private String address;
 
     // JobSeeker-specific fields
     private String fullName;
     private List<Skills> skills;
-	
-
 	private String description;
 	private String resumePath;
 	private String profilePicturePath;
 
     // Employer-specific fields
     private String companyName;
-    private String address;
 	private String website;
 	private String companyLogoPath;
 	

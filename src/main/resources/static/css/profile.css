@@ -1,14 +1,13 @@
-/* Existing CSS code here */
 .main-content {
     display: flex;
-    flex-direction: column; /* Make the main content a column layout */
-    align-items: center; /* Center items horizontally */
-    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
 }
 
 .profile-container {
-    width: 95%;
-    max-width: 1000px;
+    width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: #fff;
@@ -28,9 +27,66 @@
     margin-bottom: 10px;
 }
 
+.profile-box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.profile-image-container {
+	  width: 200px;
+	  height: 200px;
+	  border: 1px solid #ddd;
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+	  text-align: center;
+	  padding: 10px;
+	  position: relative;
+	  overflow: hidden;
+}
+.profile-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+    padding: 10px;
+    position: relative;
+}
+
+.profile-picture {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+	 display: block;
+}
+.profile-form-container{
+	margin-top: 5px;
+	display: flex;
+	justify-content: center;
+	text-align: center;
+}
+.profile-box p {
+  margin-bottom: 10px;
+}
+
+.profile-box form {
+  margin-top: 5px;
+}
+.profile-box form input[type="file"]{
+    margin-bottom: 5px;
+}
+.profile-box form button {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+
 .info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 10px;
 }
 
@@ -54,24 +110,7 @@
     display: inline-block;
 }
 
-.profile-box {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    position: relative;
-}
-.image-container{
-    position: relative;
-    display: inline-block;
-}
 
-.profile-picture {
-    max-width: 100%;
-    max-height: 200px;
-    display: block;
-    margin: 0 auto 10px;
-}
 
 .resume-link {
     display: inline-block;

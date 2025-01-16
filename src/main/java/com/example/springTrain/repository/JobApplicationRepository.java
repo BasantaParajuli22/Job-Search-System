@@ -2,6 +2,8 @@ package com.example.springTrain.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,6 +22,14 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication,L
 	
 	Long countJobApplicationByJobPosting_JobId(Long jobId);
 	List<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobId(Long employerId, Long jobId);
+		
+	List<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobIdAndApplicationStatus(Long employerId, Long jobId,
+			String applicationStatus);
+	
+	
+	Page<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobId(Long employerId, Long jobId, Pageable pageable);
+	Page<JobApplication> findByEmployer_EmployerIdAndJobPosting_JobIdAndApplicationStatus(Long employerId, Long jobId,
+			String applicationStatus, Pageable pageable);
 
 }
 

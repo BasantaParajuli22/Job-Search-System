@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Apply for Job</title>
 	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
 	<link rel="stylesheet" th:href="@{/css/form.css}">
-
+    
 </head>
 <body>
 	
@@ -16,29 +15,33 @@
 	    <p th:text="${errorMessage}"></p>
 	</div>
 	
-    <div class="maincontainer">
-        <h1>Apply for Job</h1>
+    <div class="form-container">
+        <h1>Apply for <span th:text="${jobPost.title}"></span></h1>
         <form th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}
 		(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}"
-			 method="post" enctype="multipart/form-data" th:object="${jobSeekerDTO}" class="form-register">
+			 method="post" enctype="multipart/form-data" th:object="${jobSeekerDTO}" class="form-register" id="applicationForm">
             <!-- Job Seeker Details -->
             <div class="form-group">
                 <label for="name">Full Name:</label>
-                <input type="text" id="name" name="fullName" th:value="${jobSeekerDTO.fullName}" required />
+                <input type="text" id="name" name="fullName" th:value="${jobSeekerDTO.fullName}"  />
+				<span id="nameError" class="error"></span>
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" th:value="${jobSeekerDTO.email}" required />
+                <input type="text" id="email" name="email" th:value="${jobSeekerDTO.email}" />
+				<span id="emailError" class="error"></span>
             </div>
             <div class="form-group">
                 <label for="contactNumber">Contact Number:</label>
-                <input type="text" id="contactNumber" name="number" th:value="${jobSeekerDTO.number}" required />
+                <input type="text" id="contactNumber" name="number" th:value="${jobSeekerDTO.number}"  />
+				<span id="contactNumberError" class="error"></span>
             </div>
 			
             <!-- File Uploads -->
             <div class="form-group">
-                <label for="cv">Upload CV (PDF only):</label>
-                <input type="file" id="cv" name="file" accept=".pdf"  onchange="validateFileSize(this)"/>
+                <label for="cv">Upload CV/Resume (PDF only):</label>
+                <input type="file" id="cv" name="file" accept="application/pdf"  onchange="validateFileSize(this)"/>
+				<span id="cvError" class="error"></span>
             </div>
 			<!-- 
             <div class="form-group">
@@ -54,15 +57,6 @@
         </form>
     </div>
 	
-	<script>
-	    function validateFileSize(input) {
-	        const file = input.files[0];
-	        if (file && file.size > 1 * 1024 * 1024) { // 1 MB limit
-	            alert("File size exceeds the maximum allowed size of 1 MB.");
-	            input.value = ""; // Clear the input
-	        }
-		}
-	</script>
-
+    <script th:src="@{/js/apply-validation.js}"></script>
 </body>
 </html>

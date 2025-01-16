@@ -7,107 +7,108 @@
     <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
     <link rel="stylesheet" th:href="@{/css/profile.css}">
     <link rel="stylesheet" th:href="@{/css/post-style.css}">
-    <style>
-        /* Add this style inside the <style> tag */
-        .website-link {
-            display: inline-block; /* Important to make width work */
-            max-width: 250px; /* Adjust this to fit your layout */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            word-break: break-all; /* For very long words */
-        }
-         .job-post-wrapper {
-            margin: 20px 0; /* Adds vertical space */
-            padding: 0 10px; /* remove padding from all sides and use left padding for alignment */
-        }
-         @media (max-width: 768px) {
-            .website-link {
-                max-width: 200px;
-            }
-        }
-    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
     <header th:replace="~{fragments/nav :: nav}"></header>
 
+		<!-- Display Error Message -->
+		<div th:if="${errorMessage}" class="alert alert-danger">
+		    <p th:text="${errorMessage}"></p>
+		</div>
+
+		<!-- Display Success Message -->
+		<div th:if="${successMessage}" class="alert alert-success">
+		    <p th:text="${successMessage}"></p>
+		</div>
     <main class="main-content">
        <div class="profile-container">
-            <h1>Profile: <span th:text="${employer.companyName}"></span></h1>
-
-            <section class="profile-section">
-                <h2>Company Information</h2>
-                <div class="info-grid">
-                    <div>
-                        <label><strong>Company Name:</strong></label>
-                        <span th:text="${employer.companyName}"></span>
-                    </div>
-                    <div>
-                        <label><strong>Contact Number:</strong></label>
-                        <span th:text="${employer.number}"></span>
-                    </div>
-                     <div>
-                        <label><strong>Address:</strong></label>
-                        <span th:text="${employer.address}"></span>
-                    </div>
-                    <div th:if="${not #strings.isEmpty(employer.website)}">
-                         <label><strong>Website:</strong></label>
-                        <a th:href="${employer.website}" target="_blank" th:text="${employer.website}" class="website-link"></a>
-                    </div>
-                    <div>
-                        <label><strong>Created At:</strong></label>
-                        <span th:text="${#temporals.format(employer.createdAt, 'dd-MM-yyyy')}"></span>
-                    </div>
-                </div>
-            </section>
-
-            <section class="profile-section">
-                <h2>Company Description</h2>
-                <div>
-                    <label><strong>Description:</strong></label>
-                    <p th:text="${employer.companyDescription}"></p>
-                </div>
-            </section>
-
-            <section class="profile-section">
-                <h2>Company Logo</h2>
-                <div class="documents-grid">
-                    <div class="profile-box" th:if="${not #strings.isEmpty(employer.companyLogoPath)}">
-                        <img th:src="@{/view/application/file/{fileName}(fileName=${employer.companyLogoPath})}"
+            <h2>Profile: <span th:text="${employer.companyName}"></span></h2>
+			 <!-- Profile Picture Section Starts -->
+            <div class="profile-box-container">
+				<!-- Profile Image Container -->
+                <div class="profile-image-container" th:if="${not #strings.isEmpty(employer.companyLogoPath)}">
+                    <img th:src="@{/view/application/file/{fileName}(fileName=${employer.companyLogoPath})}"
                             alt="Company Logo" class="profile-picture"/>
-                        <p>Company Logo</p>
-                        <form method="post"
-                              th:if="${loggedInEmployer != null and loggedInEmployer.employerId == employer.employerId }"
-                              th:action="@{/employers/profile/edit/{employerId}/company-logo(employerId=${employer.employerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp" onchange="validateFileSize(this)"/>
-                            <button type="submit" onclick="return confirmChangeLogo()">Change Logo</button>
-                        </form>
-                    </div>
-
-                    <div class="profile-box" th:if="${#strings.isEmpty(employer.companyLogoPath)}">
-                        <p>No Company logo added</p>
-                        <form method="post"
-                              th:if="${loggedInEmployer != null and loggedInEmployer.employerId == employer.employerId }"
-                              th:action="@{/employers/profile/edit/{employerId}/company-logo(employerId=${employer.employerId})}"
-                              enctype="multipart/form-data">
-                            <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp" onchange="validateFileSize(this)"/>
-                            <button type="submit">Add Logo</button>
-                        </form>
-                    </div>
 
                 </div>
-            </section>
-
-            <section class="profile-section" th:if="${loggedInEmployer != null }">
-                <h2>My Actions</h2>
-                <div class="link-group">
-                    <a href="/jobposts/new/create">Create New Job Post</a>
-                    <a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
+				<div class="profile-image-container" th:if="${#strings.isEmpty(employer.companyLogoPath)}">
+					<img th:src="@{/images/default-company-profile.png}"
+					 alt="Default Profile" class="profile-picture"/>
                 </div>
-            </section>
+
+                <!-- Profile Picture Form Starts -->
+                <div class="profile-form-container">
+                    <form method="post"
+                        th:if="${loggedInEmployer != null and loggedInEmployer.employerId == employer.employerId }"
+                        th:action="@{/employers/profile/edit/{employerId}/company-logo(employerId=${employer.employerId})}"
+                        enctype="multipart/form-data">
+                        <input type="file" name="image" accept=".png, .jpg, .jpeg, .webp"  onchange="validateFileSize(this)"/>
+                        <button type="submit" 
+						 	th:text="${#strings.isEmpty(employer.companyLogoPath)} ? 'Add Logo' : 'Change Logo'"
+						 	onclick="return confirmChangeLogo()"></button>
+                    </form>
+                </div>
+				<!-- Profile Picture Form Ends -->
+
+            </div>
+             <!-- Profile Picture Section Ends -->
+
+            <div class="content-container">
+				<section class="profile-section">
+					<h2>Company Information</h2>
+					<div class="info-grid">
+						<div >
+							<label><strong>Company Name:</strong></label>
+							<span th:text="${employer.companyName}"></span>
+						</div>
+						<div>
+							<label><strong>Contact Number:</strong></label>
+							<span th:text="${employer.number}"></span>
+							<span th:if="${ #strings.isEmpty(employer.number)}"
+								th:text="'Not provided'">Not provided</span>
+						</div>
+						 <div>
+							<label><strong>Address:</strong></label>
+							<span th:text="${employer.address}"></span>
+							<span th:if="${ #strings.isEmpty(employer.address)}"
+							 	th:text="'Not provided'">Not provided</span>
+						</div>
+						
+						<div th:if="${not #strings.isEmpty(employer.website)}">
+							 <label><strong>Website:</strong></label>
+							<a th:href="${employer.website}" target="_blank" th:text="${employer.website}" class="website-link"></a>
+							<span th:if="${ #strings.isEmpty(employer.website)}"
+									th:text="'Not provided'">Not provided</span>
+						</div>
+						<div>
+							<label><strong>Created At:</strong></label>
+							<span th:text="${#temporals.format(employer.createdAt, 'dd-MM-yyyy')}"></span>
+						</div>
+					</div>
+				</section>
+
+				<section class="profile-section">
+					<h2>Company Description</h2>
+					<div>
+						<label><strong>Description:</strong></label>
+						<p th:text="${employer.companyDescription}"></p>
+						<p th:if="${ #strings.isEmpty(employer.companyDescription)}"
+							th:text="'Not provided'">Not provided</p>
+					</div>
+				</section>
+
+
+				<section class="profile-section" th:if="${loggedInEmployer != null }">
+					<h2>My Actions</h2>
+					<div class="link-group">
+						<a href="/jobposts/new/create">Create New Job Post</a>
+						<a th:href="@{/employers/profile/edit/{employerId}(employerId=${employer.employerId})}">Edit Profile</a>
+					</div>
+				</section>
+			</div>
         </div>
+		</main>
           <div class="job-post-wrapper">
                <div class="main-container">
                     <div class="job-posts">
@@ -120,30 +121,22 @@
                                 <div th:each="jobPost, iterStat : ${myJobPosts}" class="job-post">
                                     <div class="job-info">
                                         <div class="truncate-text">
-                                            <strong>Company Name:</strong>
-                                            <span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" th:text="${jobPost.employer.companyName}"></a></span>
-                                        </div>
-                                        <div class="truncate-text">
                                             <strong>Title:</strong>
                                             <span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" th:text="${jobPost.title}"></a></span>
                                         </div>
-                                        <div class="truncate-text">
-                                            <strong>Requirements:</strong>
-                                            <span th:text="${jobPost.requirements}"></span>
+										<div class="truncate-text">
+											<strong>Category:</strong> 
+											<span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.jobCategory.name())}"></span>
                                         </div>
                                         <div class="truncate-text">
-                                            <strong>Job Description:</strong>
-                                            <span th:text="${jobPost.jobDescription}"></span>
+											<strong>Location:</strong>	
+											<span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.cityLocation.name())}"></span>
                                         </div>
-                                        <div class="truncate-text">
-                                            <strong>Salary Range:</strong>
-                                            <span th:text="${jobPost.salaryRange}"></span>
+										
+										 <div class="truncate-text">	
+                                            <strong>Job Type:</strong>
+											<span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.jobType.name())}"></span>
                                         </div>
-                                        <strong>Category:</strong> <span th:text="${jobPost.jobCategory}"></span><br>
-                                        <strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
-                                        <strong>Job Type:</strong> <span th:text="${jobPost.jobType}"></span><br>
-                                        <strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}"></span><br>
-                                        <strong>Application Deadline:</strong> <span th:text="${jobPost.applicationDeadline}"></span><br>
                                     </div>
 
                                     <div class="job-actions">
@@ -159,6 +152,7 @@
                                         </div>
 
                                         <div class="buttons">
+
                                             <a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}">
                                                 <button type="button" class="buttonSmall">View</button>
                                             </a>
@@ -187,7 +181,7 @@
                     </div>
                 </div>
           </div>
-    </main>
+   
   <script>
         function validateFileSize(input) {
             const file = input.files[0];

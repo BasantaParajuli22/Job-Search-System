@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.springTrain.entity.Employer;
 import com.example.springTrain.entity.JobPosting;
 import com.example.springTrain.enums.CityLocation;
 import com.example.springTrain.enums.ExperienceLevel;
 import com.example.springTrain.enums.JobCategory;
 import com.example.springTrain.enums.JobType;
+import com.example.springTrain.service.EmployerService;
 import com.example.springTrain.service.JobPostingService;
 import com.example.springTrain.util.EnumConverter;
 
@@ -25,7 +27,8 @@ public class SearchController {
 
 	@Autowired
 	private JobPostingService jobPostingService;
-	
+	@Autowired
+	private EmployerService employerService;
 	//Search by givng input can be 
 	//title or
 	//companyName
@@ -59,6 +62,19 @@ public class SearchController {
         model.addAttribute("totalPosts",totalPosts);//to display total posts counts
 	    model.addAttribute("filterName",jobCategory);//jobPosts category/type/location/Explvl/location
 	    
+    	// Get the employerId from Model
+    	Long loggedInEmployerId = (Long) model.getAttribute("employerId");
+    	
+	    Employer employer  = employerService.findByEmployerId(loggedInEmployerId);
+        model.addAttribute("employer", employer);
+
+        if (loggedInEmployerId != null) { // Check if employerId is valid
+           Employer loggedInEmployer  = employerService.findByEmployerId(loggedInEmployerId);
+            
+           if (loggedInEmployer != null) {
+                model.addAttribute("loggedInEmployer", loggedInEmployer);
+            }
+        }
 	    return "jobpost";
 	}
 	

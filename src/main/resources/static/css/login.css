@@ -1,12 +1,12 @@
 /* Main Container Styling */
-.maincontainer {
+.main-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    width: 100%;
+    width: 50%;
     padding: 12px;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 
 .headtitle {
@@ -60,6 +60,7 @@ input[type="password"] {
     border-radius: 4px;
     font-size: 14px;
     box-sizing: border-box;
+    padding-right: 30px;
 }
 
 input[type="radio"],
@@ -68,23 +69,52 @@ input[type="checkbox"] {
 }
 
 /* Password Field Group */
+.pass-group {
+    position: relative;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+}
+
 .pass-group input[type="password"],
 .pass-group input[type="text"] {
-    width: 75%;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding-right: 30px;
 }
 
 .passButton {
-    display: inline;
-    width: 20%;
-    padding: 2%;
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
     outline: none;
-    color: #4cae4c;
-    border: 1px solid #ccc;
-    background-color: #f4f4f4;
+    cursor: pointer;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    align-self: center;
 }
 
 .passButton:hover {
-    border: 1px solid #625050;
+    color: #625050;
+}
+
+.passButton i {
+    pointer-events: none;
+    font-size: 20px; /* Increase the font-size to make the eye bigger */
+}
+
+
+.pass-group p {
+    margin-top: 5px;
 }
 
 /* Form Focus */
@@ -101,7 +131,7 @@ input[type="checkbox"] {
 }
 
 /* General Button Styling */
-button {
+.button-green {
     width: 100%;
     padding: 10px;
     background-color: #007BFF; /* Blue color */
@@ -112,16 +142,14 @@ button {
     cursor: pointer;
 }
 
-
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-    .maincontainer {
-        margin-top: 20%;
+    .main-container {
+        margin-top: 10%;
     }
 
     .form-register {
-		/* Make form take most of the screen on small devices */
-        width: 90%;  
+        width: 90%;
         padding: 15px;
     }
 
@@ -137,11 +165,10 @@ button {
 
 @media (max-width: 480px) {
     .form-register {
-		/* Form takes nearly full width on very small devices */
-        width: 95%;  
+        width: 95%;
     }
 
-    button {
+   .button-green {
         font-size: 14px;
         padding: 12px;
     }

@@ -181,7 +181,6 @@ public class JobPostingController {
 	    existingJobPosting.setApplicationDeadline(updatedJobPosting.getApplicationDeadline());
 	    existingJobPosting.setExperienceLevel(updatedJobPosting.getExperienceLevel());
 	    existingJobPosting.setRemote(updatedJobPosting.isRemote());
-	    existingJobPosting.setContactEmail(updatedJobPosting.getContactEmail());
 
 	    // Save the updated job post
 	    jobPostingService.updateJobPosting(jobId, existingJobPosting);

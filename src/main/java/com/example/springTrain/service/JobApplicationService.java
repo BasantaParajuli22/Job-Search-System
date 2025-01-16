@@ -8,6 +8,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -66,7 +70,7 @@ public class JobApplicationService {
 		jobApplication.setJobSeeker(jobSeeker);
 		jobApplication.setJobPosting(jobPosting);
 		jobApplication.setEmployer(employer);
-		jobApplication.setApplicationStatus("not-viewed");
+		jobApplication.setApplicationStatus("Pending");
 		
 		jobApplication.setEmail(jobseekerDTO.getEmail());
 		jobApplication.setNumber(jobseekerDTO.getNumber());
@@ -169,14 +173,38 @@ public class JobApplicationService {
 		return jobApplicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
 	}
 	
+	//list of all applications
 	public List<JobApplication> findAllJobApplicationByEmployerIdAndJobId(Long employerId, Long jobId) {
 		return jobApplicationRepository.findByEmployer_EmployerIdAndJobPosting_JobId(employerId,jobId);
 	}
 
+	public List<JobApplication> findAllJobApplicationByEmployerIdAndJobIdAndStatus(Long employerId, Long jobId,
+			String applicationStatus) {
+		return jobApplicationRepository.findByEmployer_EmployerIdAndJobPosting_JobIdAndApplicationStatus(employerId,
+				jobId,applicationStatus);
+	}
 
+	
+	//pages of all applications in ascending order in updated time
+	//old first
+	//new last
+	public Page<JobApplication> findAllJobApplicationByEmployerIdAndJobIdInPages(Long employerId,
+			Long jobId,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Order.asc("updatedAt")));
 
+		return jobApplicationRepository.findByEmployer_EmployerIdAndJobPosting_JobId(
+				employerId,jobId,pageable);
+	}
 
- 
+	//pages according to status and in ascending order
+	public Page<JobApplication> findAllJobApplicationByEmployerIdAndJobIdAndStatusInPages(Long employerId, Long jobId,
+			String applicationStatus,int page,int size) {
+		Pageable pageable = PageRequest.of(page, size,Sort.by(Sort.Order.asc("updatedAt")));
 
+		return jobApplicationRepository.findByEmployer_EmployerIdAndJobPosting_JobIdAndApplicationStatus(
+				employerId,jobId,applicationStatus,pageable);
+
+	}
 
 }
+

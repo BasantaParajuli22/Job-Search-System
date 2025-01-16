@@ -56,7 +56,8 @@ public class JobSeekerService {
     	jobSeeker.setNumber(profileDTO.getNumber());
  		jobSeeker.setSkills(profileDTO.getSkills());
  		jobSeeker.setDescription(profileDTO.getDescription());
- 		
+ 		jobSeeker.setAddress(profileDTO.getAddress());
+	
         jobSeekerRepository.save(jobSeeker); 
 	}
 	

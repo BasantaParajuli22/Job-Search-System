@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Applications for Employer's Job Posts</title>
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/all-applications.css}">
+    <style>
+
+</style>
+</head>
+<body>
+	<!-- Navigation Bar -->
+	<header th:replace="~{fragments/nav :: nav}"></header>
+		
+	<!-- Display Error Message -->
+	<div th:if="${errorMessage}" class="alert alert-danger">
+	    <p th:text="${errorMessage}"></p>
+	</div>
+
+	<!-- Display Success Message -->
+	<div th:if="${successMessage}" class="alert alert-success">
+	    <p th:text="${successMessage}"></p>
+	</div>
+	
+    <div class="main-container" th:if="${allJobApplications.isEmpty()}">
+        <h3>No Applications found</h3>
+		<div class="status-filter-links" th:if="${employerId != null}">
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}
+						(employerId=${employerId},jobId=${jobPost.jobId})}">All</a>
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+						(employerId=${employerId},jobId=${jobPost.jobId},status='Accepted')}">Accepted</a>
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+						(employerId=${employerId},jobId=${jobPost.jobId},status='Rejected')}">Rejected</a>
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+						(employerId=${employerId},jobId=${jobPost.jobId},status='Reviewed')}">Reviewed</a>
+					<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+						(employerId=${employerId},jobId=${jobPost.jobId},status='Pending')}">Pending</a>
+		</div>
+    </div>
+	
+	<div class="main-container" th:if="${not allJobApplications.isEmpty()}">
+		
+		<h3>All Applications of 
+			<a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" 
+										th:text="${jobPost.title}"></a>	
+		</h3>
+
+		<div class="status-filter-links" th:if="${employerId != null}">
+			<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}
+				(employerId=${employerId},jobId=${jobPost.jobId})}">All</a>
+			<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+				(employerId=${employerId},jobId=${jobPost.jobId},status='Accepted')}">Accepted</a>
+			<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+				(employerId=${employerId},jobId=${jobPost.jobId},status='Rejected')}">Rejected</a>
+			<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+				(employerId=${employerId},jobId=${jobPost.jobId},status='Reviewed')}">Reviewed</a>
+			<a th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}/{status}
+				(employerId=${employerId},jobId=${jobPost.jobId},status='Pending')}">Pending</a>
+		</div>
+		
+    	<div th:each="jobApplication : ${allJobApplications}">
+		
+			<div class="application-card">
+				<div class="application-header">
+					<!-- Profile picture container here -->
+					 <div class="profile-image-container" th:if="${not #strings.isEmpty(jobApplication.jobSeeker.profilePicturePath)}">
+						<a th:href="@{/view/jobseekers/profile/{jobSeekerId}
+							(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}">
+							<img th:src="@{/view/application/file/{fileName}(fileName=${jobApplication.jobSeeker.profilePicturePath})}"
+								alt="Profile Picture" class="profile-picture"/>
+						</a> 
+						
+			
+					 </div>
+					 <div class="profile-image-container" th:if="${#strings.isEmpty(jobApplication.jobSeeker.profilePicturePath)}">
+						<a th:href="@{/view/jobseekers/profile/{jobSeekerId}
+												(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}">
+							<img th:src="@{/images/default-jobseeker-profile.png}"
+							 	alt="Default Profile" class="profile-picture"/>						
+						</a>
+					</div>
+                    <div class="application-header-text">
+					    <h3 >
+                            <a th:href="@{/view/jobseekers/profile/{jobSeekerId}(jobSeekerId=${jobApplication.jobSeeker.jobSeekerId})}"
+                               th:text="${jobApplication.fullName}"></a>
+                        </h3>
+                        <!-- Email and number links -->
+                        <div class="contact-info">
+                            <a th:href="@{'mailto:' + ${jobApplication.email}}"
+                               th:text="${jobApplication.email}">Send email</a>
+                            <a th:href="@{'tel:' + ${jobApplication.number}}"
+                               th:text="${jobApplication.number}">Call</a>
+                        </div>
+                    </div>
+				</div>
+				<!-- Details section -->
+				<div class="application-details">
+					
+					<div th:if="${jobApplication.filePath != null}">
+						<a th:href="@{/view/application/file/{fileName}(fileName=${jobApplication.filePath})}" target="_blank">
+						View CV/Resume </a> | 
+						<a th:href="@{/download/application/file/{fileName}(fileName=${jobApplication.filePath})}" target="_blank">
+						Download CV/Resume </a>
+					</div>
+					<div>
+						<span>Details from Job Seeker
+							<span th:text="${jobApplication.jobSeeker.fullName}"></span>
+							Profile 
+						</span>
+						<hr>
+					</div>
+					<div class="skills-tags" th:if="${jobApplication.jobSeeker.skills}">
+						<span th:each="skill : ${jobApplication.jobSeeker.skills}"
+								th:text="${skill.toString()}" class="skill-tag">
+						</span>
+					</div>
+					<p th:if="${#lists.isEmpty(jobApplication.jobSeeker.skills)}"
+					   th:text="'Skills: ' + 'No skills listed'">
+					</p>
+					<div class="description-container">
+					    <p th:if="${not #strings.isEmpty(jobApplication.jobSeeker.description)}"
+						 th:text="'Description: ' + ${jobApplication.jobSeeker.description}">
+						</p>
+						
+					    <p th:if="${#strings.isEmpty(jobApplication.jobSeeker.description)}"
+						 th:text="'Description: No description provided'">
+						</p>
+						<p th:if="${#strings.isEmpty(jobApplication.jobSeeker.address)}"
+							th:text="'Address: No address specified'">
+						</p>
+					</div>
+
+					<hr>
+					<!-- Application status -->
+					<p>Status: 
+						<span th:if="${jobApplication.applicationStatus == 'Pending'}"
+							th:text="${jobApplication.applicationStatus}" style="color: rgb(64, 128, 128);" ></span> 
+						<span th:if="${jobApplication.applicationStatus == 'Reviewed'}"
+							 th:text="${jobApplication.applicationStatus}" style="color: rgb(128, 128, 128);" ></span> 
+						<span th:if="${jobApplication.applicationStatus == 'Accepted'}"
+							th:text="${jobApplication.applicationStatus}" style="color: rgb(0, 128, 0);"></span>
+						<span th:if="${jobApplication.applicationStatus == 'Rejected'}"
+							th:text="${jobApplication.applicationStatus}" style="color: rgb(255, 0, 0);"></span>
+					</p>
+
+				</div>
+				<div class="application-actions">
+					<!-- Status update Form -->
+					<form th:action="@{/application/submittedto/employer/{employerId}/statusUpdate/{applicationId}(employerId=${jobApplication.employer.employerId},applicationId=${jobApplication.applicationId})}" method="post">
+						<select name="applicationStatus">
+							<option value="Reviewed" th:selected="${jobApplication.applicationStatus == 'Reviewed'}">Reviewed</option>
+							<option value="Accepted" th:selected="${jobApplication.applicationStatus == 'Accepted'}">Accepted</option>
+							<option value="Rejected" th:selected="${jobApplication.applicationStatus == 'Rejected'}">Rejected</option>
+						</select>
+						<button type="submit" class="buttonSmall">Update Status</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="pagination-controls">
+		    <a th:if="${allJobApplications.hasPrevious()}"
+		       th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}
+		            (employerId=${employerId},jobId=${jobPost.jobId},
+		            page=${allJobApplications.number-1},size=${allJobApplications.size})}">
+		        Previous
+		    </a>
+
+		    <span>
+		        <span th:text="${allJobApplications.number + 1}"></span> /
+		        <span th:text="${allJobApplications.totalPages}"></span>
+		    </span>
+
+		    <a th:if="${allJobApplications.hasNext()}"
+		       th:href="@{/view/applications/submittedto/employer/{employerId}/of/{jobId}
+		            (employerId=${employerId},jobId=${jobPost.jobId},
+		            page=${allJobApplications.number+1}, size=${allJobApplications.size})}">
+		        Next
+		    </a>
+		</div>
+		
+	</div>
+	
+</body>
+</html>

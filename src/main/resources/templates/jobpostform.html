@@ -24,7 +24,7 @@
 	<!-- Form Action URL - new or update based on jobId -->
 	<!-- Dynamic URL Construction (String Concatenation)-->
 	<!-- Works well for more complex URL logic and multiple conditions like in a ternary operator (? :)-->
-	<div class="maincontainer">
+	<div class="form-container">
 		<!-- Header to determine if it's an edit or create form -->
 		<h1 th:text="${jobPosting.jobId != null} ? 'Edit Job Posting' : 'Create Job Posting'"></h1>
 
@@ -59,13 +59,14 @@
 		</div>
 
 
-		<!-- Contact Email -->
+		<!-- Contact Email
 		    <div class="form-group">
 		        <label for="contactEmail">Contact Email:</label>
 		        <input type="email" id="contactEmail" name="contactEmail" th:field="*{contactEmail}" maxlength="250">
 		        <span class="error-message" style="color: red;"></span>
 		    </div>
-		
+			-->
+			
 		<!-- Salary Range -->
 		<div class="form-group">
 		    <label for="salaryRange">Salary Range:</label>

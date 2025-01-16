@@ -4,114 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Vacancy</title>
-	<link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
-	<link rel="stylesheet" th:href="@{/css/job-listing.css}">
-	<script th:src="@{/js/navbar.js}" defer></script>
-
+    <link rel="stylesheet" th:href="@{/css/navbar-footer.css}">
+    <link rel="stylesheet" th:href="@{/css/job-listing.css}">
+    <script th:src="@{/js/navbar.js}" defer></script>
 </head>
 <body>
-	<!-- Navigation Bar -->
-	<header th:replace="~{fragments/nav :: nav}"></header>
-		
-	<!-- Display Error Message -->
-	<div th:if="${errorMessage}" class="alert alert-danger">
-	    <p th:text="${errorMessage}"></p>
-	</div>
+    <!-- Navigation Bar -->
+    <header th:replace="~{fragments/nav :: nav}"></header>
+	<main>
+    <!-- Display Error Message -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
 
-	<!-- Display Success Message -->
-	<div th:if="${successMessage}" class="alert alert-success">
-	    <p th:text="${successMessage}"></p>
-	</div>
-	
+    <!-- Display Success Message -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+
     <div class="job-container">
         <div class="job-header">
-            <h1 th:text="${jobPost.title}">Title</h1>
-			<span class="deadline" th:text="'Application deadline: ' + ${jobPost.applicationDeadline}"></span>
-            <span class="deadline1" th:text="'total days left : '+ ${deadlineDays}"></span>
-		</div>
+            <h1>
+                <a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}"
+                   th:text="${jobPost.title}"></a>
+            </h1>
+			 <span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" th:text="${jobPost.employer.companyName}"></a></span>
+            <span th:if="${ !#strings.isEmpty(jobPost.employer.address)}" th:text="${jobPost.employer.address}" ></span>
+            <span class="deadline" th:text="'Application deadline: ' + ${jobPost.applicationDeadline}"></span>
+            <span class="deadline1" th:text="'total days left : '+ ${deadlineDays}" style="color: red;"></span>
+        </div>
 
-			 <div class="job-info">
-			 							
-			 	<div class="truncate-text"><strong>Company Name:</strong>
-			 		<span><a th:href="@{/view/jobposts/{jobId}/of/employer/{employerId}(jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" th:text="${jobPost.employer.companyName}"></a></span>
-			 	</div>
-			 	<div class="truncate-text"><strong>Title:</strong>
-			 		<span><a th:href="@{/view/jobposts/details/{jobId}(jobId=${jobPost.jobId})}" th:text="${jobPost.title}"></a></span>
-			 	</div>
-			 	<div class="truncate-text"><strong>Requirements:</strong>
-					 <span th:text="${jobPost.requirements}" ></span>
-				</div>
-				<div class="truncate-text"><strong>Job Description:</strong>
-			 		 <span th:text="${jobPost.jobDescription}"></span>
-			 	</div>						    
-			 	<div class="truncate-text"><strong>Salary Range:</strong>
-			 		 <span th:text="${jobPost.salaryRange}"></span>
-			 	</div>
-			    <strong>Location:</strong> <span th:text="${jobPost.cityLocation}"></span><br>
-				<strong>Contact Email:</strong> <span th:text="${jobPost.contactEmail}"></span><br>
-				<strong>Job Type:</strong> <span th:text="${jobPost.jobType}"></span><br>
-			    <strong>Experience Level:</strong> <span th:text="${jobPost.experienceLevel}"></span><br>
-				<strong>Category:</strong> <span th:text="${jobPost.jobCategory}"></span><br>
-				<strong>Remote:</strong> <span th:text="${jobPost.remote ? 'Yes' : 'No'}"></span><br>
-				<strong>Available:</strong> <span th:text="${jobPost.available ? 'Yes' : 'No'}"></span><br>
-				<strong>Created At:</strong> <span th:text="${jobPost.createdAt}"></span><br>
-		</div>
-
-		
-		<div sec:authorize="hasRole('ROLE_JOBSEEKER')">
-		<!-- if appliedjobPost is found that means its already applied then cannot apply-->
-			<div th:if="${appliedjobPost != null}" >
-				<form class="form2">
-					<button class="button-green">Applied</button>
-				</form>
+        <div class="job-info">
+			<div class="job-info">
+            <strong >Basic Information</strong>
 			</div>
-			<p th:if="${available == false}" th:text="'Deadline is Over'">	</p>
+
+            <div class="job-info-head-space-betn">
+                <strong>Salary Range:</strong>
+                <span th:text="${jobPost.salaryRange}"></span>
+            </div>
+            <div class="job-info-head-space-betn">
+                <strong>Category:</strong>
+                <span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.jobCategory.name())}"></span>
+            </div>
+            <div class="job-info-head-space-betn">
+                <strong>Remote:</strong>
+                <span th:text="${jobPost.remote ? 'Yes' : 'No'}"></span>
+            </div>
+
+            <div class="job-info-head-space-betn">
+                <strong>Job Type:</strong>
+                <span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.jobType.name())}"></span>
+            </div>
+            <div class="job-info-head-space-betn">
+                <strong>Location:</strong>
+                <span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.cityLocation.name())}"></span>
+            </div>
+            <div class="job-info-head-space-betn">
+                <strong>Experience Level:</strong>
+                <span th:text="${T(com.example.springTrain.util.EnumConverter).toSentenceCase(jobPost.experienceLevel.name())}"></span>
+            </div>
+        </div>
+
+        <div class="job-info">
+            <strong class="job-info"></strong>
+            <div><strong>Requirements:</strong>
+                <span th:text="${jobPost.requirements}"></span>
+            </div>
+        </div>
+
+        <div class="job-info">
+            <div><strong>Job Description:</strong>
+                <span th:text="${jobPost.jobDescription}"></span>
+            </div>
+        </div>
+
+        <div sec:authorize="hasRole('ROLE_JOBSEEKER')">
+       <!-- if appliedjobPost is found that means its already applied then cannot apply-->
+       <div class="button-container"> <!-- SINGLE CONTAINER FOR ALL BUTTONS -->
+            <div th:if="${appliedjobPost != null}">
+                <form class="form2">
+                    <button class="button-green" style="display: inline;">Applied</button>
+                </form>
+            </div>
 			
-   		 	<div th:if="${available == true && canApply == true && appliedjobPost == null }">
-				
-				<form th:if="${jobSeeker != null}"
-					th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
-					method="get"  class="form1">
+            <p th:if="${available == false}" th:text="'Deadline is Over'"></p>
 
-			    	<button type="submit" class="button-green">Apply</button>
-				</form>
-			</div>
-			<div th:if="${available == true && canApply == true && appliedjobPost != null }">
-							
-				<form th:if="${jobSeeker != null}"
-						th:action="@{/application/{applicationId}/withdraw-by/jobseeker/{jobSeekerId}/to-jobpost/{jobId}/of/{employerId}
-						(applicationId =${appliedjobPost.applicationId},jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}" 
-						method="post"  class="form1">
-
-					<button type="submit" class="button-green"
-					onclick="return confirmWithdraw()" >Withdraw</button>
-				</form>
-			</div>
-			
-			<!-- Save Job Button -->
-			<div th:if="${savedjobPost == null and jobSeeker != null}">		
-				<div>
-		    		<form th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post" class="form1">
-						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-		        		<button type="submit" class="buttonSmall">Save job</button>
-		    		</form>
-				</div>
-			</div>
-			<!-- UnSave job Button -->
-			<div th:if="${savedjobPost != null and jobSeeker != null}">
-				<div>
-					<form th:action="@{/unsaveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post" class="form2">
-						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-						<button type="submit" class="button-green">UnSave job</button>
-					</form>
-				</div>
-			</div>
-		</div>
+                <div th:if="${available == true && canApply == true && appliedjobPost == null }">
+                    <form th:if="${jobSeeker != null}"
+                        th:action="@{/applications/applyBy/{jobSeekerId}/to/{jobId}/{employerId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}"
+                        method="get" class="form1">
+                    	<button type="submit" class="button-green" 
+						style="display: inline;">Apply</button>
+                	</form>
+            	</div>
+            <!-- Save Job Button -->
+            <div th:if="${savedjobPost == null and jobSeeker != null}">
+                <form th:action="@{/saveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post" class="form1">
+                    <button type="submit" class="buttonSmall"
+					style="display: inline;">Save job</button>
+                </form>
+            </div>
+            <!-- UnSave job Button -->
+            <div th:if="${savedjobPost != null and jobSeeker != null}">
+                <form th:action="@{/unsaveBy/jobSeeker/{jobSeekerId}/jobPost/{jobId}(jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId})}" method="post" class="form2">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="button-green"
+					style="display: inline;">UnSave job</button>
+                </form>
+            </div>
+            <div th:if="${available == true && canApply == true && appliedjobPost != null }">
+                <form th:if="${jobSeeker != null}"
+                    th:action="@{/application/{applicationId}/withdraw-by/jobseeker/{jobSeekerId}/to-jobpost/{jobId}/of/{employerId}
+                        (applicationId =${appliedjobPost.applicationId},jobSeekerId=${jobSeeker.jobSeekerId},jobId=${jobPost.jobId},employerId=${jobPost.employer.employerId})}"
+                    method="post" class="form1">
+                    <button type="submit" class="button-green" style="display: inline;"
+                            onclick="return confirmWithdraw()">Withdraw</button>
+                </form>
+            </div>
+        </div>
     </div>
-	<script>
-	    function confirmWithdraw() {
-	        return confirm("Are you sure you want to withdraw your application?");
-	    }
-	</script>
+	</main>
+    <script>
+        function confirmWithdraw() {
+            return confirm("Are you sure you want to withdraw your application?");
+        }
+    </script>
 </body>
-</html>
