@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
         if (username === '') {
             showError('nameError', 'Name is required.');
             isValid = false;
-        }
+        }else if(! validateName(username)){
+			showError('nameError','Space between firstname and lastname only (No numbers)')
+		}
 
         // Validate Email
         const email = document.getElementById('email').value.trim();
@@ -56,6 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return emailRegex.test(email);
     }
 
+	function validateName(name) {
+		//firstname and space between last name
+			const nameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
+	        return nameRegex.test(name);
+	    }
+	
     function showError(id, message) {
         const errorElement = document.getElementById(id);
         if (errorElement) {
@@ -66,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function clearErrors() {
         const errors = document.querySelectorAll('.error');
         errors.forEach(error => {
-            error.textContent = '';  // Clear error messages
+            error.textContent = '';  
         });
     }
 });

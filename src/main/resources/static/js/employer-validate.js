@@ -13,7 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
         if (companyName === '') {
             showError('nameError', 'Company/Organization Name is required.');
             isValid = false;
-        }
+        }else if(! validateName(companyName)){
+			showError('nameError', 'Invalid company name. Use only letters, numbers, spaces, &');
+			isValid = false;
+		}
 
         // Validate Email
         const email = document.getElementById('email').value.trim();
@@ -46,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
             isValid = false;
         }
 
-        // Debugging log
         console.log("isValid after all checks: ", isValid);
 
         // Prevent form submission if invalid
@@ -60,6 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
+	function validateName(name) {
+	    // Match names containing letters, numbers, spaces, and specific special characters like & and '
+	    const nameRegex = /^[a-zA-Z0-9&\s]+$/;
+	    return nameRegex.test(name) && !/^\d+$/.test(name) && name.trim().length > 0;
+	}
 
     function showError(id, message) {
         const errorElement = document.getElementById(id);

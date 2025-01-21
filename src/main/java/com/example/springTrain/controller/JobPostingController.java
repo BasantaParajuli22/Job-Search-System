@@ -73,7 +73,7 @@ public class JobPostingController {
 
 		jobPostingService.createJobPosting(jobPosting,loggedInEmployer);//jobposting created
 		
-        redirectAttributes.addFlashAttribute("successMessage", "Your Job Post has been edited successfully!");
+        redirectAttributes.addFlashAttribute("successMessage", "Your Job Post has been saved successfully!");
 		return "redirect:/employers/profile";
 	}
 	
