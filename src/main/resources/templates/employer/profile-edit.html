@@ -27,7 +27,8 @@
 		    <label for="companyName" class="profile-label">Company Name:</label>
 		    <input type="text" id="companyName" th:field="*{companyName}" placeholder="Company Name" class="profile-input" maxlength="50">
 			<span class="error-message" id="companyName-error"></span>
-
+			<p th:if="${error?.companyName != null}"><span th:text="${error.companyName}" class="error"></span></p>
+			
 		    <label for="companyDescription" class="profile-label">Company Description:</label>
 		    <textarea id="companyDescription" th:field="*{description}" placeholder="Description" class="profile-textarea" maxlength="900"></textarea>
 		    <span class="error-message" id="companyDescription-error"></span>

@@ -29,10 +29,6 @@
 				<input type="text" id="username" th:field="*{fullName}" placeholder="Enter your Full Name(firstname lastname)" maxlength="50">
 				
 				<span id="nameError" class="error"></span>
-				<p th:if="${error?.username != null}">
-					<!--if there is no username in register table it wiil show error -->
-					<span th:text="${error.username}" class="error"></span>
-				</p>
             </div>
 
 			<div class="form-group">

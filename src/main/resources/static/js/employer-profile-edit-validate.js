@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 companyNameError.textContent = 'Company name must be less than 50 characters';
                 isValid = false;
             } else if(!isValidName(companyNameInput.value)){
-                companyNameError.textContent = "Company name must not contain special character and number";
+                companyNameError.textContent = "Invalid company name. Use only letters, numbers, spaces, &";
                  isValid = false;
              }
         }
@@ -76,9 +76,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-     function isValidName(name) {
-         return /^[a-zA-Z\s]*$/.test(name);
-     }
+
+	 function isValidName(name) {
+	 	    // Match names containing letters, numbers, spaces, and specific special characters like & and '
+	 	    const nameRegex = /^[a-zA-Z0-9&\s]+$/;
+	 	    return nameRegex.test(name) && !/^\d+$/.test(name) && name.trim().length > 0;
+	 	}
 
      function isValidNumber(number) {
            return /^\d{10}$/.test(number);

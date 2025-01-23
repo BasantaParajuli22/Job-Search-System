@@ -67,9 +67,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    function isValidName(name) {
-      return /^[a-zA-Z\s]*$/.test(name);
-    }
+	function isValidName(name) {
+		//firstname and space between last name
+			const nameRegex = /^[A-Za-z]+ [A-Za-z]+$/;
+	        return nameRegex.test(name);
+	    }
     function isValidNumber(number) {
        return /^\d{10}$/.test(number);
     }

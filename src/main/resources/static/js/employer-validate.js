@@ -13,8 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (companyName === '') {
             showError('nameError', 'Company/Organization Name is required.');
             isValid = false;
+			}
+		else if (companyName.length > 50) {
+			 showError('nameError', 'Company/Organization Name cannot exceed 50 characters.');
+			 isValid = false;
         }else if(! validateName(companyName)){
-			showError('nameError', 'Invalid company name. Use only letters, numbers, spaces, &');
+			showError('nameError', 'Invalid company name. Use only letters, numbers, spaces, and &');
 			isValid = false;
 		}
 
@@ -63,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return emailRegex.test(email);
     }
 	function validateName(name) {
-	    // Match names containing letters, numbers, spaces, and specific special characters like & and '
+	    // Match names containing letters, numbers, spaces, and specific special characters like &
 	    const nameRegex = /^[a-zA-Z0-9&\s]+$/;
 	    return nameRegex.test(name) && !/^\d+$/.test(name) && name.trim().length > 0;
 	}
