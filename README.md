@@ -29,7 +29,7 @@ A full-stack job portal with role-based dashboards (Admin, Employer, Job Seeker)
 ## 🛠 Tech Stack  
 | Layer          | Technology |  
 |----------------|------------|  
-| **Frontend**   | Thymeleaf, HTML5, CSS3, JavaScript |  
+| **Frontend**   | Thymeleaf, HTML5, CSS, JavaScript |  
 | **Backend**    | Spring Boot (Java) |  
 | **Database**   | PostgreSQL |  
 | **Deployment** | Docker |  
@@ -40,4 +40,4 @@ A full-stack job portal with role-based dashboards (Admin, Employer, Job Seeker)
 
 1. **Clone the repo**:  
    ```bash 
-   git clone https://github.com/your-repo/job-search-system.git && cd job-search-system
+   git clone https://github.com/BasantaParajuli22/Job-Search-System.git
